@@ -1,4 +1,4 @@
-# emacs_config
+# my_emacs_config
 
 Moja konfiguracja Emacs-a.
 
@@ -20,8 +20,9 @@ Potrzebne beda pewne programy z poziomu stytemu, np.:
 * i inne (wyjdzie w praniu gdy uruchomimy jakiegos moda i nie bedzie cos dzialac)<br>
 
 
-Gdybym teraz zaczynal od zera wybralbym pewnie
-[doom emacs](https://www.github.com/hlissner/doom-emacs)
+Gdybym teraz zaczynal od zera wybralbym pewnie:
+[Doom Emacs](https://www.github.com/hlissner/doom-emacs)
+za rekomendacja: [Doom Emacs for Noobs](https://www.youtube.com/watch?v=iab2z21cRqA)
 
 ## Do własnego użytku, nie powinno być używane przez nikogo innego.<br>
 ## For my personal use only, should not be used by anyone else.
