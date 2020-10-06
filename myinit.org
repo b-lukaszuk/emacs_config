@@ -35,7 +35,8 @@
 * cl-lib (kompatybilnosc z common-lisp)
 
 Potrzebne do dzialania moich funcji liczacych czas (podlicz wiersz, tydzien, itd.)
-Nastepca cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-first, cl-second
+
+Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-first, cl-second
 
 #+BEGIN_SRC emacs-lisp
 
