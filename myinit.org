@@ -33,8 +33,8 @@
 
 * cl-lib (kompatybilnosc z common-lisp)
 
-Potrzebne do dzialania moich funcji liczacych czas (podlicz wiersz, tydzien, itd.)\\
-Nastepca cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-first, cl-second\\
+Potrzebne do dzialania moich funcji liczacych czas (podlicz wiersz, tydzien, itd.) \\
+Nastepca cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-first, cl-second \\
 
 #+BEGIN_SRC emacs-lisp
 
@@ -68,14 +68,14 @@ Nastepca cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-fir
 
 * Podlicz wiersz (godz:min w wierszu)
 
-oblicza ile minut (np. nauki niemieckiego jest w wierszu), tj.\\
-zamienia wiersz w stylu:\\
-<2019-06-20 Thu> 06:30-06:50 10:10-10:30\\
-na\\
-<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min\\
-nie trzeba wizualnie zaznaczyc wiersza\\
-(funkcja robi to sama, ale nawet tego nie widac)\\
-czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia\\
+oblicza ile minut (np. nauki niemieckiego jest w wierszu), tj. \\
+zamienia wiersz w stylu: \\
+<2019-06-20 Thu> 06:30-06:50 10:10-10:30 \\
+na \\
+<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min \\
+nie trzeba wizualnie zaznaczyc wiersza \\
+(funkcja robi to sama, ale nawet tego nie widac) \\
+czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia \\
 
 #+BEGIN_SRC emacs-lisp
 
@@ -164,8 +164,8 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia\\
 
 * Podlicz tydzien
 
-podlicza sume minut (cyfry przed " min")\\
-i sume pln (cyfry przed " pln") z zaznaczonego tekstu\\
+podlicza sume minut (cyfry przed " min") \\
+i sume pln (cyfry przed " pln") z zaznaczonego tekstu \\
 
 #+BEGIN_SRC emacs-lisp
 
@@ -326,8 +326,9 @@ i sume pln (cyfry przed " pln") z zaznaczonego tekstu\\
 
 * Numerowanie okien
 
-Dzieki temu mamy wygodniejsze przechodzenie miedzy oknami.
-(M-nr_okna), np. M-1, M-2 zamiast domyslnego Emacsowego C-x o
+Dzieki temu mamy wygodniejsze przechodzenie miedzy oknami. \\
+(M-nr_okna), np. M-1, M-2 \\
+zamiast domyslnego Emacsowego C-x o (Ctrl+x o) \\
 
 #+BEGIN_SRC emacs-lisp
 
@@ -409,10 +410,10 @@ Wymaga zainstalowanego R-a https://www.r-project.org/
 
 * Python
 
-Bedac w pliku *.py -> M-x run-python\\
-A potem zaznaczamy region kodu i C-c C-c\\
+Bedac w pliku *.py -> M-x run-python \\
+A potem zaznaczamy region kodu i C-c C-c \\
 \\
-Wymaga Pyhon3\\
+Wymaga Pyhon3
 
 #+BEGIN_SRC emacs-lisp
 
@@ -511,8 +512,8 @@ Wymaga Pyhon3\\
 
 * Kill-other-buffers
 
-Do zabicia pozostalych buforow\\
-(jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)\\
+Do zabicia pozostalych buforow \\
+(jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac) \\
 
 #+BEGIN_SRC emacs-lisp
 
@@ -526,8 +527,8 @@ Do zabicia pozostalych buforow\\
 
 Wymaga [[https://git-scm.com/][Git-a]]
 
-Fajna nakladka na Git-a, choc jak jest\\
-duzo plikow w 1 commitcie to zauwazalnie zwalnia\\
+Fajna nakladka na Git-a, choc jak jest \\
+duzo plikow w 1 commitcie to zauwazalnie zwalnia \\
 
 #+BEGIN_SRC emacs-lisp
 
