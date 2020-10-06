@@ -1,0 +1,7 @@
+elpa/
+transient/
+/abbrev_defs
+/init.el~
+/myinit.el
+/myinit.org~
+auto-save-list/
