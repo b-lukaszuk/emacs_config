@@ -8,9 +8,9 @@ Postepowanie:
 2. odpalamy Emacs-a (wyskoczy warning lub blad, bo nie ma zainstalowanego `use-package` czy wgranego `myinit.org`, na razie ignorujemy)
 3. `M-x` (Alt-x) `list-packages` i instalujemy: `use-package`
 4. do katalogu `~/.emacs.d` wgrywamy plik `myinit.org`
-5. restart emacs-a i powinno wszystko samo sciagnac z neta i poinstalowac (mozliwe warningsy, ale raczej ignorujemy)
+5. restart Emacs-a i powinno wszystko samo sciagnac z neta i poinstalowac (mozliwe warningsy, ale raczej ignorujemy)
 
-Potrzebne beda pewne programy z poziomu stytemu, np.:
+Potrzebne beda pewne programy z poziomu systemu, np.:
 * haskell
 * R
 * Jupyter notebook
