@@ -5,7 +5,6 @@
 
 (require 'package)
 (package-initialize)
-(require 'cl)
 
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))

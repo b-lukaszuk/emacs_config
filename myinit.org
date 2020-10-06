@@ -1,5 +1,7 @@
+#+TITLE: My emacs config
 #+STARTUP: overview
 #+STARTUP: indent
+#+OPTIONS: \n:t
 
 * Wyglad interfejsu
 
@@ -14,8 +16,11 @@
   ;; otherwise after a few reloadings its gonna look ugly
 
 (load-theme 'wheatgrass)
+
+;; wylaczenie wyswietlania menu-baru i tool-bar (gora okienka)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+
 (set-language-environment "UTF-8")
 
 (setq column-number-mode t)
@@ -24,6 +29,20 @@
 (global-hl-line-mode +1)
 (set-face-background 'hl-line "gray20")
 (set-face-foreground 'highlight nil)
+
+#+END_SRC
+
+* cl-lib (kompatybilnosc z common-lisp)
+
+Potrzebne do dzialania moich funcji liczacych czas (podlicz wiersz, tydzien, itd.)
+Nastepca cl, funckje common lispa sa poprzedzone przedrostkiem "cl-", np. cl-first, cl-second
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package cl-lib
+  :ensure t
+  :pin melpa-stable
+  :defer t)
 
 #+END_SRC
 
@@ -36,8 +55,9 @@
 
   ;; deklaracja zmiennych pomocniczych
   (let ((znak-pop (char-before)) ; sprawdzamy znak przed pointem
-	(co-wstawic (replace-regexp-in-string "\n" "" ; shell-command-to-string wstawia tekst ze znakiem nowej linii   
-					      (shell-command-to-string "date +'%H:%M'")))) ; wstawiamy aktualny czas 
+	(co-wstawic
+	 (replace-regexp-in-string "\n" "" ; shell-command-to-string wstawia tekst ze znakiem nowej linii   
+				   (shell-command-to-string "date +'%H:%M'")))) ; wstawiamy aktualny czas 
 
     (if (= znak-pop 45) ; ascii 45 to "-"
 	;; jesli wczesniej bylo "-" to wstawiamy tylko string "HH:MM"
@@ -57,69 +77,58 @@ na
 nie trzeba wizualnie zaznaczyc wiersza
 (funkcja robi to sama, ale nawet tego nie widac)
 czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
-
 #+BEGIN_SRC emacs-lisp
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
     ;; ponizsza funkcja zamienia godz na min, np. "10:10"
     ;; to 610 min (10h 10min) po polnocy (00:00)
     ;; czas nie moze obejmowac "00:00", tj. np. "23:57-00:03"
     ;; spowoduje bledne obliczenia (wartosci ujemne)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/godz_min-do-min (str_czas) ; str_czas to "HH:MM"
+  (let* ((lst-of-str-godz-min (split-string str_czas ":")) ; dzieli string na godz i min
+         (int-godz (string-to-number (car lst-of-str-godz-min)))
+         (int-min (string-to-number (car (cdr lst-of-str-godz-min)) )))
+    (+ (* 60 int-godz) int-min))) ; zwraca ilosc minut po polnocy (int)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ponizsza funkcja oblicza ile minut minelo od do,
+  ;; np. jesli zaczelem sie uczyc o 10:10
+  ;; a skonczylem o 10:30 to minelo 20 min
+  ;; string wejsciowy w tym przypadku to "10:10-10:30"
+  ;; czas nie moze obejmowac "00:00", tj. "23:57-00:03" spowoduje bledne obliczenia
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/czas-od-do (str-czas-od-do) ; str-czas-od-do jest w formacie "HH:MM-HH:MM"
+  (let* ((lst-of-str-czas1-czas2 (split-string str-czas-od-do "-"))
+         (int-czas1-start (my/godz_min-do-min (car lst-of-str-czas1-czas2)))
+         (int-czas2-koniec (my/godz_min-do-min (car (cdr lst-of-str-czas1-czas2)))))
+    (- int-czas2-koniec int-czas1-start))) ; zwraca ilosc min miedzy 2 godzinami (int)
+    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ponizsza funkcja wydobywa godz:min ze stringu w postaci
+  ;;" <2019-06-20 Thu> 06:30-06:50 10:10-10:30"
+  ;; lub
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
+  ;; i zwraca jes jako liste stringow ("HH:MM-HH:MM" "HH:MM-HH:MM")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/wydobadz-godz_min (linijka-tekstu) ; linijka-tekstu to string
+  (let  ((tekst linijka-tekstu))
+    (setq tekst (replace-regexp-in-string "^.*> " "" linijka-tekstu))
+    (setq tekst (replace-regexp-in-string " [0-9]+ min *" "" tekst))
+    (split-string tekst " +")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    (defun my/godz_min-do-min (str_czas) ; str_czas to "HH:MM"
-      (let* ((lst-of-str-godz-min (split-string str_czas ":")) ; dzieli string na godz i min
-             (int-godz (string-to-number (car lst-of-str-godz-min)))
-             (int-min (string-to-number (car (cdr lst-of-str-godz-min)) )))
-        (+ (* 60 int-godz) int-min))) ; zwraca ilosc minut po polnocy (int)
-    
+  ;; ponizsza funkcja podlicza ile jest minut treningu w kazedj linijce
+  ;; przyjmuje linijke (string w postaci):
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30"
+  ;; lub
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
+  ;; zwraca (wstawia do buforu/pliku) linijke w postaci
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min" (oczywiscie bez ")
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    ;; ponizsza funkcja oblicza ile minut minelo od do,
-    ;; np. jesli zaczelem sie uczyc o 10:10
-    ;; a skonczylem o 10:30 to minelo 20 min
-    ;; string wejsciowy w tym przypadku to "10:10-10:30"
-    ;; czas nie moze obejmowac "00:00", tj. "23:57-00:03" spowoduje bledne obliczenia
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (defun my/czas-od-do (str-czas-od-do) ; str-czas-od-do jest w formacie "HH:MM-HH:MM"
-      (let* ((lst-of-str-czas1-czas2 (split-string str-czas-od-do "-"))
-             (int-czas1-start (my/godz_min-do-min (car lst-of-str-czas1-czas2)))
-             (int-czas2-koniec (my/godz_min-do-min (car (cdr lst-of-str-czas1-czas2)))))
-        (- int-czas2-koniec int-czas1-start))) ; zwraca ilosc min miedzy 2 godzinami (int)
-    
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    ;; ponizsza funkcja wydobywa godz:min ze stringu w postaci
-    ;;" <2019-06-20 Thu> 06:30-06:50 10:10-10:30"
-    ;; lub
-    ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
-    ;; i zwraca jes jako liste stringow ("HH:MM-HH:MM" "HH:MM-HH:MM")
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (defun my/wydobadz-godz_min (linijka-tekstu) ; linijka-tekstu to string
-      (let  ((tekst linijka-tekstu))
-        (setq tekst (replace-regexp-in-string "^.*> " "" linijka-tekstu))
-        (setq tekst (replace-regexp-in-string " [0-9]+ min *" "" tekst))
-        (split-string tekst " +")))
-
-    
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    ;; ponizsza funkcja podlicza ile jest minut treningu w kazedj linijce
-    ;; przyjmuje linijke (string w postaci):
-    ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30"
-    ;; lub
-    ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
-    ;; zwraca (wstawia do buforu/pliku) linijke w postaci
-    ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min" (oczywiscie bez ")
-  
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/wiersz-podlicz ()
   (interactive) ; potrzebne do wywolania przez M-x
   
@@ -154,6 +163,7 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
 #+END_SRC
 
 * Podlicz tydzien
+
 podlicza sume minut (cyfry przed " min")
 i sume pln (cyfry przed " pln") z zaznaczonego tekstu
 wykorzystuje plik suma_czas_gotowka.awk
@@ -162,25 +172,19 @@ z tego samego folderu
 #+BEGIN_SRC emacs-lisp
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
     ;; ponizsza funkcja rozbija blok tekstu na pojedyncze linijki
     ;; zwraca liste stringow (czyli pojedyncze linijki)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun my/blok-tekstu-do-lista-linijek (blok-tekstu)
   (split-string blok-tekstu "\n"))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
     ;; ponizsza funkcja rozbija linijke tekstu na pojedyncze wyrazy
     ;; zwraca liste stringow (wyrazy w zdaniu w odwroconej kolejnosci)
     ;; zamienia string "ala ma kota"
     ;; na liste ("kota" "ma" "ala")
     ;; potrzebne by na koncu niektorych linijek jest, np. "124 min"
     ;; lub "100 pln"
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my/odwroc-kolejn-slow-w-linijce (ln-tkstu)
@@ -188,43 +192,48 @@ z tego samego folderu
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
     ;; ponizsza funkcja wczytuje blok tekstu
     ;; in na podstawie pol typu: "124 min"
     ;; "100 pln"
     ;; podlicza czas i koszt i wyswietla to w minibuforze
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my/tydzien-podlicz ()
   (interactive) ; do wywolania przez M-x
 
-  ;; zmienne pomocnicze
-  (let* ((wczytany-tekst (buffer-substring (point) (mark)))
-	 (linijki-tekstu (my/blok-tekstu-do-lista-linijek wczytany-tekst)) ; lista, ktorej kazdy elt to linia tekstu
-	 (suma-pln 0) (suma-min 0) (suma-godz 0)) ; zmienne do obliczenia
-    
-    ;; obliczenia suma minut/pln (w zaleznosci od tego czy na koncu linijki jest, np. "120 min" czy "120 pln")
-    ;; aby to zrobic odwraca kolejnosc wyrazow w linijce
-    (dolist (jedna-linijka linijki-tekstu)
-      (let ((linijka-od-tylu (my/odwroc-kolejn-slow-w-linijce jedna-linijka))) ; lista wyrazow w linijce od tylu
-	(cond ((string= (car linijka-od-tylu) "min")    (incf suma-min (string-to-number (second linijka-od-tylu)))) ; dodaje minuty
-	      ((string= (car linijka-od-tylu) "pln")    (incf suma-pln (string-to-number (second linijka-od-tylu))))))) ; dodaje pln-y
-    
-    (incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
-    
-    (message "%d min, czyli %.2f godz.\noraz %d pln" suma-min suma-godz suma-pln)))
+  ;; pozycja punktu przed wszystkimi operacjami
+  (let ((pocz-poz-punktu (point)))
+
+    ;; zmienne pomocnicze
+    (let* ((wczytany-tekst (buffer-substring (point) (mark)))
+	   (linijki-tekstu (my/blok-tekstu-do-lista-linijek wczytany-tekst)) ; lista, ktorej kazdy elt to linia tekstu
+	   (suma-pln 0) (suma-min 0) (suma-godz 0)) ; zmienne do obliczenia
+      
+      ;; obliczenia suma minut/pln (w zaleznosci od tego czy na koncu linijki jest, np. "120 min" czy "120 pln")
+      ;; aby to zrobic odwraca kolejnosc wyrazow w linijce
+      (dolist (jedna-linijka linijki-tekstu)
+	(let ((linijka-od-tylu (my/odwroc-kolejn-slow-w-linijce jedna-linijka))) ; lista wyrazow w linijce od tylu
+	  (cond ((string= (car linijka-od-tylu) "min")
+		 (incf suma-min (string-to-number (cl-second linijka-od-tylu)))) ; dodaje minuty
+		((string= (car linijka-od-tylu) "pln")
+		 (incf suma-pln (string-to-number (cl-second linijka-od-tylu))))))) ; dodaje pln-y
+      
+      (incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
+      
+      (message "%d min, czyli %.2f godz.\noraz %d pln" suma-min suma-godz suma-pln))
+
+    ;; powrot do poczatkowej pozycji punktu
+    (goto-char pocz-poz-punktu)))
 
 #+END_SRC
-
-#+RESULTS:
-: my/tydzien-podlicz
 
 * Org-mode
 
 #+BEGIN_SRC emacs-lisp
 
 (use-package org
+  :ensure t
+  :defer t
   :bind (
 	:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
 	      ("C-c g" . #'my/wstaw-godz-min)
@@ -241,25 +250,32 @@ z tego samego folderu
 (use-package avy
   :ensure t
   :pin melpa-stable
+  :defer t
   :bind ("C-;" . avy-goto-char))
 
 #+END_SRC
 
-* Autopair (nawiasy, zamykanie, podswietlanie pasujacych nawiasow)
+* Nawiasy (zamykanie, podswietlanie pasujacych nawiasow)
 
 #+BEGIN_SRC emacs-lisp
 
 (use-package autopair
   :ensure t
   :pin melpa-stable
+  :defer t
   :config
   (autopair-global-mode)
   (show-paren-mode 1))
 
- (use-package paredit
-   :ensure t
-   ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
-   :commands (enable-paredit-mode))
+(use-package paredit
+  :ensure t
+  ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
+  :defer t
+  :bind (
+  ;; przydatene przy edytowaniu kodu lispowego
+  ("M-]" . paredit-forward-slurp-sexp)
+  ("M-[" . paredit-backward-slurp-sexp))
+  :commands (enable-paredit-mode))
 
 #+END_SRC
 
@@ -267,51 +283,53 @@ z tego samego folderu
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package evil
-    :ensure t
-    :pin melpa-stable
-    :defer 0.1 ;; don't block emacs when starting, load evil immediately after startup
-    :init
-    (setq evil-want-keybinding nil)
-    (setq evil-want-integration t) ;; required by evil-collection
-    (setq evil-search-module 'evil-search)
-    (setq evil-ex-complete-emacs-commands nil)
-    (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
-    (setq evil-split-window-below t) ;; like vim's 'splitbelow'
-    (setq evil-shift-round nil)
-    (setq evil-want-C-u-scroll t)
-    :config (evil-mode))
+(use-package evil
+  :ensure t
+  :pin melpa-stable
+  :defer 0.1 ;; don't block emacs when starting, load evil immediately after startup
+  :init
+  (setq evil-want-keybinding nil)
+  (setq evil-want-integration t) ;; required by evil-collection
+  (setq evil-search-module 'evil-search)
+  (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
+  (setq evil-split-window-below t) ;; like vim's 'splitbelow'
+  (setq evil-shift-round nil)
+  (setq evil-want-C-u-scroll t)
+  :config (evil-mode))
 
-  ;; vim-like keybindings everywhere in emacs
-  (use-package evil-collection
-    :after evil
-    :ensure t
-    :config
-    (evil-collection-init))
+;; vim-like keybindings everywhere in emacs
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 
-  (use-package evil-surround
-    :after evil
-    :ensure t
-    :pin melpa-stable
-    :config (global-evil-surround-mode 1))
-    
-  (use-package elscreen
-    :after evil
-    :ensure t
-    :pin melpa-stable
-    :bind
-    (:map evil-normal-state-map
-  	("C-w t" . elscreen-create)
-  	("C-w x" . elscreen-kill)
-  	("C-w e" . elscreen-previous)
-  	("C-w r" . elscreen-next))
-    :config (elscreen-start))
-    
+(use-package evil-surround
+  :after evil
+  :ensure t
+  :pin melpa-stable
+  :config (global-evil-surround-mode 1))
+  
+(use-package elscreen
+  :after evil
+  :ensure t
+  :pin melpa-stable
+  :bind
+  (:map evil-normal-state-map
+	("C-w t" . elscreen-create)
+	("C-w x" . elscreen-kill)
+	("C-w e" . elscreen-previous)
+	("C-w r" . elscreen-next))
+  :config (elscreen-start))
 
 #+END_SRC
 
 * Numerowanie okien
+
+Dzieki temu mamy wygodniejsze przechodzenie miedzy oknami.
+(M-nr_okna), np. M-1, M-2 zamiast domyslnego Emacsowego C-x o
 
 #+BEGIN_SRC emacs-lisp
 
@@ -323,16 +341,15 @@ z tego samego folderu
 
 #+END_SRC
 
-* Numerowanie linii
+* Relatywne numerowanie linii
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package linum-relative
-  :ensure t
-  :pin melpa-stable
-  :config
-  (global-linum-mode 1)
-  (linum-relative-on))
+(use-package nlinum-relative
+    :ensure t
+    :pin melpa
+    :config
+    (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
 #+END_SRC
 
@@ -343,123 +360,131 @@ z tego samego folderu
 (use-package helm
   :ensure t
   :pin melpa-stable
+  :defer t
   :bind
   (("C-x b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
    ("M-x" . helm-M-x)
-   ("C-x r b" . helm-filtered-bookmarks)))
+   ("C-x r b" . helm-filtered-bookmarks))
+  :config
+  (helm-mode 1))
+  
+(use-package helm-config)
 
 #+END_SRC
 
-* Counsel
+* Crux (otwieranie pliku z powiazanej aplikacji systemowej)
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package counsel
+(use-package crux
   :ensure t
-  :pin melpa-stable
+  :pin melpa
+  :defer t
   :bind
-  (("C-c o" . counsel-find-file)))
+  ;; przydatne, po najechaniu na plik w Dired-zie
+  ;; mozna go otworzyc w aplikacji systemowej (np. LibreOffice Calc)
+  (("C-c o" . crux-open-with)))
 
 #+END_SRC
 
 * ESS (emacs speaks statistics) 
+
+Wymaga zainstalowanego R-a https://www.r-project.org/
 
 #+BEGIN_SRC emacs-lisp
 
 (use-package ess
   :ensure t
   :pin melpa-stable
+  :defer t
   :config
-  (setq ess-toggle-underscore t)
-  (setq ess-toggle-underscore nil)
+  ;; do zastanowienia jak wylaczyc zamiane "_" na "<-"
+  ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
+  ;; ale juz "__" (dwa underscory) daja "_" (czyli cofaja ta zamiane)
+  ;;(setq ess-insert-assign nil) nie dziala
+  ;;(setq ess-toggle-underscore nil) nie dziala
 )
 
 #+END_SRC
 
 * Python
 
+Bedac w pliku *.py -> M-x run-python
+A potem zaznaczamy region kodu i C-c C-c
+
+Wymaga Pyhon3
+
 #+BEGIN_SRC emacs-lisp
 
-  (use-package flycheck
-    :ensure t
-    :pin melpa-stable
-    :init
-    (global-flycheck-mode t))
+(use-package flycheck
+  :ensure t
+  :pin melpa-stable
+  :defer t
+  :init
+  (global-flycheck-mode t))
 
-  (use-package elpy
-    :ensure t
-    :pin melpa-stable
-    :init
-    (elpy-enable)
-    :hook ((elpy-mode . flycheck-mode))
-    :config
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (setq elpy-rpc-python-command "python3")
-    (setq elpy-rpc-timeout 2)
-    (setq python-shell-interpreter "jupyter"
-          python-shell-interpreter-args "console --simple-prompt"
-          python-shell-prompt-detect-failure-warning nil)
-    (add-to-list 'python-shell-completion-native-disabled-interpreters
-                 "jupyter")
+(use-package elpy
+  :ensure t
+  :pin melpa-stable
+  :defer t
+  :init
+  (elpy-enable)
+  :hook ((elpy-mode . flycheck-mode))
+  :config
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (setq elpy-rpc-python-command "python3")
+  (setq elpy-rpc-timeout 2)
+  (setq python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt"
+        python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+               "jupyter")
 
-    ) 
+  ) 
 
-  (add-hook 'python-mode-hook 'yas-minor-mode)
-  (add-hook 'python-mode-hook 'flycheck-mode)
+(add-hook 'python-mode-hook 'yas-minor-mode)
+(add-hook 'python-mode-hook 'flycheck-mode)
 
-  (with-eval-after-load 'company
-      (add-hook 'python-mode-hook 'company-mode))
+(with-eval-after-load 'company
+    (add-hook 'python-mode-hook 'company-mode))
 
-  (use-package company-jedi
-    :ensure t
-    :config
-      (require 'company)
-      (add-to-list 'company-backends 'company-jedi))
+;; wymaga instalacji jedi przez pip3
+(use-package company-jedi
+  :ensure t
+  :defer t
+  :config
+    (require 'company)
+    (add-to-list 'company-backends 'company-jedi)
+    (add-hook 'python-mode-hook 'python-mode-company-init))
 
-  (defun python-mode-company-init ()
-    (setq-local company-backends '((company-jedi
-                                    company-etags
-                                    company-dabbrev-code))))
-
-  (use-package company-jedi
-    :ensure t
-    :config
-      (require 'company)
-      (add-hook 'python-mode-hook 'python-mode-company-init))
-
-  (use-package ein
-    :ensure t
-    :after elpy-mode
-    ; tu melpa-stable nie mialo zaleznosci websocket
-    ; w odpowiedniej wersji
-    :pin melpa
-    ;; ;; przemapowania domyslnych skrotow dla ein-a nie powiodly sie
-    ;; ;; nic nie daje umieszczenie ich w bind:, ani tak jak ponizej
-    ;; ;; ostatnia proba zmieniono skroty w ein-notebook.el i przekompilowano
-    ;; ;; dziala dla M-RET, ale nie dla C-RET
-    ;:defer t
-    ;:commands ein:notebooklist-open
-    ;:init
-    ;(progn
-    ;  (with-eval-after-load 'ein-notebooklist
-    ;    ;; removing keybindings
-    ;    (define-key ein:notebook-mode-map (kbd "<M-return>") nil)
-    ;    (define-key ein:notebook-mode-map (kbd "<C-return>") nil)
-    ;    ;; changing keybinding
-    ;    (define-key ein:notebook-mode-map (kbd "<M-return>")
-    ;      'ein:worksheet-execute-cell-and-insert-below-km)
-    ;    (define-key ein:notebook-mode-map (kbd "<C-return>")
-    ;      'ein:worksheet-execute-cell-and-goto-next-km)
-    ;    ))
-    )
-    ; wyswietlanie plotow w buforze emacs-a
-    ; M-x customize-group RET ein
-    ; Ein:Output Area Inlined Images
+(defun python-mode-company-init ()
+  (setq-local company-backends '((company-jedi
+                                  company-etags
+                                  company-dabbrev-code))))
 
 #+END_SRC
 
-#+RESULTS:
+* EIN (Emacs IPython Notebook)
+
+[[https://jupyter.org/][Jupyter notebook]] w Emacsi-e (w trybie tekstowym, mostly)
+ 
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package ein
+  :ensure t
+  :after elpy-mode
+  ;; tu melpa-stable nie mialo zaleznosci websocket
+  ;; w odpowiedniej wersji
+  :pin melpa
+  :defer t
+  :config
+  ;; wyswietlanie plotow w buforze Emacs-a
+  ;; a nie w wyskakujacym oknie (domyslne)
+  (setq ein:output-area-inlined-images t))
+
+#+END_SRC
 
 * Tmux-like window-zooming
 
@@ -487,7 +512,8 @@ z tego samego folderu
 
 * Kill-other-buffers
 
-Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
+Do zabicia pozostalych buforow
+(jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -499,11 +525,22 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 
 * Magit
 
+Wymaga [[https://git-scm.com/][Git-a]]
+
+Fajna nakladka na Git-a, choc jak jest
+duzo plikow w 1 commitcie to zauwazalnie zwalnia
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package magit
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :defer t)
+  
+(use-package evil-magit
+  :ensure t
+  :pin melpa-stable
+  :defer t)
 
 #+END_SRC
 
@@ -521,6 +558,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 
 * Haskell
 
+Wymaga [[https://www.haskell.org/][Haskell]], najlepiej: `apt-get install haskell-platform`
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package haskell-mode
@@ -537,6 +576,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 
 * SLIME (superior lisp interaction mode for emacs) 
 
+Wymaga [[http://www.sbcl.org/][SBCL]]
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package slime
@@ -547,7 +588,7 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 
 #+END_SRC
 
-* Dired 
+* Dired (Directory Editor)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -561,7 +602,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 
 #+BEGIN_SRC emacs-lisp
 
-;;; ac > company
+;;; ponoc ac > company 
+;;; choc ja wole company
 (use-package auto-complete
   :ensure t
   :pin melpa-stable
@@ -578,6 +620,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 #+BEGIN_SRC emacs-lisp
 
 (use-package company
+  :ensure t
+  :pin melpa-stable
   :bind (("C-c k" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
@@ -589,12 +633,16 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
   (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-auto-complete t)
-  (setq company-show-numbers t)
-  )
+  (setq company-show-numbers t))
 
 #+END_SRC
 
 * Snippets
+
+kawalki kodu dla szybszego pisania for-ow, definicji funkcji, klas, itd.
+
+dziala z roznymi jezykami programowania
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -617,8 +665,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 (use-package origami
   :ensure t
   :pin melpa
-  :hook prog-mode-hook
-  )
+  :defer t
+  :hook prog-mode-hook)
 
 #+END_SRC
 
@@ -627,7 +675,8 @@ Do zabicia pozostalych buforow (jesli sie ich za duzo nazbieralo po dniu pracy i
 #+BEGIN_SRC emacs-lisp
 
 (use-package eglot
-  :ensure t)
+  :ensure t
+  :defer t)
 
 #+END_SRC
 
