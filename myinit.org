@@ -25,6 +25,11 @@
 
 (setq column-number-mode t)
 
+
+;; podswietlanie pasujacych nawiasow
+(show-paren-mode 1)
+(setq show-paren-style 'parenthesis)
+
 ;; highlight line with the cursor, preserving the colours.
 (global-hl-line-mode +1)
 (set-face-background 'hl-line "gray20")
@@ -122,7 +127,6 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
     (split-string tekst " +")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
   ;; ponizsza funkcja podlicza ile jest minut treningu w kazedj linijce
   ;; przyjmuje linijke (string w postaci):
   ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30"
@@ -130,7 +134,6 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
   ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
   ;; zwraca (wstawia do buforu/pliku) linijke w postaci
   ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min" (oczywiscie bez ")
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/wiersz-podlicz ()
   (interactive) ; potrzebne do wywolania przez M-x
@@ -186,10 +189,8 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
     ;; potrzebne by na koncu niektorych linijek jest, np. "124 min"
     ;; lub "100 pln"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun my/odwroc-kolejn-slow-w-linijce (ln-tkstu)
    (reverse (split-string ln-tkstu " ")))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; ponizsza funkcja wczytuje blok tekstu
@@ -197,7 +198,6 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
     ;; "100 pln"
     ;; podlicza czas i koszt i wyswietla to w minibuforze
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun my/tydzien-podlicz ()
   (interactive) ; do wywolania przez M-x
 
@@ -228,11 +228,11 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 (use-package org
   :ensure t
   :defer t
-  :bind (
-	:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
-	      ("C-c g" . #'my/wstaw-godz-min)
-	      ("C-c w" . #'my/wiersz-podlicz)
-	      ("C-c t" . #'my/tydzien-podlicz)))
+  :bind
+  (:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
+	("C-c g" . #'my/wstaw-godz-min)
+	("C-c w" . #'my/wiersz-podlicz)
+	("C-c t" . #'my/tydzien-podlicz)))
   ;; patrz powyzej
 
 #+END_SRC
@@ -258,17 +258,16 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :pin melpa-stable
   :defer t
   :config
-  (autopair-global-mode)
-  (show-paren-mode 1))
+  (autopair-global-mode))
 
 (use-package paredit
   :ensure t
   ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
   :defer t
-  :bind (
-  ;; przydatene przy edytowaniu kodu lispowego
-  ("M-]" . paredit-forward-slurp-sexp)
-  ("M-[" . paredit-backward-slurp-sexp))
+  :bind 
+  (;; przydatene przy edytowaniu kodu lispowego
+   ("M-]" . paredit-forward-slurp-sexp)
+   ("M-[" . paredit-backward-barf-sexp))
   :commands (enable-paredit-mode))
 
 #+END_SRC
@@ -298,7 +297,6 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :ensure t
   :config
   (evil-collection-init))
-
 
 (use-package evil-surround
   :after evil
@@ -342,10 +340,9 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 #+BEGIN_SRC emacs-lisp
 
 (use-package nlinum-relative
-    :ensure t
-    :pin melpa
-    :config
-    (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+  :ensure t
+  :pin melpa
+  :hook (prog-mode . nlinum-relative-mode))
 
 #+END_SRC
 
@@ -429,7 +426,7 @@ Wymaga Pyhon3
   :defer t
   :init
   (elpy-enable)
-  :hook ((elpy-mode . flycheck-mode))
+  :hook (python-mode . elpy-mode)
   :config
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (setq elpy-rpc-python-command "python3")
@@ -448,6 +445,11 @@ Wymaga Pyhon3
 (with-eval-after-load 'company
     (add-hook 'python-mode-hook 'company-mode))
 
+(defun python-mode-company-init ()
+  (setq-local company-backends '((company-jedi
+                                  company-etags
+                                  company-dabbrev-code))))
+
 ;; wymaga instalacji jedi przez pip3
 (use-package company-jedi
   :ensure t
@@ -456,11 +458,6 @@ Wymaga Pyhon3
     (require 'company)
     (add-to-list 'company-backends 'company-jedi)
     (add-hook 'python-mode-hook 'python-mode-company-init))
-
-(defun python-mode-company-init ()
-  (setq-local company-backends '((company-jedi
-                                  company-etags
-                                  company-dabbrev-code))))
 
 #+END_SRC
 
@@ -593,9 +590,30 @@ Wymaga [[http://www.sbcl.org/][SBCL]]
 
 #+BEGIN_SRC emacs-lisp
 
+
+;; kopiowanie nazwy pliku/sciezki do schowka
+(defun my-put-file-name-on-clipboard ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region
+	 (point-min) (point-max)))
+      (message filename))))
+
 (use-package dired
   :hook
-  (dired-mode . dired-hide-details-mode))
+  ;; wcisniecie "(" powoduje wlaczenie domyslnego wyswietlania
+  ;; tj. wyswietlenie dodatkowych informacji
+  ;; (display w stylu outputu komendy: ls -la)
+  (dired-mode . dired-hide-details-mode)
+  :bind
+  (("\y" . #'my-put-file-name-on-clipboard)))
+
 
 #+END_SRC
 
@@ -681,3 +699,30 @@ dziala z roznymi jezykami programowania
 
 #+END_SRC
 
+* Speed-type (cwiczenie touch-typing z Emacsa)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package speed-type
+   :ensure t
+   :pin melpa-stable
+   :defer t)
+
+#+END_SRC
+
+* Rainbow delimiters 
+
+Ten sam poziom nawiasow ma ten sam kolor
+
+Kolory sa subtelne
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package rainbow-delimiters
+  :ensure t
+  :pin melpa-stable
+  :defer t
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config)
+
+#+END_SRC
