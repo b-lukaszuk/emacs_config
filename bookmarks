@@ -1,0 +1,20 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("myinit.org"
+ (filename . "~/.emacs.d/myinit.org")
+ (front-context-string . "#+TITLE: My emac")
+ (rear-context-string)
+ (position . 1))
+("kalendarz.org"
+ (filename . "~/Desktop/emacs_testy/kalendarz.org")
+ (front-context-string . "#+STARTUP: overv")
+ (rear-context-string)
+ (position . 1))
+("Desktop"
+ (filename . "~/Desktop/")
+ (front-context-string . ".\n  drwx------ 2")
+ (rear-context-string . "96 Oct  6 14:50 ")
+ (position . 123))
+)
