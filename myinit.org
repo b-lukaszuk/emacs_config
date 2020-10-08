@@ -391,14 +391,12 @@ Wymaga zainstalowanego R-a https://www.r-project.org/
   :ensure t
   :pin melpa-stable
   :defer t
-  :config
-  ;; do zastanowienia jak wylaczyc zamiane "_" na "<-"
   ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
   ;; (w pliku *.r i w konsoli)
-  ;; ale juz "__" (dwa underscory) daja "_" (czyli cofaja ta zamiane)
-  ;;(setq ess-insert-assign nil) nie dziala
-  ;;(setq ess-toggle-underscore nil) nie dziala
-)
+  :init
+  (add-hook 'ess-mode-hook
+            (lambda () 
+              (ess-toggle-underscore nil))))
 
 #+END_SRC
 

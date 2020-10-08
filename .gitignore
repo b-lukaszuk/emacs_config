@@ -5,3 +5,5 @@ transient/
 /myinit.el
 /myinit.org~
 auto-save-list/
+eshell/
+request/
