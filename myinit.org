@@ -154,7 +154,7 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
 	   (str-do-zwrotu "")) ; string ktory zwroci/wypisze ta funkcja (na razie blank)
 
       (dolist (elt (my/wydobadz-godz_min wczytany-tekst))
-	(incf suma (my/czas-od-do elt))) ; dodaj liczbe minut z kazdej krotkiej sesji
+	(cl-incf suma (my/czas-od-do elt))) ; dodaj liczbe minut z kazdej krotkiej sesji
       (setq str-do-zwrotu
 	    (replace-regexp-in-string
 	     "$" ; zastap co:  wirtualny koniec linijki
@@ -211,11 +211,11 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
     (dolist (jedna-linijka linijki-tekstu)
       (let ((linijka-od-tylu (my/odwroc-kolejn-slow-w-linijce jedna-linijka))) ; lista wyrazow w linijce od tylu
 	(cond ((string= (car linijka-od-tylu) "min")
-	       (incf suma-min (string-to-number (cl-second linijka-od-tylu)))) ; dodaje minuty
+	       (cl-incf suma-min (string-to-number (cl-second linijka-od-tylu)))) ; dodaje minuty
 	      ((string= (car linijka-od-tylu) "pln")
-	       (incf suma-pln (string-to-number (cl-second linijka-od-tylu))))))) ; dodaje pln-y
+	       (cl-incf suma-pln (string-to-number (cl-second linijka-od-tylu))))))) ; dodaje pln-y
     
-    (incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
+    (cl-incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
     
     (message "%d min, czyli %.2f godz.\noraz %d pln" suma-min suma-godz suma-pln)))
 
@@ -727,7 +727,6 @@ Kolory sa subtelne
   :ensure t
   :pin melpa-stable
   :defer t
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :config)
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
