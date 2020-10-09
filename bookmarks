@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("myinit.org"
+(("PU"
+ (filename . "~/Desktop/SONATA12/PU/")
+ (front-context-string . ".~lock.palm_upta")
+ (rear-context-string . "82 Oct  9 09:28 ")
+ (position . 235))
+("myinit.org"
  (filename . "~/.emacs.d/myinit.org")
  (front-context-string . "#+TITLE: My emac")
  (rear-context-string)

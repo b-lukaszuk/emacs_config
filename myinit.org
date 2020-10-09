@@ -391,9 +391,9 @@ Wymaga zainstalowanego R-a https://www.r-project.org/
   :ensure t
   :pin melpa-stable
   :defer t
+  :init
   ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
   ;; (w pliku *.r i w konsoli)
-  :init
   (add-hook 'ess-mode-hook
             (lambda () 
               (ess-toggle-underscore nil))))
@@ -408,6 +408,10 @@ A potem (w pliku *.py) zaznaczamy region kodu i C-c C-c
 (przesylamy do ewaluacji w konsoli)
 
 Wymaga Pyhon3
+
+Wymaga instalacji virtualenv: ~pip3 install virtualenv~
+
+Wymaga instalacji jedi: ~pip3 install jedi~
 
 #+BEGIN_SRC emacs-lisp
 
@@ -424,6 +428,8 @@ Wymaga Pyhon3
   :defer t
   :init
   (elpy-enable)
+  (add-hook 'elpy-mode-hook (lambda ()
+			      (highlight-indentation-mode -1)))
   :hook (python-mode . elpy-mode)
   :config
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
@@ -434,7 +440,6 @@ Wymaga Pyhon3
         python-shell-prompt-detect-failure-warning nil)
   (add-to-list 'python-shell-completion-native-disabled-interpreters
                "jupyter")
-
   ) 
 
 (add-hook 'python-mode-hook 'yas-minor-mode)
@@ -462,6 +467,8 @@ Wymaga Pyhon3
 * EIN (Emacs IPython Notebook)
 
 [[https://jupyter.org/][Jupyter notebook]] w Emacsi-e (w trybie tekstowym, mostly)
+
+Wymaga instalacji jupyter notebook: ~pip3 install notebook~
  
 
 #+BEGIN_SRC emacs-lisp
@@ -726,5 +733,22 @@ Kolory sa subtelne
   :pin melpa-stable
   :defer t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+#+END_SRC
+* highlight-indent-guides
+
+Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package highlight-indent-guides
+  :ensure t
+  :pin melpa
+  :defer t
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-auto-character-face-perc 50)
+  )
 
 #+END_SRC
