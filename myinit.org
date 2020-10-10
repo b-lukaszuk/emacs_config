@@ -1,4 +1,4 @@
-+TITLE: My emacs config
+#+TITLE: My emacs config
 #+STARTUP: overview
 #+STARTUP: indent
 #+OPTIONS: \n: t
@@ -468,7 +468,6 @@ Wymaga instalacji black: ~pip3 install black~
     (require 'company)
     (add-to-list 'company-backends 'company-jedi)
     (add-hook 'python-mode-hook 'python-mode-company-init))
-
     
 ;; blacken: python code formatter
 ;; uses black (pip3 install black)
