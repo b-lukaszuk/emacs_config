@@ -6,11 +6,18 @@
 (require 'package)
 (package-initialize)
 
+;; dodanie wersji https archiwow z modami
+;; (domyslnie jest elpa ze zwyklym http)
+
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+             '("gnu" . "https://elpa.gnu.org/packages/") t)
+
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
+
 
 ;; If there are no archived package contents, refresh them
 (when (not package-archive-contents)

@@ -1,4 +1,4 @@
-#+TITLE: My emacs config
++TITLE: My emacs config
 #+STARTUP: overview
 #+STARTUP: indent
 #+OPTIONS: \n: t
@@ -35,6 +35,8 @@
 (set-face-foreground 'highlight nil)
 
 #+END_SRC
+
+#+RESULTS:
 
 * cl-lib (kompatybilnosc z common-lisp)
 
@@ -97,7 +99,6 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
          (int-godz (string-to-number (car lst-of-str-godz-min)))
          (int-min (string-to-number (car (cdr lst-of-str-godz-min)) )))
     (+ (* 60 int-godz) int-min))) ; zwraca ilosc minut po polnocy (int)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; ponizsza funkcja oblicza ile minut minelo od do,
@@ -227,6 +228,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 (use-package org
   :ensure t
+  :pin melpa-stable
   :defer t
   :bind
   (:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
@@ -258,11 +260,13 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :pin melpa-stable
   :defer t
   :config
-  (autopair-global-mode))
+  (autopair-global-mode)
+  :hook (prog-mode . autopair-mode))
 
 (use-package paredit
   :ensure t
   ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
+  :pin melpa
   :defer t
   :bind 
   (;; przydatene przy edytowaniu kodu lispowego
@@ -295,6 +299,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 (use-package evil-collection
   :after evil
   :ensure t
+  :pin melpa-stable
   :config
   (evil-collection-init))
 
@@ -413,6 +418,8 @@ Wymaga instalacji virtualenv: ~pip3 install virtualenv~
 
 Wymaga instalacji jedi: ~pip3 install jedi~
 
+Wymaga instalacji black: ~pip3 install black~
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
@@ -439,8 +446,7 @@ Wymaga instalacji jedi: ~pip3 install jedi~
         python-shell-interpreter-args "console --simple-prompt"
         python-shell-prompt-detect-failure-warning nil)
   (add-to-list 'python-shell-completion-native-disabled-interpreters
-               "jupyter")
-  ) 
+               "jupyter")) 
 
 (add-hook 'python-mode-hook 'yas-minor-mode)
 (add-hook 'python-mode-hook 'flycheck-mode)
@@ -456,11 +462,21 @@ Wymaga instalacji jedi: ~pip3 install jedi~
 ;; wymaga instalacji jedi przez pip3
 (use-package company-jedi
   :ensure t
+  :pin melpa-stable
   :defer t
   :config
     (require 'company)
     (add-to-list 'company-backends 'company-jedi)
     (add-hook 'python-mode-hook 'python-mode-company-init))
+
+    
+;; blacken: python code formatter
+;; uses black (pip3 install black)
+(use-package blacken
+  :ensure t
+  :pin melpa
+  :defer t
+  :hook (python-mode . blacken-mode))
 
 #+END_SRC
 
@@ -576,9 +592,11 @@ Wymaga [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskel
   :pin melpa-stable)
 
 (use-package haskell-indentation-mode
+  :pin melpa-stable
   :hook haskell-mode)  
   
 (use-package interactive-haskell-mode
+  :pin melpa-stable
   :hook haskell-mode)
 
 #+END_SRC
@@ -615,6 +633,8 @@ Wymaga [[http://www.sbcl.org/][SBCL]]
 	 (point-min) (point-max)))
       (message filename))))
 
+;;; dired jest domyslnie wbudowany w Emacs-a
+;;; wiec nie trzeba go sciagac, ladowac, itd.
 (use-package dired
   :hook
   ;; wcisniecie "(" powoduje wlaczenie domyslnego wyswietlania
@@ -636,6 +656,7 @@ Wymaga [[http://www.sbcl.org/][SBCL]]
 (use-package auto-complete
   :ensure t
   :pin melpa-stable
+  :defer t
   :config
   (setq ac-use-menu-map t)
   (setq ac-ignore-case nil)
@@ -701,11 +722,15 @@ dziala z roznymi jezykami programowania
 
 * Eglot (Emacs polyglot, np. do Pythona)
 
+Nie wiem czy to jest potrzebne do czegos
+Chyba tego nie uzywam
+
 #+BEGIN_SRC emacs-lisp
 
-(use-package eglot
-  :ensure t
-  :defer t)
+;(use-package eglot
+;  :ensure t
+;  :pin melpa
+;  :defer t)
 
 #+END_SRC
 
@@ -748,7 +773,6 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   :hook (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-auto-character-face-perc 50)
-  )
+  (setq highlight-indent-guides-auto-character-face-perc 50))
 
 #+END_SRC
