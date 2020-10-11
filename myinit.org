@@ -259,6 +259,10 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :ensure t
   :pin melpa-stable
   :defer t
+  ;; wylaczenie parowania nawiasow w minibuforze
+  :init
+  (add-hook 'minibuffer-setup-hook (lambda ()
+			      (autopair-mode -1)))
   :config
   (autopair-global-mode)
   :hook (prog-mode . autopair-mode))
@@ -475,7 +479,9 @@ Wymaga instalacji black: ~pip3 install black~
   :ensure t
   :pin melpa
   :defer t
-  :hook (python-mode . blacken-mode))
+  :hook (python-mode . blacken-mode)
+  :config 
+  (setq blacken-line-length 78))
 
 #+END_SRC
 
