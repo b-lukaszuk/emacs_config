@@ -500,11 +500,13 @@ Wymaga instalacji jupyter notebook: ~pip3 install notebook~
   ;; tu melpa-stable nie mialo zaleznosci websocket
   ;; w odpowiedniej wersji
   :pin melpa
-  :defer t
-  :config
+  :defer t)
+          
   ;; wyswietlanie plotow w buforze Emacs-a
   ;; a nie w wyskakujacym oknie (domyslne)
-  (setq ein:output-area-inlined-images t))
+  (setq ein:output-area-inlined-images t)
+  ;; umieszczenie tego setq w use-package nic nie daje
+  ;; (ani w :config, ani w :init, ani w :custom
 
 #+END_SRC
 
@@ -762,6 +764,9 @@ Kolory sa subtelne
   :ensure t
   :pin melpa-stable
   :defer t
+  :init
+  (add-hook 'ein-setup-hook (lambda ()
+			      (rainbow-delimiters-mode -1)))
   :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
@@ -776,6 +781,10 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   :pin melpa
   :defer t
   :hook (prog-mode . highlight-indent-guides-mode)
+  ;; wylaczenie highlight-indent-guides w ein-ie
+  :init
+  (add-hook 'ein-setup-hook (lambda ()
+			      (highlight-indent-guides-mode -1)))
   :config
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-auto-character-face-perc 50))
