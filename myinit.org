@@ -792,3 +792,44 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   (setq highlight-indent-guides-auto-character-face-perc 50))
 
 #+END_SRC
+* pdf-tools (przegladanie pdf-ow w Emacsie)
+
+Require:
+- both gcc and g++
+- make
+- automake
+- autoconf
+- libpng-dev
+- zlib1g-dev
+- libpoppler-glib-dev
+- libpoppler-private-dev
+- imagemagick
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package pdf-tools
+  :ensure t
+  :pin melpa-stable
+  ;; wylaczenie nlinum moda w pdf-toolsie
+  ;; inaczej 'dusi' Emacs-a
+  :init
+  (add-hook 'pdf-tools-setup-hook (lambda ()
+				    (nlinum-relative-mode -1)))
+  :config
+  ;; initialise
+  (pdf-tools-install)
+  ;; open pdfs scaled to fit page
+  (setq-default pdf-view-display-size 'fit-page)
+  ;; automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t))
+
+#+END_SRC
+* ECB (Emacs Code Browser)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package ecb
+  :ensure t
+  :pin melpa)
+
+#+END_SRC
