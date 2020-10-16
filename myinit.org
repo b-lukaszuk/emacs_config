@@ -833,3 +833,21 @@ Require:
   :pin melpa)
 
 #+END_SRC
+* Wklejanie tekstu ze schowka do minibufora
+
+Wymaga xsel
+
+Wklejanie za pomoca M-y
+
+#+BEGIN_SRC emacs-lisp
+
+(defun paste-from-x-clipboard()
+  (interactive)
+  (shell-command "xsel -ob" 1))
+
+(defun my/paste-in-minibuffer ()
+  (local-set-key (kbd "M-y") 'paste-from-x-clipboard))
+
+(add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
+
+#+END_SRC
