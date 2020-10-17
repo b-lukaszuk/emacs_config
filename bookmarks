@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("s1"
+((".xmonad"
+ (filename . "~/.xmonad/")
+ (front-context-string . "  /home/oisezc/.")
+ (rear-context-string)
+ (position . 1))
+("s1"
  (filename . "~/Desktop/JS_Developer/s1/")
  (front-context-string . "agile_i_scrum\n  ")
  (rear-context-string . "96 Oct 17 08:43 ")
