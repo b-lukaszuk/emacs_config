@@ -392,7 +392,8 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 * ESS (emacs speaks statistics) 
 
-Wymaga zainstalowanego R-a https://www.r-project.org/
+Wymaga:
+- R-a https://www.r-project.org/
 
 #+BEGIN_SRC emacs-lisp
 
@@ -416,13 +417,11 @@ Bedac w pliku *.py -> M-x run-python
 A potem (w pliku *.py) zaznaczamy region kodu i C-c C-c
 (przesylamy do ewaluacji w konsoli)
 
-Wymaga Pyhon3
-
-Wymaga instalacji virtualenv: ~pip3 install virtualenv~
-
-Wymaga instalacji jedi: ~pip3 install jedi~
-
-Wymaga instalacji black: ~pip3 install black~
+Wymaga:
+- Pyhon3
+- virtualenv: ~pip3 install virtualenv~
+- jedi: ~pip3 install jedi~
+- black: ~pip3 install black~
 
 #+BEGIN_SRC emacs-lisp
 
@@ -489,9 +488,9 @@ Wymaga instalacji black: ~pip3 install black~
 
 [[https://jupyter.org/][Jupyter notebook]] w Emacsi-e (w trybie tekstowym, mostly)
 
-Wymaga instalacji jupyter notebook: ~pip3 install notebook~
+Wymaga: 
+- jupyter notebook: ~pip3 install notebook~
  
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package ein
@@ -506,7 +505,8 @@ Wymaga instalacji jupyter notebook: ~pip3 install notebook~
   ;; a nie w wyskakujacym oknie (domyslne)
   (setq ein:output-area-inlined-images t)
   ;; umieszczenie tego setq w use-package nic nie daje
-  ;; (ani w :config, ani w :init, ani w :custom
+  ;; (ani w :config, ani w :init, ani w :custom,
+  ;; ani jako hook)
 
 #+END_SRC
 
@@ -550,7 +550,8 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 
 * Magit
 
-Wymaga [[https://git-scm.com/][Git-a]]
+Wymaga: 
+- [[https://git-scm.com/][Git]]
 
 Fajna nakladka na Git-a.
 
@@ -592,7 +593,8 @@ zamykanie panelu ~q~
 
 * Haskell
 
-Wymaga [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
+Wymaga:
+- [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
 
 #+BEGIN_SRC emacs-lisp
 
@@ -612,7 +614,8 @@ Wymaga [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskel
 
 * SLIME (superior lisp interaction mode for emacs) 
 
-Wymaga [[http://www.sbcl.org/][SBCL]]
+Wymaga:
+- [[http://www.sbcl.org/][SBCL]]
 
 #+BEGIN_SRC emacs-lisp
 
@@ -692,7 +695,9 @@ Wymaga [[http://www.sbcl.org/][SBCL]]
   (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-auto-complete t)
-  (setq company-show-numbers t))
+  (setq company-show-numbers t)
+  ;; aby sugestie byly case-sensitive
+  (setq company-dabbrev-downcase nil))
 
 #+END_SRC
 
@@ -792,9 +797,9 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   (setq highlight-indent-guides-auto-character-face-perc 50))
 
 #+END_SRC
-* pdf-tools (przegladanie pdf-ow w Emacsie)
+* pdf-tools (lepsze przegladanie pdf-ow)
 
-Require:
+Wymaga (instalacja z terminala):
 - both gcc and g++
 - make
 - automake
@@ -835,7 +840,8 @@ Require:
 #+END_SRC
 * Wklejanie tekstu ze schowka do minibufora
 
-Wymaga xsel
+Wymaga: 
+- xsel (instalacja z terminala)
 
 Wklejanie za pomoca M-y
 
