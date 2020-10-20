@@ -430,10 +430,11 @@ Wymaga:
 (use-package flycheck
   :ensure t
   :pin melpa-stable
-  :defer t
   :init
   (global-flycheck-mode t))
 
+ ;; w razie problemow z autocomplete w plikach *.py
+ ;; M-x elpy-config i sprawdzic czy ustawienia sa poprawne
 (use-package elpy
   :ensure t
   :pin melpa-stable
@@ -472,7 +473,7 @@ Wymaga:
   :config
     (require 'company)
     (add-hook 'python-mode-hook 'python-mode-company-init))
-
+    
 ;; M-x pyenv-activate
 (use-package pyvenv
   :ensure t
