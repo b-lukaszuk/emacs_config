@@ -38,7 +38,9 @@
 
 #+RESULTS:
 
-* cl-lib (kompatybilnosc z common-lisp)
+* cl-lib
+
+(kompatybilnosc z common-lisp)
 
 Potrzebne do dzialania moich funcji liczacych czas (podlicz wiersz, tydzien, itd.)
 
@@ -53,7 +55,9 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 
 #+END_SRC
 
-* Wstaw-godz:min (wstawia aktualny czas w formacie "HH:MM")
+* Wstaw-godz:min
+
+(wstawia aktualny czas w formacie "HH:MM")
 
 #+BEGIN_SRC emacs-lisp
 
@@ -63,8 +67,8 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
   ;; deklaracja zmiennych pomocniczych
   (let ((znak-pop (char-before)) ; sprawdzamy znak przed pointem
 	(co-wstawic
-	 (replace-regexp-in-string "\n" "" ; shell-command-to-string wstawia tekst ze znakiem nowej linii   
-				   (shell-command-to-string "date +'%H:%M'")))) ; wstawiamy aktualny czas 
+	 (replace-regexp-in-string "\n" "" ; shell-command-to-string wstawia tekst ze znakiem nowej linii
+				   (shell-command-to-string "date +'%H:%M'")))) ; wstawiamy aktualny czas
 
     (if (= znak-pop 45) ; ascii 45 to "-"
 	;; jesli wczesniej bylo "-" to wstawiamy tylko string "HH:MM"
@@ -74,7 +78,7 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 
 #+END_SRC
 
-* Podlicz wiersz (godz:min w wierszu)
+* Podlicz wiersz
 
 oblicza ile minut (np. nauki niemieckiego jest w wierszu), tj.
 zamienia wiersz w stylu:
@@ -112,7 +116,7 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
          (int-czas1-start (my/godz_min-do-min (car lst-of-str-czas1-czas2)))
          (int-czas2-koniec (my/godz_min-do-min (car (cdr lst-of-str-czas1-czas2)))))
     (- int-czas2-koniec int-czas1-start))) ; zwraca ilosc min miedzy 2 godzinami (int)
-    
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; ponizsza funkcja wydobywa godz:min ze stringu w postaci
   ;;" <2019-06-20 Thu> 06:30-06:50 10:10-10:30"
@@ -137,7 +141,7 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/wiersz-podlicz ()
   (interactive) ; potrzebne do wywolania przez M-x
-  
+
   ;; ponizsze 3 linijki aby zaznaczyc wizualnie linijke tekstu
   ;; (wczesniej robilem tak z klawiatury)
   ;; (samo evilowe "V" zostawia kursor na pocz linijki)
@@ -206,7 +210,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   (let* ((wczytany-tekst (buffer-substring (point) (mark)))
 	 (linijki-tekstu (my/blok-tekstu-do-lista-linijek wczytany-tekst)) ; lista, ktorej kazdy elt to linia tekstu
 	 (suma-pln 0) (suma-min 0) (suma-godz 0)) ; zmienne do obliczenia
-    
+
     ;; obliczenia suma minut/pln (w zaleznosci od tego czy na koncu linijki jest, np. "120 min" czy "120 pln")
     ;; aby to zrobic odwraca kolejnosc wyrazow w linijce
     (dolist (jedna-linijka linijki-tekstu)
@@ -215,9 +219,9 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 	       (cl-incf suma-min (string-to-number (cl-second linijka-od-tylu)))) ; dodaje minuty
 	      ((string= (car linijka-od-tylu) "pln")
 	       (cl-incf suma-pln (string-to-number (cl-second linijka-od-tylu))))))) ; dodaje pln-y
-    
+
     (cl-incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
-    
+
     (message "%d min, czyli %.2f godz.\noraz %d pln" suma-min suma-godz suma-pln)))
 
 #+END_SRC
@@ -239,7 +243,9 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* Avy - wyszukuje litere na ekranie i do niej skacze
+* Avy
+
+wyszukuje litere na ekranie i do niej skacze
 
 #+BEGIN_SRC emacs-lisp
 
@@ -251,7 +257,9 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* Nawiasy (zamykanie, podswietlanie pasujacych nawiasow)
+* Nawiasy
+
+(zamykanie, podswietlanie pasujacych nawiasow)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -272,7 +280,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
   :pin melpa
   :defer t
-  :bind 
+  :bind
   (;; przydatene przy edytowaniu kodu lispowego
    ("M-]" . paredit-forward-slurp-sexp)
    ("M-[" . paredit-backward-barf-sexp))
@@ -280,7 +288,9 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* Evil (Vim like mode) and evil-like
+* Evil and evil-like
+
+(Extensive Vi Layer)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -297,7 +307,18 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   (setq evil-split-window-below t) ;; like vim's 'splitbelow'
   (setq evil-shift-round nil)
   (setq evil-want-C-u-scroll t)
-  :config (evil-mode))
+  :config
+  (evil-mode)
+  ;; set leader key in normal state
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-define-key 'normal 'global
+                   (kbd "<leader>v") 'evil-window-vsplit)
+  (evil-define-key 'normal 'global
+                   (kbd "<leader>s") 'evil-window-split)
+  (evil-define-key 'normal 'global
+                   (kbd "<leader>w") 'evil-write)
+  (evil-define-key 'normal 'global
+                   (kbd "<leader>q") 'kill-buffer))
 
 ;; vim-like keybindings everywhere in emacs
 (use-package evil-collection
@@ -312,7 +333,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :ensure t
   :pin melpa-stable
   :config (global-evil-surround-mode 1))
-  
+
 (use-package elscreen
   :after evil
   :ensure t
@@ -355,7 +376,9 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 #+END_SRC
 
-* Helm (lepsze nawigowanie, wyszukiwanie plikow, itd.)
+* Helm
+
+(lepsze nawigowanie, wyszukiwanie plikow, itd.)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -370,12 +393,14 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
    ("C-x r b" . helm-filtered-bookmarks))
   :config
   (helm-mode 1))
-  
+
 (use-package helm-config)
 
 #+END_SRC
 
-* Crux (otwieranie pliku z powiazanej aplikacji systemowej)
+* Crux
+
+(otwieranie pliku z powiazanej aplikacji systemowej)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -390,7 +415,9 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 #+END_SRC
 
-* ESS (emacs speaks statistics) 
+* ESS
+
+(emacs speaks statistics)
 
 Wymaga:
 - R-a https://www.r-project.org/
@@ -405,7 +432,7 @@ Wymaga:
   ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
   ;; (w pliku *.r i w konsoli)
   (add-hook 'ess-mode-hook
-            (lambda () 
+            (lambda ()
               (ess-toggle-underscore nil))))
 
 #+END_SRC
@@ -452,7 +479,7 @@ Wymaga:
         python-shell-interpreter-args "console --simple-prompt"
         python-shell-prompt-detect-failure-warning nil)
   (add-to-list 'python-shell-completion-native-disabled-interpreters
-               "jupyter")) 
+               "jupyter"))
 
 (add-hook 'python-mode-hook 'yas-minor-mode)
 (add-hook 'python-mode-hook 'flycheck-mode)
@@ -473,14 +500,14 @@ Wymaga:
   :config
     (require 'company)
     (add-hook 'python-mode-hook 'python-mode-company-init))
-    
+
 ;; M-x pyenv-activate
 (use-package pyvenv
   :ensure t
   :pin melpa-stable
   :hook ((python-mode . pyvenv-mode)))
 
-    
+
 ;; blacken: python code formatter
 ;; uses black (pip3 install black)
 (use-package blacken
@@ -488,18 +515,20 @@ Wymaga:
   :pin melpa
   :defer t
   :hook (python-mode . blacken-mode)
-  :config 
+  :config
   (setq blacken-line-length 78))
 
 #+END_SRC
 
-* EIN (Emacs IPython Notebook)
+* EIN
+
+(Emacs IPython Notebook)
 
 [[https://jupyter.org/][Jupyter notebook]] w Emacsi-e (w trybie tekstowym, mostly)
 
-Wymaga: 
+Wymaga:
 - jupyter notebook: ~pip3 install notebook~
- 
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package ein
@@ -509,7 +538,7 @@ Wymaga:
   ;; w odpowiedniej wersji
   :pin melpa
   :defer t)
-          
+
   ;; wyswietlanie plotow w buforze Emacs-a
   ;; a nie w wyskakujacym oknie (domyslne)
   (setq ein:output-area-inlined-images t)
@@ -519,7 +548,9 @@ Wymaga:
 
 #+END_SRC
 
-* Tmux-like window-zooming
+* Zoom-window
+
+(Tmux-like window-zooming)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -531,7 +562,9 @@ Wymaga:
 
 #+END_SRC
 
-* Iedit (zamiana wszystkich wystapien slowa przy pomocy C-c C-;)
+* Iedit
+
+(zamiana wszystkich wystapien slowa przy pomocy C-c C-;)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -551,15 +584,15 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 
 #+BEGIN_SRC emacs-lisp
 
-(defun kill-other-buffers () 
-  (interactive)                                                                   
+(defun kill-other-buffers ()
+  (interactive)
     (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
 #+END_SRC
 
 * Magit
 
-Wymaga: 
+Wymaga:
 - [[https://git-scm.com/][Git]]
 
 Fajna nakladka na Git-a.
@@ -574,7 +607,7 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
   :defer t
   :bind
   (("C-x g" . magit-status)))
-  
+
 (use-package evil-magit
   :ensure t
   :pin melpa-stable
@@ -613,15 +646,17 @@ Wymaga:
 
 (use-package haskell-indentation-mode
   :pin melpa-stable
-  :hook haskell-mode)  
-  
+  :hook haskell-mode)
+
 (use-package interactive-haskell-mode
   :pin melpa-stable
   :hook haskell-mode)
 
 #+END_SRC
 
-* SLIME (superior lisp interaction mode for emacs) 
+* SLIME
+
+(Superior Lisp Interaction Mode for Emacs)
 
 Wymaga:
 - [[http://www.sbcl.org/][SBCL]]
@@ -636,7 +671,9 @@ Wymaga:
 
 #+END_SRC
 
-* Dired (Directory Editor)
+* Dired
+
+(Directory Editor)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -671,11 +708,13 @@ Wymaga:
 
 #+END_SRC
 
-* Auto-complete (autouzupelnianie)
+* Auto-complete
+
+(autouzupelnianie)
 
 #+BEGIN_SRC emacs-lisp
 
-;;; ponoc ac > company 
+;;; ponoc ac > company
 ;;; choc ja wole company
 (use-package auto-complete
   :ensure t
@@ -688,7 +727,9 @@ Wymaga:
 
 #+END_SRC
 
-* Company (autouzupelnianie)
+* Company
+
+(autouzupelnianie)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -711,7 +752,7 @@ Wymaga:
   (setq company-quickhelp-mode 0.2)
   ;; aby sugestie byly case-sensitive
   (setq company-dabbrev-downcase nil))
-  
+
 #+END_SRC
 
 * Snippets
@@ -735,7 +776,9 @@ dziala z roznymi jezykami programowania
 
 #+END_SRC
 
-* Origami (Zwijanie kodu)
+* Origami
+
+(Zwijanie kodu)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -747,7 +790,9 @@ dziala z roznymi jezykami programowania
 
 #+END_SRC
 
-* Eglot (Emacs polyglot, np. do Pythona)
+* Eglot
+
+(Emacs polyglot, np. do Pythona)
 
 Nie wiem czy to jest potrzebne do czegos
 Chyba tego nie uzywam
@@ -761,7 +806,9 @@ Chyba tego nie uzywam
 
 #+END_SRC
 
-* Speed-type (cwiczenie touch-typing z Emacsa)
+* Speed-type
+
+(cwiczenie touch-typing z Emacsa)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -772,7 +819,7 @@ Chyba tego nie uzywam
 
 #+END_SRC
 
-* Rainbow delimiters 
+* Rainbow delimiters
 
 Ten sam poziom nawiasow ma ten sam kolor
 
@@ -810,7 +857,9 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   (setq highlight-indent-guides-auto-character-face-perc 50))
 
 #+END_SRC
-* pdf-tools (lepsze przegladanie pdf-ow)
+* pdf-tools
+
+(lepsze przegladanie pdf-ow)
 
 Wymaga (instalacja z terminala):
 - both gcc and g++
@@ -842,7 +891,9 @@ Wymaga (instalacja z terminala):
   (setq pdf-annot-activate-created-annotations t))
 
 #+END_SRC
-* ECB (Emacs Code Browser)
+* ECB
+
+(Emacs Code Browser)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -855,7 +906,7 @@ Wymaga (instalacja z terminala):
 
 * Wklejanie tekstu ze schowka do minibufora
 
-Wymaga: 
+Wymaga:
 - xsel (instalacja z terminala)
 
 Wklejanie za pomoca M-y
@@ -872,6 +923,7 @@ Wklejanie za pomoca M-y
 (add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
 
 #+END_SRC
+
 * JavaScript
 Wciaz nie dziala tak jak bym tego chcial
 
