@@ -935,6 +935,22 @@ Wciaz nie dziala tak jak bym tego chcial
 W zwiazku z powyzszym sprobuje czegos innego.
 za: https://www.youtube.com/watch?v=0zuYCEzrchk
 
+** node-js
+
+wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
+
+output wyswietla w minibuforze
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/plik-to-node ()
+  (interactive) ; do wywolania przez M-x
+  (message
+   (shell-command-to-string
+    (format "node %s" (buffer-name)))))
+
+#+END_SRC
+
 ** RJSX-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -962,7 +978,12 @@ za: https://www.youtube.com/watch?v=0zuYCEzrchk
 (use-package tide
   :ensure t
   :after (rjsx-mode company flycheck)
-  :hook (rjsx-mode . setup-tide-mode))
+  :hook (rjsx-mode . setup-tide-mode)
+  :bind
+  ;; uzywanie napisanej przeze mnie funkcji
+  ;; my/plik-to-node (patrz wyzej)
+  (:map tide-mode-map
+	("C-c n" . #'my/plik-to-node)))
 
 #+END_SRC
 
@@ -975,21 +996,6 @@ za: https://www.youtube.com/watch?v=0zuYCEzrchk
   :pin melpa
   :after (rjsx-mode)
   :hook (rjsx-mode . prettier-js-mode))
-
-#+END_SRC
-** node-js
-
-wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
-
-output wyswietla w minibuforze
-
-#+BEGIN_SRC emacs-lisp
-
-(defun my/plik-to-node ()
-  (interactive) ; do wywolania przez M-x
-  (message
-   (shell-command-to-string
-    (format "node %s" (buffer-name)))))
 
 #+END_SRC
 
