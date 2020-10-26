@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("test.py"
+(("emacs_testy"
+ (filename . "~/Desktop/emacs_testy/")
+ (front-context-string . "  /home/oisezc/D")
+ (rear-context-string)
+ (position . 1))
+("test.py"
  (filename . "~/Desktop/testy/test.py")
  (front-context-string . "################")
  (rear-context-string)
@@ -14,9 +19,9 @@
  (position . 1))
 ("s1"
  (filename . "~/Desktop/JS_Developer/s1/")
- (front-context-string . "agile_i_scrum\n  ")
- (rear-context-string . "96 Oct 17 08:43 ")
- (position . 243))
+ (front-context-string . "  /home/oisezc/D")
+ (rear-context-string)
+ (position . 1))
 ("PU"
  (filename . "~/Desktop/SONATA12/PU/")
  (front-context-string . ".~lock.palm_upta")
