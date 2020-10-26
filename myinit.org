@@ -977,6 +977,22 @@ za: https://www.youtube.com/watch?v=0zuYCEzrchk
   :hook (rjsx-mode . prettier-js-mode))
 
 #+END_SRC
+** node-js
+
+wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
+
+output wyswietla w minibuforze
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/plik-to-node ()
+  (interactive) ; do wywolania przez M-x
+  (message
+   (shell-command-to-string
+    (format "node %s" (buffer-name)))))
+
+#+END_SRC
+
 * Zasada 80 kolumny
 
 Podswietlanie tekstu powyzej 80 kolumny
