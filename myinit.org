@@ -947,7 +947,7 @@ output wyswietla w minibuforze
   (interactive) ; do wywolania przez M-x
   (message
    (shell-command-to-string
-    (format "node %s" (buffer-name)))))
+    (format "node %s" (buffer-file-name)))))
 
 #+END_SRC
 
@@ -963,6 +963,10 @@ output wyswietla w minibuforze
 #+END_SRC
 
 ** Tide
+
+Wymaga:
+
+- typescript: ~npm install -g typescript~
 
 #+BEGIN_SRC emacs-lisp
 
