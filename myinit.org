@@ -139,19 +139,20 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
   ;; zwraca (wstawia do buforu/pliku) linijke w postaci
   ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min" (oczywiscie bez ")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun my/wiersz-podlicz ()
   (interactive) ; potrzebne do wywolania przez M-x
 
-  ;; ponizsze 3 linijki aby zaznaczyc wizualnie linijke tekstu
-  ;; (wczesniej robilem tak z klawiatury)
-  ;; (samo evilowe "V" zostawia kursor na pocz linijki)
-  ;; (a evilowa sekwencja: "0v$"), coz, nie chce mi sie jej ciagle wklepywac
-  (evil-digit-argument-or-evil-beginning-of-line)
-  (evil-visual-block)
-  (evil-end-of-line)
-
   ;; pozycja punktu przed wszystkimi operacjami
   (let ((pocz-poz-punktu (point)))
+    ;; ponizsze 3 linijki aby zaznaczyc wizualnie linijke tekstu
+    ;; (wczesniej robilem tak z klawiatury)
+    ;; (samo evilowe "V" zostawia kursor na pocz linijki)
+    ;; (a evilowa sekwencja: "0v$"), coz, nie chce mi sie jej ciagle wklepywac
+    (evil-digit-argument-or-evil-beginning-of-line)
+    (evil-visual-block)
+    (evil-end-of-line)
+
       ;;; teraz linijki obliczajace czas i wstawiajace min na koncu linijki
     (let* ((wczytany-tekst (buffer-substring (point) (mark)))
 	   (wczytany-tekst-bez-min (replace-regexp-in-string " [0-9]+ min *$" "" wczytany-tekst))
