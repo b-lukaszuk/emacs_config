@@ -940,6 +940,10 @@ za: https://www.youtube.com/watch?v=0zuYCEzrchk
 
 wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
 
+lub
+
+wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js argumenty~
+
 output wyswietla w minibuforze
 
 #+BEGIN_SRC emacs-lisp
@@ -949,6 +953,12 @@ output wyswietla w minibuforze
   (message
    (shell-command-to-string
     (format "node %s" (buffer-file-name)))))
+
+(defun my/plik-i-args-to-node (argumenty)
+  (interactive "spodaj argumenty: ") ; do wywolania przez M-x
+  (message
+   (shell-command-to-string
+    (format "node %s %s" (buffer-file-name) argumenty))))
 
 #+END_SRC
 
@@ -988,7 +998,8 @@ Wymaga:
   ;; uzywanie napisanej przeze mnie funkcji
   ;; my/plik-to-node (patrz wyzej)
   (:map tide-mode-map
-	("C-c n" . #'my/plik-to-node)))
+	("C-c n" . #'my/plik-to-node)
+	("C-c C-n" . #'my/plik-i-args-to-node)))
 
 #+END_SRC
 
