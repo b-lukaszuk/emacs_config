@@ -630,7 +630,9 @@ zamykanie panelu ~q~
   :ensure t
   :pin melpa-stable
   :bind
-  (("<f8>" . neotree-dir)))
+  (("<f8>" . neotree-dir))
+  :config
+  (setq-default neo-show-hidden-files t))
 
 #+END_SRC
 
