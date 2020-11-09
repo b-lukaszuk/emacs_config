@@ -632,6 +632,7 @@ zamykanie panelu ~q~
   :bind
   (("<f8>" . neotree-dir))
   :config
+  ;; H - przelacza/toggluje hidden files display
   (setq-default neo-show-hidden-files t))
 
 #+END_SRC
