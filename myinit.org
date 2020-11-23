@@ -1032,3 +1032,33 @@ Podswietlanie tekstu powyzej 80 kolumny
 
 #+END_SRC
 
+* web-mode
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package web-mode
+    :ensure t
+    :pin melpa-stable
+    :defer t
+    :config
+	   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+	   (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+(setq web-mode-enable-auto-closing t))
+(setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
+
+#+END_SRC
+
+* emmet-mode
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package emmet-mode
+  :ensure t
+  :defer t
+  :pin melpa-stable
+  :config
+  ;; Auto-start on any markup modes
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'web-mode-hook 'emmet-mode))
+
+#+END_SRC

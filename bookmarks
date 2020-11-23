@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("node_js_pd"
+(("plany"
+ (filename . "~/Desktop/JS_Developer/s1/plany/")
+ (front-context-string . ".\n  drwxrwxr-x 1")
+ (rear-context-string . "96 Nov 21 09:40 ")
+ (position . 148))
+("node_js_pd"
  (filename . "~/Desktop/JS_Developer/s1/NodeJS/node_js_pd/")
  (front-context-string . ".\n  drwxrwxr-x 4")
  (rear-context-string . "96 Oct 30 08:51 ")
