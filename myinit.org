@@ -1062,3 +1062,24 @@ Podswietlanie tekstu powyzej 80 kolumny
   (add-hook 'web-mode-hook 'emmet-mode))
 
 #+END_SRC
+* change keyboard layout
+
+#+BEGIN_SRC emacs-lisp
+
+;; swap caps-esc
+;; https://superuser.com/questions/396988/how-to-remap-capslock-to-esc-in-linux-mint-12
+
+
+;; ustawia uklad klawiatury na polski
+(defun my/keyboard-pl ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap pl") ; klawiatura pl
+  (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
+
+;; ustawia uklad klawiatury na angielski
+(defun my/keyboard-us ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap us") ; klawiatura us
+  (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
+
+#+END_SRC
