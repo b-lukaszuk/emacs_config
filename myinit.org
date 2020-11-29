@@ -34,6 +34,9 @@
 (set-face-background 'hl-line "gray20")
 (set-face-foreground 'highlight nil)
 
+;; stop emacs from creating backup files
+(setq make-backup-files nil)
+
 #+END_SRC
 
 #+RESULTS:
@@ -965,6 +968,23 @@ output wyswietla w minibuforze
 
 #+END_SRC
 
+** typescript
+
+wywoluje w shellu komende: ~tsc nazwa_otwartego_pliku.ts~
+
+output wyswietla w minibuforze
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/plik-to-tsc ()
+  (interactive) ; do wywolania przez M-x
+  (message (format "%s %s"
+		   "wyslano do tsc"
+		   (shell-command-to-string
+		    (format "tsc %s" (buffer-file-name))))))
+
+#+END_SRC
+
 ** RJSX-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1002,11 +1022,14 @@ Wymaga:
   ;; my/plik-to-node (patrz wyzej)
   (:map tide-mode-map
 	("C-c n" . #'my/plik-to-node)
-	("C-c C-n" . #'my/plik-i-args-to-node)))
+	("C-c C-n" . #'my/plik-i-args-to-node)
+	("C-c t" . #'my/plik-to-tsc)))
 
 #+END_SRC
 
 ** Prettier
+
+wymaga: prettier (~npm install -g prettier~)
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1069,9 +1092,8 @@ Podswietlanie tekstu powyzej 80 kolumny
 ;; swap caps-esc
 ;; https://superuser.com/questions/396988/how-to-remap-capslock-to-esc-in-linux-mint-12
 
-
 ;; ustawia uklad klawiatury na polski
-(defun my/keyboard-pl ()
+(defun my/keyboard-pol ()
   (interactive) ; do wywolania przez M-x
   (shell-command "setxkbmap pl") ; klawiatura pl
   (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
