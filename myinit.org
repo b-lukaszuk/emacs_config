@@ -37,9 +37,16 @@
 ;; stop emacs from creating backup files
 (setq make-backup-files nil)
 
+(use-package doom-modeline
+  :ensure t
+  :pin melpa-stable
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 10)))
+
 #+END_SRC
 
 #+RESULTS:
+: t
 
 * cl-lib
 
@@ -1105,3 +1112,20 @@ Podswietlanie tekstu powyzej 80 kolumny
   (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
 
 #+END_SRC
+* which-key
+
+pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package which-key
+  :ensure t
+  :pin melpa-stable
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
+
+#+END_SRC
+
+

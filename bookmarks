@@ -27,16 +27,6 @@
  (front-context-string . "################")
  (rear-context-string)
  (position . 1))
-(".xmonad"
- (filename . "~/.xmonad/")
- (front-context-string . "  /home/oisezc/.")
- (rear-context-string)
- (position . 1))
-("s1"
- (filename . "~/Desktop/JS_Developer/s1/")
- (front-context-string . "  /home/oisezc/D")
- (rear-context-string)
- (position . 1))
 ("PU"
  (filename . "~/Desktop/SONATA12/PU/")
  (front-context-string . ".~lock.palm_upta")
