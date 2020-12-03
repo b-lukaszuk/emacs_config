@@ -1128,4 +1128,42 @@ pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
 #+END_SRC
 
+* eshell (clear command)
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/eshell-clear ()
+  "czysci bufor eshell-a"
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))
+
+(add-hook 'eshell-mode-hook
+	  (lambda ()
+	    (define-key
+	      eshell-mode-map (kbd "C-c M-o") #'my/eshell-clear)))
+
+#+END_SRC
+
+* EXWM (Emacs X Window Manager)
+
+Tu przez use-package nie zadziala
+wiec M-x package-install exwm
+
+"Super-&" - otwiera inne programy
+"Super-0" - workspace number (default 0-3)
+
+#+BEGIN_SRC emacs-lisp
+
+;(require 'exwm)
+;(require 'exwm-config)
+;(exwm-config-default)
+;;; z nazwa monitora z xrandr z bash-a
+;(setq exwm-randr-workspace-output-plist '(0 "eDP-1"))
+;
+;(require 'exwm-systemtray)
+;(exwm-systemtray-enable)
+
+#+END_SRC
 
