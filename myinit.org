@@ -6,47 +6,49 @@
 * Wyglad interfejsu
 
 #+BEGIN_SRC emacs-lisp
-(defun disable-all-themes ()
-  "disable all active themes."
-  (dolist (i custom-enabled-themes)
-    (disable-theme i)))
+  (defun disable-all-themes ()
+    "disable all active themes."
+    (dolist (i custom-enabled-themes)
+      (disable-theme i)))
 
-(defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes)) ; loading a theme will first disable the old one
-  ;; otherwise after a few reloadings its gonna look ugly
+  (defadvice load-theme (before disable-themes-first activate)
+    (disable-all-themes)) ; loading a theme will first disable the old one
+    ;; otherwise after a few reloadings its gonna look ugly
 
-(load-theme 'wheatgrass)
+  (load-theme 'wheatgrass)
 
-;; wylaczenie wyswietlania menu-baru i tool-bar (gora okienka)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+  ;; wylaczenie wyswietlania menu-baru i tool-bar (gora okienka)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
 
-(set-language-environment "UTF-8")
+  (set-language-environment "UTF-8")
 
-(setq column-number-mode t)
+  (setq column-number-mode t)
 
-;; podswietlanie pasujacych nawiasow
-(show-paren-mode 1)
-(setq show-paren-style 'parenthesis)
+  ;; podswietlanie pasujacych nawiasow
+  (show-paren-mode 1)
+  (setq show-paren-style 'parenthesis)
 
-;; highlight line with the cursor, preserving the colours.
-(global-hl-line-mode +1)
-(set-face-background 'hl-line "gray20")
-(set-face-foreground 'highlight nil)
+  ;; highlight line with the cursor, preserving the colours.
+  ;; load-theme -> themy przy ktorych te ustawienia sa ok
+  ;; ciemny: wheatgras, misterioso, tsdh
+  ;; jasny: tsdh-light, light-blue
+  (global-hl-line-mode +1)
+  (set-face-background 'hl-line "gray10")
+  (set-face-foreground 'highlight nil)
 
-;; stop emacs from creating backup files
-(setq make-backup-files nil)
+  ;; stop emacs from creating backup files
+  (setq make-backup-files nil)
 
-(use-package doom-modeline
-  :ensure t
-  :pin melpa-stable
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 10)))
+  ;(use-package doom-modeline
+  ;  :ensure t
+  ;  :pin melpa-stable
+  ;  :init (doom-modeline-mode 1)
+  ;  :custom ((doom-modeline-height 10)))
 
 #+END_SRC
 
 #+RESULTS:
-: t
 
 * cl-lib
 
@@ -264,7 +266,9 @@ wyszukuje litere na ekranie i do niej skacze
   :ensure t
   :pin melpa-stable
   :defer t
-  :bind ("C-;" . avy-goto-char))
+  :bind
+  ("C-;" . nil)
+  ("C-;" . avy-goto-char))
 
 #+END_SRC
 
@@ -949,7 +953,7 @@ Wciaz nie dziala tak jak bym tego chcial
 W zwiazku z powyzszym sprobuje czegos innego.
 za: https://www.youtube.com/watch?v=0zuYCEzrchk
 
-** node-js
+** node-js (moje funkcje)
 
 wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
 
@@ -975,7 +979,7 @@ output wyswietla w minibuforze
 
 #+END_SRC
 
-** typescript
+** typescript (moje funkcje)
 
 wywoluje w shellu komende: ~tsc nazwa_otwartego_pliku.ts~
 
@@ -990,7 +994,16 @@ output wyswietla w minibuforze
 		   (shell-command-to-string
 		    (format "tsc %s" (buffer-file-name))))))
 
+(defun my/create-etags ()
+  (interactive) ; do wywolania przez M-x
+  (message (format "stworzono etags-y"))
+  (shell-command-to-string
+   (format "etags %s" "*ts")))
+
 #+END_SRC
+
+#+RESULTS:
+: my/create-etags
 
 ** RJSX-mode
 
@@ -999,7 +1012,7 @@ output wyswietla w minibuforze
 (use-package rjsx-mode
   :ensure t
   :pin melpa
-  :mode "\\.js\\'")
+  :mode ("\\.js\\'"))
 
 #+END_SRC
 
@@ -1024,6 +1037,7 @@ Wymaga:
   :ensure t
   :after (rjsx-mode company flycheck)
   :hook (rjsx-mode . setup-tide-mode)
+  :mode ("\\.ts\\'")
   :bind
   ;; uzywanie napisanej przeze mnie funkcji
   ;; my/plik-to-node (patrz wyzej)
@@ -1165,3 +1179,13 @@ wiec M-x package-install exwm
 
 #+END_SRC
 
+* autosave files
+
+#+BEGIN_SRC emacs-lisp
+
+; do odpalenia przy uzywaniu reacta
+; inaczej pliki #cos_tam emacs-a go wykrzaczaja
+(setq auto-save-default nil)
+(setq create-lockfiles nil)
+
+#+END_SRC
