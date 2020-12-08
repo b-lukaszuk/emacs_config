@@ -1160,6 +1160,8 @@ pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
 * EXWM (Emacs X Window Manager)
 
+Experyment
+
 Tu przez use-package nie zadziala
 wiec M-x package-install exwm
 
@@ -1187,5 +1189,18 @@ wiec M-x package-install exwm
 ; inaczej pliki #cos_tam emacs-a go wykrzaczaja
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
+
+#+END_SRC
+* command-log-mode
+
+Wyswietla w bocznym buforze
+nacisniete klawisze i funkcje z nimi powiazane
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package command-log-mode
+  :ensure t
+  :pin melpa
+  :diminish command-log-mode)
 
 #+END_SRC
