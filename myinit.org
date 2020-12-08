@@ -256,6 +256,21 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
+* Iedit
+
+(zamiana wszystkich wystapien slowa przy pomocy C-;)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package iedit
+  :ensure t
+  :defer t
+  :pin melpa
+  :bind
+  ("C-;" . iedit-mode))
+
+#+END_SRC
+
 * Avy
 
 wyszukuje litere na ekranie i do niej skacze
@@ -267,8 +282,8 @@ wyszukuje litere na ekranie i do niej skacze
   :pin melpa-stable
   :defer t
   :bind
-  ("C-;" . nil)
-  ("C-;" . avy-goto-char))
+  ("C-'" . avy-goto-char)
+  ("C-c C-'" . avy-goto-char-2))
 
 #+END_SRC
 
@@ -574,20 +589,6 @@ Wymaga:
   :pin melpa-stable
   :bind
   (("C-x C-z" . zoom-window-zoom)))
-
-#+END_SRC
-
-* Iedit
-
-(zamiana wszystkich wystapien slowa przy pomocy C-c C-;)
-
-#+BEGIN_SRC emacs-lisp
-
-(use-package iedit
-  :ensure t
-  :pin melpa-stable
-  :bind
-  (("C-c C-;" . iedit-toggle-key-default)))
 
 #+END_SRC
 
@@ -1201,6 +1202,9 @@ nacisniete klawisze i funkcje z nimi powiazane
 (use-package command-log-mode
   :ensure t
   :pin melpa
+  :bind
+  ("C-c o" . nil)
+  ("C-c o" . crux-open-with)
   :diminish command-log-mode)
 
 #+END_SRC
