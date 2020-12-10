@@ -34,7 +34,7 @@
   ;; ciemny: wheatgras, misterioso, tsdh
   ;; jasny: tsdh-light, light-blue
   (global-hl-line-mode +1)
-  (set-face-background 'hl-line "gray10")
+  (set-face-background 'hl-line "gray15")
   (set-face-foreground 'highlight nil)
 
   ;; stop emacs from creating backup files
@@ -282,8 +282,8 @@ wyszukuje litere na ekranie i do niej skacze
   :pin melpa-stable
   :defer t
   :bind
-  ("C-'" . avy-goto-char)
-  ("C-c C-'" . avy-goto-char-2))
+  ("C-'" . avy-goto-char-2)
+  ("C-c C-'" . avy-goto-char))
 
 #+END_SRC
 
@@ -1058,6 +1058,7 @@ wymaga: prettier (~npm install -g prettier~)
 (use-package prettier-js
   :ensure t
   :pin melpa
+  :defer t
   :after (rjsx-mode)
   :hook (rjsx-mode . prettier-js-mode))
 
