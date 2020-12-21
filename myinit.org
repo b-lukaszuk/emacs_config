@@ -249,6 +249,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :defer t
   :bind
   (:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
+      ("C-'" . nil)
 	("C-c g" . #'my/wstaw-godz-min)
 	("C-c w" . #'my/wiersz-podlicz)
 	("C-c t" . #'my/tydzien-podlicz)))
@@ -1036,9 +1037,9 @@ Wymaga:
 
 (use-package tide
   :ensure t
-  :after (rjsx-mode company flycheck)
+  :after (javascript-mode rjsx-mode company flycheck)
   :hook (rjsx-mode . setup-tide-mode)
-  :mode ("\\.ts\\'")
+  :mode ("\\.ts\\'" . tide-mode)
   :bind
   ;; uzywanie napisanej przeze mnie funkcji
   ;; my/plik-to-node (patrz wyzej)
@@ -1209,3 +1210,18 @@ nacisniete klawisze i funkcje z nimi powiazane
   :diminish command-log-mode)
 
 #+END_SRC
+
+* dumb-jump
+
+Skakanie do definicji funkcji, itd
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package dumb-jump
+  :ensure t
+  :pin melpa-stable
+  :diminish dump-jump-mode)
+
+#+END_SRC
+
+
