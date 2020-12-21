@@ -314,7 +314,7 @@ wyszukuje litere na ekranie i do niej skacze
   :bind
   (;; przydatene przy edytowaniu kodu lispowego
    ("M-]" . paredit-forward-slurp-sexp)
-   ("M-[" . paredit-backward-barf-sexp))
+   ("M-[" . paredit-forward-barf-sexp))
   :commands (enable-paredit-mode))
 
 #+END_SRC
@@ -996,12 +996,6 @@ output wyswietla w minibuforze
 		   (shell-command-to-string
 		    (format "tsc %s" (buffer-file-name))))))
 
-(defun my/create-etags ()
-  (interactive) ; do wywolania przez M-x
-  (message (format "stworzono etags-y"))
-  (shell-command-to-string
-   (format "etags %s" "*ts")))
-
 #+END_SRC
 
 #+RESULTS:
@@ -1046,6 +1040,7 @@ Wymaga:
   (:map tide-mode-map
 	("C-c n" . #'my/plik-to-node)
 	("C-c C-n" . #'my/plik-i-args-to-node)
+	("C-c e" . #'my/create-etags)
 	("C-c t" . #'my/plik-to-tsc)))
 
 #+END_SRC
@@ -1224,4 +1219,25 @@ Skakanie do definicji funkcji, itd
 
 #+END_SRC
 
+* etags
+
+Tworzy plik TAGS (komenda bashowa etags)
+umozliwiajacy skakanie do definicji (funkcji, metod, klas)
+miedzy plikami w folderze
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/create-etags ()
+  "
+    tworzy etagsy dla wszystkich plikow
+    z rozszerzeniem nazwy aktualnie edytowanego pliku
+  "
+  (interactive) ; do wywolania przez M-x
+  (message (format "stworzono etags-y"))
+  (shell-command-to-string
+   (format "etags *%s"
+	   (car (last
+		 (split-string buffer-file-name "\\."))))))
+
+#+END_SRC
 
