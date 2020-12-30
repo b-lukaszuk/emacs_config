@@ -45,6 +45,9 @@
   ;  :pin melpa-stable
   ;  :init (doom-modeline-mode 1)
   ;  :custom ((doom-modeline-height 10)))
+  
+;; usuwanie duplikatow z historii komend
+(setq history-delete-duplicates t)
 
 #+END_SRC
 
@@ -688,6 +691,10 @@ Wymaga:
   :pin melpa-stable
   :config
   (setq inferior-lisp-program "sbcl"))
+  
+(use-package common-lisp-snippets
+  :ensure t
+  :pin melpa)
 
 #+END_SRC
 
@@ -1097,7 +1104,7 @@ Podswietlanie tekstu powyzej 80 kolumny
 (use-package emmet-mode
   :ensure t
   :defer t
-  :pin melpa-stable
+  :pin melpa
   :config
   ;; Auto-start on any markup modes
   (add-hook 'sgml-mode-hook 'emmet-mode)
