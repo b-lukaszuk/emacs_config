@@ -1038,9 +1038,13 @@ Wymaga:
 
 (use-package tide
   :ensure t
-  :after (javascript-mode rjsx-mode company flycheck)
-  :hook (rjsx-mode . setup-tide-mode)
-  :mode ("\\.ts\\'" . tide-mode)
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save))
+  :mode ("\\.ts\\'" . tide)
+  :config
+  (add-hook 'before-save-hook 'tide-format-before-save)
   :bind
   ;; uzywanie napisanej przeze mnie funkcji
   ;; my/plik-to-node (patrz wyzej)
@@ -1062,8 +1066,8 @@ wymaga: prettier (~npm install -g prettier~)
   :ensure t
   :pin melpa
   :defer t
-  :after (rjsx-mode)
-  :hook (rjsx-mode . prettier-js-mode))
+  :after (:any rjsx-mode tide)
+  :hook ((rjsx-mode . prettier-js-mode)))
 
 #+END_SRC
 

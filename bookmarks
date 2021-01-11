@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("plany"
+(("angular_od_podstaw"
+ (filename . "~/Desktop/JS_Developer/s1/angular_od_podstaw/")
+ (front-context-string . ".\n  drwxrwxr-x 1")
+ (rear-context-string . "96 Dec  6 16:02 ")
+ (position . 157))
+("plany"
  (filename . "~/Desktop/JS_Developer/s1/plany/")
  (front-context-string . ".\n  drwxrwxr-x 1")
  (rear-context-string . "96 Nov 21 09:40 ")
