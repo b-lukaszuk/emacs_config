@@ -1249,7 +1249,7 @@ miedzy plikami w folderze i jego podfolderach
   (message (format "stworzono etags-y"))
   (shell-command-to-string
    (format
-    "find . -name \"*.%s\" -print -or -name \"*.h\" -print | xargs etags --append"
+    "find . -name \"*.%s\" -print | xargs etags --append"
     (car (last
 	  (split-string buffer-file-name "\\."))))))
 
