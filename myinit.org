@@ -45,7 +45,7 @@
   ;  :pin melpa-stable
   ;  :init (doom-modeline-mode 1)
   ;  :custom ((doom-modeline-height 10)))
-  
+
 ;; usuwanie duplikatow z historii komend
 (setq history-delete-duplicates t)
 
@@ -691,7 +691,7 @@ Wymaga:
   :pin melpa-stable
   :config
   (setq inferior-lisp-program "sbcl"))
-  
+
 (use-package common-lisp-snippets
   :ensure t
   :pin melpa)
@@ -1234,21 +1234,27 @@ Skakanie do definicji funkcji, itd
 
 Tworzy plik TAGS (komenda bashowa etags)
 umozliwiajacy skakanie do definicji (funkcji, metod, klas)
-miedzy plikami w folderze
+miedzy plikami w folderze i jego podfolderach
 
 #+BEGIN_SRC emacs-lisp
 
 (defun my/create-etags ()
   "
     tworzy etagsy dla wszystkich plikow
-    z rozszerzeniem nazwy aktualnie edytowanego pliku
+    z rozszerzeniem nazwy aktualnie edytowanego pliku.
+    punkt wyjscia to folder aktualnie edytowanego pliku.
+    uwzglednia pliki z tym rozszerzeniem w podfolderach.
   "
   (interactive) ; do wywolania przez M-x
   (message (format "stworzono etags-y"))
   (shell-command-to-string
-   (format "etags *%s"
-	   (car (last
-		 (split-string buffer-file-name "\\."))))))
+   (format
+    "find . -name \"*.%s\" -print -or -name \"*.h\" -print | xargs etags --append"
+    (car (last
+	  (split-string buffer-file-name "\\."))))))
 
 #+END_SRC
+
+#+RESULTS:
+: my/create-etags
 
