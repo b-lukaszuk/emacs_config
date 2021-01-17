@@ -331,7 +331,8 @@ wyszukuje litere na ekranie i do niej skacze
 (use-package evil
   :ensure t
   :pin melpa-stable
-  :defer 0.1 ;; don't block emacs when starting, load evil immediately after startup
+  ;; don't block emacs when starting, load evil immediately after startup
+  :defer 0.1
   :init
   (setq evil-want-keybinding nil)
   (setq evil-want-integration t) ;; required by evil-collection
@@ -346,13 +347,13 @@ wyszukuje litere na ekranie i do niej skacze
   ;; set leader key in normal state
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-define-key 'normal 'global
-                   (kbd "<leader>v") 'evil-window-vsplit)
+    (kbd "<leader>v") 'evil-window-vsplit)
   (evil-define-key 'normal 'global
-                   (kbd "<leader>s") 'evil-window-split)
+    (kbd "<leader>s") 'evil-window-split)
   (evil-define-key 'normal 'global
-                   (kbd "<leader>w") 'evil-write)
+    (kbd "<leader>w") 'evil-write)
   (evil-define-key 'normal 'global
-                   (kbd "<leader>q") 'kill-buffer))
+    (kbd "<leader>q") 'delete-window))
 
 ;; vim-like keybindings everywhere in emacs
 (use-package evil-collection
