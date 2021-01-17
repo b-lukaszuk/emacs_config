@@ -1042,7 +1042,7 @@ Wymaga:
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save))
-  :mode ("\\.ts\\'" . tide)
+  :mode ("\\.ts\\'" . typescript-mode)
   :config
   (add-hook 'before-save-hook 'tide-format-before-save)
   :bind
