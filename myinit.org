@@ -1043,7 +1043,6 @@ Wymaga:
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save))
-  :mode ("\\.ts\\'" . typescript-mode)
   :config
   (add-hook 'before-save-hook 'tide-format-before-save)
   :bind
@@ -1054,6 +1053,11 @@ Wymaga:
 	("C-c C-n" . #'my/plik-i-args-to-node)
 	("C-c e" . #'my/create-etags)
 	("C-c t" . #'my/plik-to-tsc)))
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+
+(add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
 
 #+END_SRC
 
@@ -1091,14 +1095,14 @@ Podswietlanie tekstu powyzej 80 kolumny
 #+BEGIN_SRC emacs-lisp
 
 (use-package web-mode
-    :ensure t
-    :pin melpa-stable
-    :defer t
-    :config
-	   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-	   (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
-(setq web-mode-enable-auto-closing t))
-(setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
+  :ensure t
+  :pin melpa-stable
+  :defer t
+  :after (emmet-mode))
+
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(setq web-mode-enable-auto-closing t)
+(setq web-mode-enable-auto-quoting t)
 
 #+END_SRC
 
@@ -1109,11 +1113,9 @@ Podswietlanie tekstu powyzej 80 kolumny
 (use-package emmet-mode
   :ensure t
   :defer t
-  :pin melpa
-  :config
-  ;; Auto-start on any markup modes
-  (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'web-mode-hook 'emmet-mode))
+  :pin melpa)
+
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . emmet-mode))
 
 #+END_SRC
 * change keyboard layout
