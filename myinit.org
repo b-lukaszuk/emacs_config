@@ -53,6 +53,20 @@
 
 #+RESULTS:
 
+* Diminish
+
+potrzebny do dzialania keyword-a
+:diminish
+w use-package (nie wysietla nazwy minor moda na pasku)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package diminish
+  :ensure t
+  :pin melpa-stable)
+
+#+END_SRC
+
 * cl-lib
 
 (kompatybilnosc z common-lisp)
@@ -269,6 +283,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 (use-package iedit
   :ensure t
   :defer t
+  :diminish iedit-mode
   :pin melpa
   :bind
   ("C-;" . iedit-mode))
@@ -285,6 +300,7 @@ wyszukuje litere na ekranie i do niej skacze
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish avy-mode
   :bind
   ("C-'" . avy-goto-char-2)
   ("C-c C-'" . avy-goto-char))
@@ -301,6 +317,7 @@ wyszukuje litere na ekranie i do niej skacze
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish autopair-mode
   ;; wylaczenie parowania nawiasow w minibuforze
   :init
   (add-hook 'minibuffer-setup-hook (lambda ()
@@ -314,6 +331,7 @@ wyszukuje litere na ekranie i do niej skacze
   ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
   :pin melpa
   :defer t
+  :diminish paredit-mode
   :bind
   (;; przydatene przy edytowaniu kodu lispowego
    ("M-]" . paredit-forward-slurp-sexp)
@@ -360,6 +378,7 @@ wyszukuje litere na ekranie i do niej skacze
   :after evil
   :ensure t
   :pin melpa-stable
+  :diminish evil-collection-mode
   :config
   (evil-collection-init))
 
@@ -367,12 +386,14 @@ wyszukuje litere na ekranie i do niej skacze
   :after evil
   :ensure t
   :pin melpa-stable
+  :diminish evil-surround-mode
   :config (global-evil-surround-mode 1))
 
 (use-package elscreen
   :after evil
   :ensure t
   :pin melpa-stable
+  :diminish elscreen-mode
   :bind
   (:map evil-normal-state-map
 	("C-w t" . elscreen-create)
@@ -395,6 +416,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 (use-package window-numbering
   :ensure t
   :pin melpa-stable
+  :diminish window-numbering-mode
   :config
   (window-numbering-mode))
 
@@ -407,6 +429,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 (use-package nlinum-relative
   :ensure t
   :pin melpa
+  :diminish nlinum-relative-mode
   :hook (prog-mode . nlinum-relative-mode))
 
 #+END_SRC
@@ -421,6 +444,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish helm-mode
   :bind
   (("C-x b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
@@ -443,6 +467,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
   :ensure t
   :pin melpa
   :defer t
+  :diminish crux-mode
   :bind
   ;; przydatne, po najechaniu na plik w Dired-zie
   ;; mozna go otworzyc w aplikacji systemowej (np. LibreOffice Calc)
@@ -463,6 +488,7 @@ Wymaga:
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish ess-mode
   :init
   ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
   ;; (w pliku *.r i w konsoli)
@@ -492,6 +518,7 @@ Wymaga:
 (use-package flycheck
   :ensure t
   :pin melpa-stable
+  :diminish flycheck-mode
   :init
   (global-flycheck-mode t))
 
@@ -501,6 +528,7 @@ Wymaga:
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish elpy-mode
   :init
   (elpy-enable)
   (add-hook 'elpy-mode-hook (lambda ()
@@ -532,6 +560,7 @@ Wymaga:
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish company-jedi-mode
   :config
     (require 'company)
     (add-hook 'python-mode-hook 'python-mode-company-init))
@@ -540,6 +569,7 @@ Wymaga:
 (use-package pyvenv
   :ensure t
   :pin melpa-stable
+  :diminish pyvenv-mode
   :hook ((python-mode . pyvenv-mode)))
 
 
@@ -549,6 +579,7 @@ Wymaga:
   :ensure t
   :pin melpa
   :defer t
+  :diminish blacken-mode
   :hook (python-mode . blacken-mode)
   :config
   (setq blacken-line-length 78))
@@ -572,14 +603,15 @@ Wymaga:
   ;; tu melpa-stable nie mialo zaleznosci websocket
   ;; w odpowiedniej wersji
   :pin melpa
-  :defer t)
+  :defer t
+  :diminish ein-mode)
 
   ;; wyswietlanie plotow w buforze Emacs-a
   ;; a nie w wyskakujacym oknie (domyslne)
   (setq ein:output-area-inlined-images t)
   ;; umieszczenie tego setq w use-package nic nie daje
   ;; (ani w :config, ani w :init, ani w :custom,
-  ;; ani jako hook)
+  ;; ani jako hook), nie wiem dlaczego, ale tak jest
 
 #+END_SRC
 
@@ -592,6 +624,7 @@ Wymaga:
 (use-package zoom-window
   :ensure t
   :pin melpa-stable
+  :diminish zoom-window-mode
   :bind
   (("C-x C-z" . zoom-window-zoom)))
 
@@ -626,13 +659,15 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish magit-mode
   :bind
   (("C-x g" . magit-status)))
 
 (use-package evil-magit
   :ensure t
   :pin melpa-stable
-  :after magit)
+  :after magit
+  :diminish evil-magit-mode)
 
 #+END_SRC
 
@@ -649,6 +684,7 @@ zamykanie panelu ~q~
 (use-package neotree
   :ensure t
   :pin melpa-stable
+  :diminish neotree-mode
   :bind
   (("<f8>" . neotree-dir))
   :config
@@ -666,14 +702,17 @@ Wymaga:
 
 (use-package haskell-mode
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :diminish haskell-mode)
 
 (use-package haskell-indentation-mode
   :pin melpa-stable
+  :diminish haskell-indentation-mode
   :hook haskell-mode)
 
 (use-package interactive-haskell-mode
   :pin melpa-stable
+  :diminish interactive-haskell-mode
   :hook haskell-mode)
 
 #+END_SRC
@@ -690,6 +729,7 @@ Wymaga:
 (use-package slime
   :ensure t
   :pin melpa-stable
+  :diminish slime-mode
   :config
   (setq inferior-lisp-program "sbcl"))
 
@@ -722,6 +762,7 @@ Wymaga:
 ;;; dired jest domyslnie wbudowany w Emacs-a
 ;;; wiec nie trzeba go sciagac, ladowac, itd.
 (use-package dired
+  :diminish dired-mode
   :hook
   ;; wcisniecie "(" powoduje wlaczenie domyslnego wyswietlania
   ;; tj. wyswietlenie dodatkowych informacji
@@ -748,6 +789,7 @@ Wymaga:
 (use-package auto-complete
   :ensure t
   :defer t
+  :diminish auto-compolete mode
   :config
   (setq ac-use-menu-map t)
   (setq ac-ignore-case nil)
@@ -765,6 +807,7 @@ Wymaga:
 (use-package company
   :ensure t
   :pin melpa-stable
+  :diminish company-mode
   :bind (("C-c k" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
@@ -796,12 +839,14 @@ dziala z roznymi jezykami programowania
 (use-package yasnippet
   :ensure t
   :pin melpa-stable
+  :diminish yasnippet-mode
   :init
     (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :diminish yasnippet-snippets-mode)
 
 #+END_SRC
 
@@ -815,6 +860,7 @@ dziala z roznymi jezykami programowania
   :ensure t
   :pin melpa
   :defer t
+  :diminish origami-mode
   :hook prog-mode-hook)
 
 #+END_SRC
@@ -844,7 +890,8 @@ Chyba tego nie uzywam
 (use-package speed-type
    :ensure t
    :pin melpa-stable
-   :defer t)
+   :defer t
+   :diminish speed-type)
 
 #+END_SRC
 
@@ -860,6 +907,7 @@ Kolory sa subtelne
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish rainbow-delimiters-mode
   :init
   (add-hook 'ein-setup-hook (lambda ()
 			      (rainbow-delimiters-mode -1)))
@@ -876,6 +924,7 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   :ensure t
   :pin melpa
   :defer t
+  :diminish highlight-indent-guides-mode
   :hook (prog-mode . highlight-indent-guides-mode)
   ;; wylaczenie highlight-indent-guides w ein-ie
   :init
@@ -906,6 +955,7 @@ Wymaga (instalacja z terminala):
 (use-package pdf-tools
   :ensure t
   :pin melpa-stable
+  :diminish pdf-tools-mode
   ;; wylaczenie nlinum moda w pdf-toolsie
   ;; inaczej 'dusi' Emacs-a
   :init
@@ -929,7 +979,8 @@ Wymaga (instalacja z terminala):
 (use-package ecb
   :ensure t
   :pin melpa
-  :defer t)
+  :defer t
+  :diminish ecb-mode)
 
 #+END_SRC
 
@@ -1016,7 +1067,14 @@ output wyswietla w minibuforze
 (use-package rjsx-mode
   :ensure t
   :pin melpa
-  :mode ("\\.js\\'"))
+  :diminish rjsx-mode
+  :mode ("\\.js\\'")
+  :bind
+  (:map rjsx-mode-map
+	("C-c n" . #'my/plik-to-node)
+	("C-c C-n" . #'my/plik-i-args-to-node)
+	("C-c e" . #'my/create-etags)
+	("C-c t" . #'my/plik-to-tsc)))
 
 #+END_SRC
 
@@ -1039,6 +1097,7 @@ Wymaga:
 
 (use-package tide
   :ensure t
+  :diminish tide-mode
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
@@ -1071,6 +1130,7 @@ wymaga: prettier (~npm install -g prettier~)
   :ensure t
   :pin melpa
   :defer t
+  :diminish prettier-js-mode
   :after (:any rjsx-mode tide)
   :hook ((rjsx-mode . prettier-js-mode)))
 
@@ -1098,6 +1158,7 @@ Podswietlanie tekstu powyzej 80 kolumny
   :ensure t
   :pin melpa-stable
   :defer t
+  :diminish web-mode
   :after (emmet-mode))
 
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
@@ -1113,6 +1174,7 @@ Podswietlanie tekstu powyzej 80 kolumny
 (use-package emmet-mode
   :ensure t
   :defer t
+  :diminish emmet-mode
   :pin melpa)
 
   (add-to-list 'auto-mode-alist '("\\.html\\'" . emmet-mode))
@@ -1179,6 +1241,8 @@ wiec M-x package-install exwm
 
 "Super-&" - otwiera inne programy
 "Super-0" - workspace number (default 0-3)
+
+Na razie wykomentowane wole i3wm, spectrwm
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1257,7 +1321,4 @@ miedzy plikami w folderze i jego podfolderach
 	  (split-string buffer-file-name "\\."))))))
 
 #+END_SRC
-
-#+RESULTS:
-: my/create-etags
 
