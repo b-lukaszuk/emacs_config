@@ -371,7 +371,11 @@ wyszukuje litere na ekranie i do niej skacze
   (evil-define-key 'normal 'global
     (kbd "<leader>w") 'evil-write)
   (evil-define-key 'normal 'global
-    (kbd "<leader>q") 'delete-window))
+    (kbd "<leader>q") 'delete-window)
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+)
 
 ;; vim-like keybindings everywhere in emacs
 (use-package evil-collection
