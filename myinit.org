@@ -1181,8 +1181,6 @@ Podswietlanie tekstu powyzej 80 kolumny
   :diminish emmet-mode
   :pin melpa)
 
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . emmet-mode))
-
 #+END_SRC
 * change keyboard layout
 
