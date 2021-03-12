@@ -702,6 +702,9 @@ zamykanie panelu ~q~
 Wymaga:
 - [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
 
+Bedac w otwartym pliku *.hs C-c C-l
+otwiera repl-a haskella i laduje do niego aktualny plik
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package haskell-mode
@@ -1158,16 +1161,16 @@ Podswietlanie tekstu powyzej 80 kolumny
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package web-mode
-  :ensure t
-  :pin melpa-stable
-  :defer t
-  :diminish web-mode
-  :after (emmet-mode))
+  (use-package web-mode
+    :ensure t
+    :pin melpa-stable
+    :defer t
+    :diminish web-mode
+    :after (emmet-mode))
 
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(setq web-mode-enable-auto-closing t)
-(setq web-mode-enable-auto-quoting t)
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  ;; (setq web-mode-enable-auto-closing t)
+  ;; (setq web-mode-enable-auto-quoting t)
 
 #+END_SRC
 
