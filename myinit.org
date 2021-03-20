@@ -888,20 +888,6 @@ Chyba tego nie uzywam
 
 #+END_SRC
 
-* Speed-type
-
-(cwiczenie touch-typing z Emacsa)
-
-#+BEGIN_SRC emacs-lisp
-
-(use-package speed-type
-   :ensure t
-   :pin melpa-stable
-   :defer t
-   :diminish speed-type)
-
-#+END_SRC
-
 * Rainbow delimiters
 
 Ten sam poziom nawiasow ma ten sam kolor
