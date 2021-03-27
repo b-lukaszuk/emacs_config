@@ -40,7 +40,7 @@
  '(ecb-options-version "2.50")
  '(package-selected-packages
    (quote
-    (exwm highlight-indent-guides seq helm evil use-package))))
+    (lsp-java exwm highlight-indent-guides seq helm evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

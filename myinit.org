@@ -1313,3 +1313,42 @@ miedzy plikami w folderze i jego podfolderach
 
 #+END_SRC
 
+* Language servers
+
+LSP - [[https://microsoft.github.io/language-server-protocol/][Language Server Protocol]]
+
+Na podstawie rady z [[https://www.youtube.com/watch?v=E-NAM9U5JYE][system crafters]]
+
+Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package lsp-mode
+  :pin melpa-stable
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration)
+  :diminish lsp-mode)
+
+#+END_SRC
+
+* Programming Languages
+
+Programming languages working with Language Server Protocol
+
+** Java
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package lsp-java
+  :pin melpa-stable
+  :ensure t
+  :config
+  (add-hook 'java-mode-hook 'lsp)
+  :diminish lsp-java)
+
+#+END_SRC
+
