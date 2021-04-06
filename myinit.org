@@ -720,7 +720,11 @@ otwiera repl-a haskella i laduje do niego aktualny plik
 (use-package interactive-haskell-mode
   :pin melpa-stable
   :diminish interactive-haskell-mode
-  :hook haskell-mode)
+  :hook haskell-mode
+  :bind
+  (:map haskell-interactive-mode-map
+	("C-c C-k" . nil)
+	("C-c M-o" . #'haskell-interactive-mode-clear)))
 
 #+END_SRC
 
@@ -823,7 +827,7 @@ Wymaga:
          ("<escape>" . company-abort))
   :config
   (global-company-mode t)
-  (setq company-idle-delay 0.2)
+  (setq company-idle-delay 0.1)
   (setq company-minimum-prefix-length 3)
   (setq company-auto-complete t)
   (setq company-show-numbers t)
