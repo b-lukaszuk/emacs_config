@@ -277,7 +277,8 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 					; zastapienie czystszym tesktem
     (insert (my/trim-trailing-whitespace-chars tekst-z-tego-bufora))
 					; powrot do pozycji startowej
-    (goto-char poz-startowa)))
+    (goto-char poz-startowa))
+    (message "trailing whtiespaces ( +$) and tabs (\t+$) has been removed"))
 
 
 #+END_SRC
