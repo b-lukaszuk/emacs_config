@@ -1082,7 +1082,7 @@ output wyswietla w minibuforze
    displays info about it in the *Messages* buffer"
   (interactive) ; do wywolania przez M-x
   (message (format "%s %s"
-		   "wyslano do tsc"
+		   "transpilacja do JS zakonczona"
 		   (shell-command-to-string
 		    (format "tsc %s" (buffer-file-name))))))
 
