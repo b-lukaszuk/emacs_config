@@ -1086,10 +1086,16 @@ output wyswietla w minibuforze
 		   (shell-command-to-string
 		    (format "tsc %s" (buffer-file-name))))))
 
+(defun my/js-version-of-ts-to-node ()
+  "sends the *.js file (current *.ts file conterpart) to node
+   displays output in the *Messages* buffer"
+  (interactive) ; do wywolania przez M-x
+  (message
+   (shell-command-to-string
+    (format "node %s" (replace-regexp-in-string
+		       ".ts$" ".js"
+		       (buffer-file-name))))))
 #+END_SRC
-
-#+RESULTS:
-: my/create-etags
 
 ** RJSX-mode
 
@@ -1140,7 +1146,8 @@ Wymaga:
 	("C-c n" . #'my/plik-to-node)
 	("C-c C-n" . #'my/plik-i-args-to-node)
 	("C-c e" . #'my/create-etags)
-	("C-c t" . #'my/plik-to-tsc)))
+	("C-c t" . #'my/plik-to-tsc)
+	("C-c C-t" . #'my/js-version-of-ts-to-node)))
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
