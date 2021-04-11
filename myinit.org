@@ -1099,8 +1099,6 @@ Wymaga:
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save))
-  :config
-  (add-hook 'before-save-hook 'tide-format-before-save)
   :bind
   ;; uzywanie napisanej przeze mnie funkcji
   ;; my/plik-to-node (patrz wyzej)
