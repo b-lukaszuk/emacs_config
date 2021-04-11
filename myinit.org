@@ -256,7 +256,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* sun trailing spaces i tabs
+* usun trailing whitespaces i tabs
 
 #+BEGIN_SRC emacs-lisp
 
