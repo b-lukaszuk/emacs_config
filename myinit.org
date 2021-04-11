@@ -1051,12 +1051,17 @@ output wyswietla w minibuforze
 #+BEGIN_SRC emacs-lisp
 
 (defun my/plik-to-node ()
+  "sends the current *.js file to node
+   displays output in the *Messages* buffer"
   (interactive) ; do wywolania przez M-x
   (message
    (shell-command-to-string
     (format "node %s" (buffer-file-name)))))
 
 (defun my/plik-i-args-to-node (argumenty)
+  "sends the current *.js file to node
+   first it asks for additoinal args separated by spaces
+   displays output in the *Messages* buffer"
   (interactive "spodaj argumenty: ") ; do wywolania przez M-x
   (message
    (shell-command-to-string
@@ -1073,6 +1078,8 @@ output wyswietla w minibuforze
 #+BEGIN_SRC emacs-lisp
 
 (defun my/plik-to-tsc ()
+  "sends the current *.ts file to tsc
+   displays info about it in the *Messages* buffer"
   (interactive) ; do wywolania przez M-x
   (message (format "%s %s"
 		   "wyslano do tsc"
