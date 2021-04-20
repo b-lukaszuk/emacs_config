@@ -1151,6 +1151,8 @@ Wymaga:
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
 
 (add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
 
@@ -1372,8 +1374,10 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
   :config
   (lsp-enable-which-key-integration)
+  (setq lsp-completion-enable-additional-text-edit nil)
   :diminish lsp-mode)
 
 #+END_SRC
