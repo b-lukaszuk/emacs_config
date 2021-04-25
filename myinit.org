@@ -53,6 +53,26 @@
 
 #+RESULTS:
 
+* Default-text-scale
+
+Domyslne C-x C-+, lub C-x C-- zmienia rozmiar czcionki tylko dla jedego buforu
+ten minor mode dziala dla wszystkich buforow.
+
+Skroty zapewniane przez ten mod: C-M-= oraz C-M--
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package default-text-scale
+  :ensure t
+  :pin melpa-stable
+  :diminish default-text-scale
+  :bind
+  ("C-M-=" . #'default-text-scale-increase)
+  ("C-M--" . #'default-text-scale-decrease)
+  ("C-M-0" . #'default-text-scale-reset))
+
+#+END_SRC
+
 * Diminish
 
 potrzebny do dzialania keyword-a
@@ -1029,6 +1049,7 @@ Wklejanie za pomoca M-y
 #+END_SRC
 
 * JavaScript
+
 Wciaz nie dziala tak jak bym tego chcial
 
 (w miedzy czasie wypadly z 2 biblioteki/mody z linkow, np. company-tern)
@@ -1377,8 +1398,10 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
   :hook ((lsp-mode . lsp-enable-which-key-integration))
   :config
   (lsp-enable-which-key-integration)
-  (setq lsp-completion-enable-additional-text-edit nil)
+  ;;(setq lsp-completion-enable-additional-text-edit nil)
   :diminish lsp-mode)
+
+(setq company-lsp-cache-candidates nil)
 
 #+END_SRC
 
