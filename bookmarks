@@ -2,11 +2,11 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("kals"
- (filename . "~/Desktop/")
- (front-context-string . "JS_Developer\n  d")
- (rear-context-string . "96 Apr 13 08:51 ")
- (position . 856))
+(("plany_zajec_JS"
+ (filename . "~/Desktop/JS_Developer/s1/plany/s2/")
+ (front-context-string . "/home/oisezc/Des")
+ (rear-context-string)
+ (position . 3))
 ("ekosystem_react"
  (filename . "~/Desktop/JS_Developer/s1/ekosystem_react/")
  (front-context-string . ".\n  drwxrwxr-x 1")
@@ -17,11 +17,6 @@
  (front-context-string . ".\n  drwxrwxr-x 1")
  (rear-context-string . "96 Dec  6 16:02 ")
  (position . 157))
-("plany"
- (filename . "~/Desktop/JS_Developer/s1/plany/")
- (front-context-string . ".\n  drwxrwxr-x 1")
- (rear-context-string . "96 Nov 21 09:40 ")
- (position . 148))
 ("node_js_pd"
  (filename . "~/Desktop/JS_Developer/s1/NodeJS/node_js_pd/")
  (front-context-string . ".\n  drwxrwxr-x 4")
@@ -37,16 +32,6 @@
  (front-context-string . "  /home/oisezc/D")
  (rear-context-string)
  (position . 1))
-("test.py"
- (filename . "~/Desktop/testy/test.py")
- (front-context-string . "################")
- (rear-context-string)
- (position . 1))
-("PU"
- (filename . "~/Desktop/SONATA12/PU/")
- (front-context-string . ".~lock.palm_upta")
- (rear-context-string . "82 Oct  9 09:28 ")
- (position . 235))
 ("myinit.org"
  (filename . "~/.emacs.d/myinit.org")
  (front-context-string . "#+TITLE: My emac")
