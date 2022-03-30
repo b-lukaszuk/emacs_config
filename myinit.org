@@ -421,6 +421,10 @@ wyszukuje litere na ekranie i do niej skacze
       (kbd "<leader>q") 'delete-window)
     (evil-define-key 'normal 'global
       (kbd "<leader>nt") 'neotree-dir)
+    (evil-define-key 'normal 'global
+      (kbd "<leader>ff") 'helm-find-files)
+    (evil-define-key 'normal 'global
+      (kbd "<leader>d") 'dired)
     ;; Use visual line motions even outside of visual-line-mode buffers
     (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
