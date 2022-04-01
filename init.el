@@ -1,8 +1,11 @@
+;;; package --- Summary:
+;;; Commentary:
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 
+;;; Code:
 (require 'package)
 (package-initialize)
 
@@ -31,7 +34,7 @@
   (expand-file-name "./myinit.org"
 		    user-emacs-directory))
 (setq inhibit-splash-screen t)
-(set-default-font "Monospace 12")
+(set-frame-font "Monospace 12")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -50,3 +53,4 @@
  )
 (put 'erase-buffer 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+;;; init.el ends here
