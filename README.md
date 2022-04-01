@@ -10,6 +10,10 @@ Postepowanie:
 4. do katalogu `~/.emacs.d` wgrywamy plik `myinit.org`
 5. restart Emacs-a i powinno wszystko samo sciagnac z neta i poinstalowac (mozliwe warningsy, ale raczej ignorujemy)
 
+Dodatkowe pliki:
+1. emacs_download_compile_install.sh - do instalacji najnowszej (lub wybranej) wersji emacsa
+2. doom_info.txt - do instalacji doom emacs (informacje ogolne)
+
 Potrzebne beda pewne programy z poziomu systemu, np.:
 * haskell
 * R
