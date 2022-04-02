@@ -1,0 +1,401 @@
+#+TITLE: My emacs config
+#+STARTUP: overview
+#+STARTUP: indent
+#+OPTIONS: \n: t
+
+Pamietac o zrobieniu '~/.emacs.d/bin/doom sync' z terminala
+
+* Wstaw-godz:min
+
+(wstawia aktualny czas w formacie "HH:MM")
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/wstaw-godz-min () ; aktualny czas wstawiamy w trybie insert-mode (evil-a)
+  (interactive)
+
+  ;; deklaracja zmiennych pomocniczych
+  (let ((znak-pop (char-before)) ; sprawdzamy znak przed pointem
+	(co-wstawic
+	 (replace-regexp-in-string "\n" "" ; shell-command-to-string wstawia tekst ze znakiem nowej linii
+				   (shell-command-to-string "date +'%H:%M'")))) ; wstawiamy aktualny czas
+
+    (if (= znak-pop 45) ; ascii 45 to "-"
+	;; jesli wczesniej bylo "-" to wstawiamy tylko string "HH:MM"
+	(insert co-wstawic)
+      ;; a jesli nie to wstawiamy string "HH:MM-"
+      (insert (concat co-wstawic "-")))))
+
+#+END_SRC
+
+* Podlicz wiersz
+
+oblicza ile minut (np. nauki niemieckiego jest w wierszu), tj.
+zamienia wiersz w stylu:
+
+~<2019-06-20 Thu> 06:30-06:50 10:10-10:30~ na ~<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min~
+
+nie trzeba wizualnie zaznaczyc wiersza
+(funkcja robi to sama, ale nawet tego nie widac)
+
+czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
+
+#+BEGIN_SRC emacs-lisp
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; ponizsza funkcja zamienia godz na min, np. "10:10"
+    ;; to 610 min (10h 10min) po polnocy (00:00)
+    ;; czas nie moze obejmowac "00:00", tj. np. "23:57-00:03"
+    ;; spowoduje bledne obliczenia (wartosci ujemne)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/godz_min-do-min (str_czas) ; str_czas to "HH:MM"
+  (let* ((lst-of-str-godz-min (split-string str_czas ":")) ; dzieli string na godz i min
+         (int-godz (string-to-number (car lst-of-str-godz-min)))
+         (int-min (string-to-number (car (cdr lst-of-str-godz-min)) )))
+    (+ (* 60 int-godz) int-min))) ; zwraca ilosc minut po polnocy (int)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ponizsza funkcja oblicza ile minut minelo od do,
+  ;; np. jesli zaczelem sie uczyc o 10:10
+  ;; a skonczylem o 10:30 to minelo 20 min
+  ;; string wejsciowy w tym przypadku to "10:10-10:30"
+  ;; czas nie moze obejmowac "00:00", tj. "23:57-00:03" spowoduje bledne obliczenia
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/czas-od-do (str-czas-od-do) ; str-czas-od-do jest w formacie "HH:MM-HH:MM"
+  (let* ((lst-of-str-czas1-czas2 (split-string str-czas-od-do "-"))
+         (int-czas1-start (my/godz_min-do-min (car lst-of-str-czas1-czas2)))
+         (int-czas2-koniec (my/godz_min-do-min (car (cdr lst-of-str-czas1-czas2)))))
+    (- int-czas2-koniec int-czas1-start))) ; zwraca ilosc min miedzy 2 godzinami (int)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ponizsza funkcja wydobywa godz:min ze stringu w postaci
+  ;;" <2019-06-20 Thu> 06:30-06:50 10:10-10:30"
+  ;; lub
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
+  ;; i zwraca jes jako liste stringow ("HH:MM-HH:MM" "HH:MM-HH:MM")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/wydobadz-godz_min (linijka-tekstu) ; linijka-tekstu to string
+  (let  ((tekst linijka-tekstu))
+    (setq tekst (replace-regexp-in-string "^.*> " "" linijka-tekstu))
+    (setq tekst (replace-regexp-in-string " [0-9]+ min *" "" tekst))
+    (split-string tekst " +")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ponizsza funkcja podlicza ile jest minut treningu w kazedj linijce
+  ;; przyjmuje linijke (string w postaci):
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30"
+  ;; lub
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min"
+  ;; zwraca (wstawia do buforu/pliku) linijke w postaci
+  ;; "<2019-06-20 Thu> 06:30-06:50 10:10-10:30 40 min" (oczywiscie bez ")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/wiersz-podlicz ()
+  (interactive) ; potrzebne do wywolania przez M-x
+
+  ;; pozycja punktu przed wszystkimi operacjami
+  (let ((pocz-poz-punktu (point)))
+    ;; ponizsze 3 linijki aby zaznaczyc wizualnie linijke tekstu
+    ;; (wczesniej robilem tak z klawiatury)
+    ;; (samo evilowe "V" zostawia kursor na pocz linijki)
+    ;; (a evilowa sekwencja: "0v$"), coz, nie chce mi sie jej ciagle wklepywac
+    (evil-digit-argument-or-evil-beginning-of-line)
+    (evil-visual-block)
+    (evil-end-of-line)
+
+      ;;; teraz linijki obliczajace czas i wstawiajace min na koncu linijki
+    (let* ((wczytany-tekst (buffer-substring (point) (mark)))
+	   (wczytany-tekst-bez-min (replace-regexp-in-string " [0-9]+ min *$" "" wczytany-tekst))
+	   (suma 0)
+	   (str-do-zwrotu "")) ; string ktory zwroci/wypisze ta funkcja (na razie blank)
+
+      (dolist (elt (my/wydobadz-godz_min wczytany-tekst))
+	(cl-incf suma (my/czas-od-do elt))) ; dodaj liczbe minut z kazdej krotkiej sesji
+      (setq str-do-zwrotu
+	    (replace-regexp-in-string
+	     "$" ; zastap co:  wirtualny koniec linijki
+	     (concat " " (number-to-string suma) " min") ; zastap czym: liczba minut z dop min
+	     wczytany-tekst-bez-min)) ; zrob to we wczytanym tekscie
+      (delete-region (point) (mark)) ; usuwa wczytana linijke tekstu
+      (insert str-do-zwrotu)) ; aby ja zastapic tekstem z podliczonymi minutami
+
+    ;; powrot do poczatkowej pozycji punktu
+    (goto-char pocz-poz-punktu)))
+
+#+END_SRC
+
+* Podlicz tydzien
+
+podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zaznaczonego tekstu
+
+#+BEGIN_SRC emacs-lisp
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; ponizsza funkcja rozbija blok tekstu na pojedyncze linijki
+    ;; zwraca liste stringow (czyli pojedyncze linijki)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/blok-tekstu-do-lista-linijek (blok-tekstu)
+  (split-string blok-tekstu "\n"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; ponizsza funkcja rozbija linijke tekstu na pojedyncze wyrazy
+    ;; zwraca liste stringow (wyrazy w zdaniu w odwroconej kolejnosci)
+    ;; zamienia string "ala ma kota"
+    ;; na liste ("kota" "ma" "ala")
+    ;; potrzebne by na koncu niektorych linijek jest, np. "124 min"
+    ;; lub "100 pln"
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/odwroc-kolejn-slow-w-linijce (ln-tkstu)
+   (reverse (split-string ln-tkstu " ")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; ponizsza funkcja wczytuje blok tekstu
+    ;; in na podstawie pol typu: "124 min"
+    ;; "100 pln"
+    ;; podlicza czas i koszt i wyswietla to w minibuforze
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/tydzien-podlicz ()
+  (interactive) ; do wywolania przez M-x
+
+  ;; zmienne pomocnicze
+  (let* ((wczytany-tekst (buffer-substring (point) (mark)))
+	 (linijki-tekstu (my/blok-tekstu-do-lista-linijek wczytany-tekst)) ; lista, ktorej kazdy elt to linia tekstu
+	 (suma-pln 0) (suma-min 0) (suma-godz 0)) ; zmienne do obliczenia
+
+    ;; obliczenia suma minut/pln (w zaleznosci od tego czy na koncu linijki jest, np. "120 min" czy "120 pln")
+    ;; aby to zrobic odwraca kolejnosc wyrazow w linijce
+    (dolist (jedna-linijka linijki-tekstu)
+      (let ((linijka-od-tylu (my/odwroc-kolejn-slow-w-linijce jedna-linijka))) ; lista wyrazow w linijce od tylu
+	(cond ((string= (car linijka-od-tylu) "min")
+	       (cl-incf suma-min (string-to-number (cl-second linijka-od-tylu)))) ; dodaje minuty
+	      ((string= (car linijka-od-tylu) "pln")
+	       (cl-incf suma-pln (string-to-number (cl-second linijka-od-tylu))))))) ; dodaje pln-y
+
+    (cl-incf suma-godz (/ suma-min 60.0)) ; zamienia minuty nauki na godziny
+
+    (message "%d min, czyli %.2f godz.\noraz %d pln" suma-min suma-godz suma-pln)))
+
+#+END_SRC
+
+* Org-mode
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! org
+  :bind
+  (:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
+      ("C-'" . nil)
+	("C-c g" . #'my/wstaw-godz-min)
+	("C-c w" . #'my/wiersz-podlicz)
+	("C-c t" . #'my/tydzien-podlicz)))
+  ;; patrz powyzej
+
+#+END_SRC
+* change keyboard layout
+
+#+BEGIN_SRC emacs-lisp
+
+;; swap caps-esc
+;; https://superuser.com/questions/396988/how-to-remap-capslock-to-esc-in-linux-mint-12
+
+;; ustawia uklad klawiatury na polski
+(defun my/keyboard-pol ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap pl") ; klawiatura pl
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
+
+;; ustawia uklad klawiatury na angielski
+(defun my/keyboard-us ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap us") ; klawiatura us
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
+
+#+END_SRC
+
+* Evil and evil-like
+
+(Extensive Vi Layer)
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package! evil
+    :config
+    ;; you can already do tha with SPC-w-v|s|
+    ;(evil-define-key 'normal 'global
+    ;  (kbd "<SPC>v") 'evil-window-vsplit)
+    ;(evil-define-key 'normal 'global
+    ;  (kbd "<SPC>s") 'evil-window-split)
+    ;; you can already do tha with SPC-f-s
+    ;(evil-define-key 'normal 'global
+    ;  (kbd "<SPC>w") 'evil-write)
+  )
+
+#+END_SRC
+
+* Nawiasy
+
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode 1) ; autoparied brackets
+#+END_SRC
+
+* Workspaces
+
+Z dokumnetacji doom-a: https://docs.doomemacs.org/latest/modules/ui/workspaces/
+
+| Command                        | key / ex command     | description                                                |
+|--------------------------------+----------------------+------------------------------------------------------------|
+| workspace/new                  | SPC TAB n            | Create a new, blank workspace                              |
+| workspace/display              | SPC TAB TAB          | Display open workspaces in the mode-line                   |
+| workspace/load                 | SPC TAB l            | Load a saved workspace into the current session            |
+| workspace/restore-last-session | SPC TAB R            | Restore last session                                       |
+| workspace/rename               | SPC TAB r            | Rename the current workspace                               |
+| workspace/save                 | SPC TAB s            | Save the current workspace to a file                       |
+| workspace/switch-to            | SPC TAB .            | Switch to an open workspace                                |
+| workspace/other                | SPC TAB `            | Switch to last workspace                                   |
+| workspace/switch-left          | SPC TAB [ / [ w / gT | Switch to previous workspace                               |
+| workspace/switch-right         | SPC TAB ] / ] w / gt | Switch to next workspace                                   |
+| workspace/delete               | SPC TAB d            | Delete the current workspace                               |
+| workspace/kill-session         | SPC TAB x / :sclear  | Clears the current session (kills all windows and buffers) |
+
+Mozna tez uzyc M-{1|2|3} aby isc do okreslonej workspace
+
+* Iedit
+
+(zamiana wszystkich wystapien slowa przy pomocy C-;)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! iedit
+  :ensure t
+  :defer t
+  :diminish iedit-mode
+  :bind
+  ("C-;" . iedit-mode))
+
+#+END_SRC
+
+* Avy
+
+wyszukuje litere na ekranie i do niej skacze
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! avy
+  :ensure t
+  :defer t
+  :diminish avy-mode
+  :bind
+  ("C-'" . avy-goto-char-2)
+  ("C-c C-'" . avy-goto-char))
+
+#+END_SRC
+
+* Crux
+
+(otwieranie pliku z powiazanej aplikacji systemowej)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! crux
+  :ensure t
+  :defer t
+  :diminish crux-mode
+  :bind
+  ;; przydatne, po najechaniu na plik w Dired-zie
+  ;; mozna go otworzyc w aplikacji systemowej (np. LibreOffice Calc)
+  (("C-c o" . crux-open-with)))
+
+#+END_SRC
+
+* Kill-other-buffers
+
+Do zabicia pozostalych buforow (oprocz tego w ktorym aktualnie jestesmy)
+
+Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
+
+#+BEGIN_SRC emacs-lisp
+
+(defun kill-other-buffers ()
+  (interactive)
+    (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
+
+#+END_SRC
+
+* Relatywne numerowanie linii
+
+#+BEGIN_SRC emacs-lisp
+
+(setq display-line-numbers-type 'relative)
+
+#+END_SRC
+
+* Dired
+
+(Directory Editor)
+
+#+BEGIN_SRC emacs-lisp
+
+;; kopiowanie nazwy pliku/sciezki do schowka
+(defun my-put-file-name-on-clipboard ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region
+	 (point-min) (point-max)))
+      (message filename))))
+
+;;; dired jest domyslnie wbudowany w Emacs-a
+;;; wiec nie trzeba go sciagac, ladowac, itd.
+(use-package! dired
+  ;; wcisniecie "(" powoduje wlaczenie/wylaczenie domyslnego wyswietlania
+  ;; tj. wyswietlenie dodatkowych informacji
+  :bind
+  (:map dired-mode-map
+	("\y" . #'my-put-file-name-on-clipboard))
+  :config
+  ;; kopiowanie plikow miedzy 2 oknami z dired-em
+  (setq dired-dwim-target t))
+
+#+END_SRC
+
+* pdf-tools
+
+(lepsze przegladanie pdf-ow)
+
+Wymaga (instalacja z terminala):
+- both gcc and g++
+- make
+- automake
+- autoconf
+- libpng-dev
+- zlib1g-dev
+- libpoppler-glib-dev
+- libpoppler-private-dev
+- imagemagick
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! pdf-tools
+  :ensure t
+  :diminish pdf-tools-mode
+  ;; wylaczenie nlinum moda w pdf-toolsie
+  ;; inaczej 'dusi' Emacs-a
+  :init
+  (add-hook 'pdf-tools-setup-hook (lambda ()
+				    (nlinum-relative-mode -1)))
+  :config
+  ;; initialise
+  (pdf-tools-install)
+  ;; open pdfs scaled to fit page
+  (setq-default pdf-view-display-size 'fit-page)
+  ;; automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t))
+
+#+END_SRC
