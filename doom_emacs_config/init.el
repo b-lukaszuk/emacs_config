@@ -187,5 +187,5 @@
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       literate
+       literate ; required for setup from config.org to work properly
        (default +bindings +smartparens))
