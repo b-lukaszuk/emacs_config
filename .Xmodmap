@@ -1,0 +1,8 @@
+! domyslna lokalizacja pliku ~/
+! nieaktualne odkad mam progamowalna klawiature ergodox
+remove Lock = Caps_Lock
+remove Control = Escape
+keysym Escape = Caps_Lock
+keysym Caps_Lock = Escape
+add Lock = Caps_Lock
+add Control = Escape
