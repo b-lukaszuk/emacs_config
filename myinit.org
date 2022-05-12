@@ -412,13 +412,13 @@ wyszukuje litere na ekranie i do niej skacze
     ;; set leader key in normal state
     (evil-set-leader 'normal (kbd "SPC"))
     (evil-define-key 'normal 'global
-      (kbd "<leader>v") 'evil-window-vsplit)
+      (kbd "<leader>wv") 'evil-window-vsplit)
     (evil-define-key 'normal 'global
-      (kbd "<leader>s") 'evil-window-split)
+      (kbd "<leader>ws") 'evil-window-split)
     (evil-define-key 'normal 'global
-      (kbd "<leader>w") 'evil-write)
+      (kbd "<leader>fs") 'evil-write)
     (evil-define-key 'normal 'global
-      (kbd "<leader>q") 'delete-window)
+      (kbd "<leader>wq") 'delete-window)
     (evil-define-key 'normal 'global
       (kbd "<leader>nt") 'neotree-dir)
     (evil-define-key 'normal 'global
