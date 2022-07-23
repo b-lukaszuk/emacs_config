@@ -1200,7 +1200,7 @@ wymaga: prettier (~npm install -g prettier~)
   :pin melpa
   :defer t
   :diminish prettier-js-mode
-  :after (:any rjsx-mode tide)
+  :after (:any rjsx-mode tide-mode)
   :hook ((rjsx-mode . prettier-js-mode)
          (tide-mode . prettier-js-mode))
   :config
