@@ -1161,38 +1161,31 @@ Wymaga:
 
 #+BEGIN_SRC emacs-lisp
 
-(defun setup-tide-mode()
-  "setup function for tide."
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (tide-hl-indentifier-mode +1)
-  (company-mode +1))
+  (use-package tide
+    :ensure t
+    :diminish tide-mode
+    :after (typescript-mode company flycheck)
+    :hook ((typescript-mode . tide-setup)
+           (typescript-mode . tide-hl-identifier-mode))
+    :config
+    (setq company-tooltip-align-annotations t)
+    :bind
+    ;; uzywanie napisanej przeze mnie funkcji
+    ;; my/plik-to-node (patrz wyzej)
+    (:map tide-mode-map
+          ("C-c n" . #'my/plik-to-node)
+          ("C-c C-n" . #'my/plik-i-args-to-node)
+          ("C-c e" . #'my/create-etags)
+          ("C-c t" . #'my/plik-to-tsc)
+          ("C-c C-t" . #'my/js-version-of-ts-to-node)))
 
-(use-package tide
-  :ensure t
-  :diminish tide-mode
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save))
-  :bind
-  ;; uzywanie napisanej przeze mnie funkcji
-  ;; my/plik-to-node (patrz wyzej)
-  (:map tide-mode-map
-	("C-c n" . #'my/plik-to-node)
-	("C-c C-n" . #'my/plik-i-args-to-node)
-	("C-c e" . #'my/create-etags)
-	("C-c t" . #'my/plik-to-tsc)
-	("C-c C-t" . #'my/js-version-of-ts-to-node)))
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . typescript-mode))
 
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
-
-(add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
+  (add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
 
 #+END_SRC
 
@@ -1208,7 +1201,14 @@ wymaga: prettier (~npm install -g prettier~)
   :defer t
   :diminish prettier-js-mode
   :after (:any rjsx-mode tide)
-  :hook ((rjsx-mode . prettier-js-mode)))
+  :hook ((rjsx-mode . prettier-js-mode)
+         (tide-mode . prettier-js-mode))
+  :config
+  (setq
+   prettier-js-args
+   '("--single-quote" "true"
+     "--print-width" "120"))
+  )
 
 #+END_SRC
 
