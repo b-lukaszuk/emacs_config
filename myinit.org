@@ -1218,11 +1218,8 @@ Podswietlanie tekstu powyzej 80 kolumny
 
 #+BEGIN_SRC emacs-lisp
 
-(setq-default
- whitespace-line-column 80
- whitespace-style       '(face lines-tail))
-
-(add-hook 'prog-mode-hook #'whitespace-mode)
+  (global-display-fill-column-indicator-mode 1)
+  ; M-x customize-variable RET fill-column
 
 #+END_SRC
 
