@@ -360,18 +360,7 @@ wyszukuje litere na ekranie i do niej skacze
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package autopair
-  :ensure t
-  :pin melpa-stable
-  :defer t
-  :diminish autopair-mode
-  ;; wylaczenie parowania nawiasow w minibuforze
-  :init
-  (add-hook 'minibuffer-setup-hook (lambda ()
-			      (autopair-mode -1)))
-  :config
-  (autopair-global-mode)
-  :hook (prog-mode . autopair-mode))
+(electric-pair-mode 1) ; autoparied brackets
 
 (use-package paredit
   :ensure t
@@ -412,7 +401,7 @@ wyszukuje litere na ekranie i do niej skacze
     ;; set leader key in normal state
     (evil-set-leader 'normal (kbd "SPC"))
     (evil-define-key 'normal 'global
-      (kbd "<leader>wv") 'evil-window-vsplit)
+       (kbd "<leader>wv") 'evil-window-vsplit)
     (evil-define-key 'normal 'global
       (kbd "<leader>ws") 'evil-window-split)
     (evil-define-key 'normal 'global
@@ -424,12 +413,12 @@ wyszukuje litere na ekranie i do niej skacze
     (evil-define-key 'normal 'global
       (kbd "<leader>ff") 'helm-find-files)
     (evil-define-key 'normal 'global
-      (kbd "<leader>d") 'dired)
-    ;; Use visual line motions even outside of visual-line-mode buffers
+    (kbd "<leader>d") 'dired)    ;; Use visual line motions even outside of visual-line-mode buffers
     (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+    (define-key evil-normal-state-map (kbd "<leader>ff") 'helm-find-files)
+    (define-key evil-normal-state-map (kbd "<leader>d") 'dired)
     (add-hook 'haskell-mode-hook (lambda () (setq evil-auto-indent nil)))
-    (add-hook 'python-mode-hook (lambda () (setq evil-auto-indent nil)))
   )
 
   ;; vim-like keybindings everywhere in emacs
@@ -722,11 +711,10 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
   :bind
   (("C-x g" . magit-status)))
 
-(use-package evil-magit
-  :ensure t
-  :pin melpa-stable
-  :after magit
-  :diminish evil-magit-mode)
+; (use-package evil-magit
+;   :ensure t
+;   :after magit
+;   :diminish evil-magit-mode)
 
 #+END_SRC
 
@@ -778,12 +766,14 @@ otwiera repl-a haskella i laduje do niego aktualny plik
   :hook haskell-mode
   :bind
   (:map haskell-interactive-mode-map
+	("C-c C-k" . nil)
 	("C-c M-o" . #'haskell-interactive-mode-clear)))
 
 ;; below haskell autocompletion
 (use-package company-ghci
   :pin melpa
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (push 'company-ghci company-backends)
 (add-hook 'haskell-mode-hook 'company-mode)
@@ -879,26 +869,28 @@ Wymaga:
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package company
-  :ensure t
-  :pin melpa-stable
-  :diminish company-mode
-  :bind (("C-c k" . company-complete)
-         :map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ("<return>" . company-complete-selection)
-         ("<escape>" . company-abort))
-  :config
-  (global-company-mode t)
-  (setq company-idle-delay 0.1)
-  (setq company-minimum-prefix-length 3)
-  (setq company-auto-complete t)
-  (setq company-show-numbers t)
-  (setq company-quickhelp-mode 1)
-  (setq company-quickhelp-mode 0.2)
-  ;; aby sugestie byly case-sensitive
-  (setq company-dabbrev-downcase nil))
+    (use-package company
+      :ensure t
+      :pin melpa-stable
+      :diminish company-mode
+      :bind (("C-c k" . company-complete)
+             :map company-active-map
+             ("C-n" . company-select-next)
+             ("C-p" . company-select-previous)
+             ("<return>" . company-complete-selection)
+             ("<escape>" . company-abort))
+  :hook (scala-mode . company-mode)
+      :config
+      (global-company-mode t)
+(setq lsp-completion-provider :capf)
+      (setq company-idle-delay 0.1)
+      (setq company-minimum-prefix-length 3)
+      (setq company-auto-complete t)
+      (setq company-show-numbers t)
+      (setq company-quickhelp-mode 1)
+      (setq company-quickhelp-mode 0.2)
+      ;; aby sugestie byly case-sensitive
+      (setq company-dabbrev-downcase nil))
 
 #+END_SRC
 
@@ -949,10 +941,10 @@ Chyba tego nie uzywam
 
 #+BEGIN_SRC emacs-lisp
 
-;(use-package eglot
-;  :ensure t
-;  :pin melpa
-;  :defer t)
+  ;(use-package eglot
+  ; :ensure t
+  ; :pin melpa
+  ; :defer t)
 
 #+END_SRC
 
@@ -1161,31 +1153,31 @@ Wymaga:
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package tide
-    :ensure t
-    :diminish tide-mode
-    :after (typescript-mode company flycheck)
-    :hook ((typescript-mode . tide-setup)
-           (typescript-mode . tide-hl-identifier-mode))
-    :config
-    (setq company-tooltip-align-annotations t)
-    :bind
-    ;; uzywanie napisanej przeze mnie funkcji
-    ;; my/plik-to-node (patrz wyzej)
-    (:map tide-mode-map
-          ("C-c n" . #'my/plik-to-node)
-          ("C-c C-n" . #'my/plik-i-args-to-node)
-          ("C-c e" . #'my/create-etags)
-          ("C-c t" . #'my/plik-to-tsc)
-          ("C-c C-t" . #'my/js-version-of-ts-to-node)))
+    (use-package tide
+      :ensure t
+      :diminish tide-mode
+      :after (typescript-mode company flycheck)
+      :hook ((typescript-mode . tide-setup)
+             (typescript-mode . tide-hl-identifier-mode))
+      :config
+      (setq company-tooltip-align-annotations t)
+      :bind
+      ;; uzywanie napisanej przeze mnie funkcji
+      ;; my/plik-to-node (patrz wyzej)
+      (:map tide-mode-map
+            ("C-c n" . #'my/plik-to-node)
+            ("C-c C-n" . #'my/plik-i-args-to-node)
+            ("C-c e" . #'my/create-etags)
+            ("C-c t" . #'my/plik-to-tsc)
+            ("C-c C-t" . #'my/js-version-of-ts-to-node)))
 
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
-  (add-to-list 'auto-mode-alist '("\\.json\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.json\\'" . typescript-mode))
 
-  (add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
+    (add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
 
 #+END_SRC
 
@@ -1213,8 +1205,6 @@ wymaga: prettier (~npm install -g prettier~)
 #+END_SRC
 
 * Zasada 80 kolumny
-
-Podswietlanie tekstu powyzej 80 kolumny
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1262,13 +1252,15 @@ Podswietlanie tekstu powyzej 80 kolumny
 (defun my/keyboard-pol ()
   (interactive) ; do wywolania przez M-x
   (shell-command "setxkbmap pl") ; klawiatura pl
-  (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
 
 ;; ustawia uklad klawiatury na angielski
 (defun my/keyboard-us ()
   (interactive) ; do wywolania przez M-x
   (shell-command "setxkbmap us") ; klawiatura us
-  (shell-command "xmodmap ~/.Xmodmap")) ;; swap Caps-Esc
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
 
 #+END_SRC
 * which-key
@@ -1409,13 +1401,14 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  ; :hook ((lsp-mode . lsp-enable-which-key-integration))
   :config
-  (lsp-enable-which-key-integration)
+  (lsp-enable-which-key-integration t)
   ;;(setq lsp-completion-enable-additional-text-edit nil)
   :diminish lsp-mode)
 
-(setq company-lsp-cache-candidates nil)
+;(setq company-lsp-cache-candidates nil)
+;(setq lsp-enable-links nil)
 
 #+END_SRC
 
@@ -1427,11 +1420,64 @@ Programming languages working with Language Server Protocol
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package lsp-java
-  :pin melpa-stable
-  :ensure t
-  :config
-  (add-hook 'java-mode-hook 'lsp)
-  :diminish lsp-java)
+;(use-package lsp-java
+;  :pin melpa-stable
+;  :ensure t
+;  :config
+;  (add-hook 'java-mode-hook 'lsp)
+;  :diminish lsp-java)
+
+#+END_SRC
+
+** Scala
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; most of the config based on:
+  ;; https://scalameta.org/metals/docs/editors/emacs/
+  ;; with my modifications
+
+  ;; after installation open  *.scala file to make sure it works
+  ;; and run M-x lsp-metals-doctor-run to troubleshoot potential configuration problems
+  ;; useful: M-x lsp-format-buffer
+
+  (setq lsp-metals-coursier-store-path
+        (substitute-in-file-name "~/.local/share/coursier/bin/coursier"))
+  (setq lsp-metals-metals-store-path
+        (substitute-in-file-name "~/.local/share/coursier/bin/metals"))
+  (setq lsp-metals-scalafmt-config-path
+        (substitute-in-file-name "~/.local/share/coursier/bin/.scalafmt.conf"))
+
+  ;; syntax coloring
+  (use-package scala-mode
+    :mode "\\.s\\(cala\\|bt\\)$"
+    :interpreter ("scala" . scala-mode)
+    )
+
+  (use-package sbt-mode
+    :commands sbt-start sbt-command
+    :custom
+    (sbt:default-command "testQuick")
+    :config
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map)
+    ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+    (setq sbt:program-options '("-Dsbt.supershell=false"))
+    )
+
+  (use-package lsp-mode
+    ;; Optional - enable lsp-mode automatically in scala files
+    :hook
+    (scala-mode . lsp)
+    (lsp-mode . lsp-lens-mode)
+    :config (setq lsp-prefer-flymake nil))
+
+  (use-package lsp-metals)
+
+  (use-package lsp-ui) ;; this is necessary to get info about compilation
 
 #+END_SRC
