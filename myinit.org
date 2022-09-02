@@ -56,6 +56,8 @@
 
 * User Interface
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
   (defun disable-all-themes ()
     "disable all active themes."
@@ -104,6 +106,8 @@
 
 * Default Text Scale
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 Domyslne C-x C-+, lub C-x C-- zmienia rozmiar czcionki tylko dla jedego buforu
 ten minor mode dziala dla wszystkich buforow.
 
@@ -124,6 +128,8 @@ Skroty zapewniane przez ten mod: C-M-= oraz C-M--
 
 * Diminish
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 potrzebny do dzialania keyword-a
 :diminish
 w use-package (nie wysietla nazwy minor moda na pasku)
@@ -137,6 +143,8 @@ w use-package (nie wysietla nazwy minor moda na pasku)
 #+END_SRC
 
 * Cl Lib
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (kompatybilnosc z common-lisp)
 
@@ -154,7 +162,13 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 #+END_SRC
 
 * Utility Functions
+
+[[#table-of-contents][Go to: Table of Contents]]
+
 ** Time Measurement
+
+[[#table-of-contents][Go to: Table of Contents]]
+
 *** Wstaw-godz:min
 
 (wstawia aktualny czas w formacie "HH:MM")
@@ -329,6 +343,8 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 ** Remove trailing whitespaces and tabs
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (defun my/trim-trailing-whitespace-chars (tekst)
@@ -356,6 +372,8 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 ** Kill Other Buffers
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 Do zabicia pozostalych buforow (oprocz tego w ktorym aktualnie jestesmy)
 
 Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
@@ -369,6 +387,8 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 #+END_SRC
 
 ** Change Keyboard Language
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 #+BEGIN_SRC emacs-lisp
 
@@ -392,6 +412,8 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 #+END_SRC
 ** Eshell Clear Command
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (defun my/eshell-clear ()
@@ -407,6 +429,8 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 #+END_SRC
 
 ** Etags
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Tworzy plik TAGS (komenda bashowa etags)
 umozliwiajacy skakanie do definicji (funkcji, metod, klas)
@@ -433,6 +457,8 @@ miedzy plikami w folderze i jego podfolderach
 
 * Org Mode
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package org
@@ -451,6 +477,8 @@ miedzy plikami w folderze i jego podfolderach
 
 * Iedit
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (zamiana wszystkich wystapien slowa przy pomocy C-;)
 
 #+BEGIN_SRC emacs-lisp
@@ -466,6 +494,8 @@ miedzy plikami w folderze i jego podfolderach
 #+END_SRC
 
 * Avy
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 wyszukuje litere na ekranie i do niej skacze
 
@@ -483,6 +513,8 @@ wyszukuje litere na ekranie i do niej skacze
 #+END_SRC
 
 * Parenthesis and Brackets
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (zamykanie, podswietlanie pasujacych nawiasow)
 
@@ -505,6 +537,8 @@ wyszukuje litere na ekranie i do niej skacze
 #+END_SRC
 
 * Evil and Evil Like
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (Extensive Vi Layer)
 
@@ -582,6 +616,8 @@ wyszukuje litere na ekranie i do niej skacze
 
 * Window Numbering
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 Dzieki temu mamy wygodniejsze przechodzenie miedzy oknami.
 
 (M-nr_okna), np. M-1, M-2\\
@@ -600,6 +636,8 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 * Nlinum Relative
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package nlinum-relative
@@ -611,6 +649,8 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 #+END_SRC
 
 * Helm
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (lepsze nawigowanie, wyszukiwanie plikow, itd.)
 
@@ -635,6 +675,8 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 * Crux
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (otwieranie pliku z powiazanej aplikacji systemowej)
 
 #+BEGIN_SRC emacs-lisp
@@ -652,6 +694,8 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 #+END_SRC
 
 * ESS
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (emacs speaks statistics)
 
@@ -675,6 +719,8 @@ Wymaga:
 #+END_SRC
 
 * Python
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Bedac w pliku *.py -> M-x run-python
 
@@ -764,6 +810,8 @@ Wymaga:
 
 * EIN
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (Emacs IPython Notebook)
 
 [[https://jupyter.org/][Jupyter notebook]] w Emacsi-e (w trybie tekstowym, mostly)
@@ -793,6 +841,8 @@ Wymaga:
 
 * Zoom Window
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (Tmux-like window-zooming)
 
 #+BEGIN_SRC emacs-lisp
@@ -807,6 +857,8 @@ Wymaga:
 #+END_SRC
 
 * Magit
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wymaga:
 - [[https://git-scm.com/][Git]]
@@ -834,6 +886,8 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
 
 * Neotree
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 ~F8~ - wswietla panel po lewej stronie
 
 W tym panelu jest struktura (tree) danego katalogu
@@ -855,6 +909,8 @@ zamykanie panelu ~q~
 #+END_SRC
 
 * Haskell
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wymaga:
 - [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
@@ -898,6 +954,8 @@ otwiera repl-a haskella i laduje do niego aktualny plik
 
 * Slime
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (Superior Lisp Interaction Mode for Emacs)
 
 Wymaga:
@@ -919,6 +977,8 @@ Wymaga:
 #+END_SRC
 
 * Dired
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (Directory Editor)
 
@@ -959,6 +1019,8 @@ Wymaga:
 
 * Auto Complete
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (autouzupelnianie)
 
 #+BEGIN_SRC emacs-lisp
@@ -978,6 +1040,8 @@ Wymaga:
 #+END_SRC
 
 * Company
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (autouzupelnianie)
 
@@ -1010,6 +1074,8 @@ Wymaga:
 
 * Snippets
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 kawalki kodu dla szybszego pisania for-ow, definicji funkcji, klas, itd.
 
 dziala z roznymi jezykami programowania
@@ -1033,6 +1099,8 @@ dziala z roznymi jezykami programowania
 
 * Origami
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (Zwijanie kodu)
 
 #+BEGIN_SRC emacs-lisp
@@ -1047,6 +1115,8 @@ dziala z roznymi jezykami programowania
 #+END_SRC
 
 * Eglot
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (Emacs polyglot, np. do Pythona)
 
@@ -1063,6 +1133,8 @@ Chyba tego nie uzywam
 #+END_SRC
 
 * Rainbow Delimiters
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Ten sam poziom nawiasow ma ten sam kolor
 
@@ -1082,6 +1154,8 @@ Kolory sa subtelne
 
 #+END_SRC
 * Highlight Indent Guides
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
 
@@ -1103,6 +1177,8 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
 
 #+END_SRC
 * PDF Tools
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 (lepsze przegladanie pdf-ow)
 
@@ -1139,6 +1215,8 @@ Wymaga (instalacja z terminala):
 #+END_SRC
 * Emacs Code Browser
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 (Emacs Code Browser)
 
 #+BEGIN_SRC emacs-lisp
@@ -1152,6 +1230,8 @@ Wymaga (instalacja z terminala):
 #+END_SRC
 
 * Paste Text from Clipboard to Minibuffer
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wymaga:
 - xsel (instalacja z terminala)
@@ -1172,6 +1252,8 @@ Wklejanie za pomoca M-y
 #+END_SRC
 
 * JavaScript and TypeScript
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wciaz nie dziala tak jak bym tego chcial
 
@@ -1320,6 +1402,8 @@ wymaga: prettier (~npm install -g prettier~)
 
 * Web Mode
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package web-mode
@@ -1336,6 +1420,8 @@ wymaga: prettier (~npm install -g prettier~)
 
 * Emmet Mode
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package emmet-mode
@@ -1346,6 +1432,8 @@ wymaga: prettier (~npm install -g prettier~)
 
 #+END_SRC
 * Which Key
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
@@ -1362,6 +1450,8 @@ pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 #+END_SRC
 
 * Emacs X Window Manager
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Experyment
 
@@ -1388,6 +1478,8 @@ Na razie wykomentowane wole i3wm, spectrwm
 
 * Autosave Files
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 ; do odpalenia przy uzywaniu reacta
@@ -1397,6 +1489,8 @@ Na razie wykomentowane wole i3wm, spectrwm
 
 #+END_SRC
 * Command Log Mode
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 Wyswietla w bocznym buforze
 nacisniete klawisze i funkcje z nimi powiazane
@@ -1415,6 +1509,8 @@ nacisniete klawisze i funkcje z nimi powiazane
 
 * Dumb Jump
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 Skakanie do definicji funkcji, itd
 
 #+BEGIN_SRC emacs-lisp
@@ -1427,6 +1523,8 @@ Skakanie do definicji funkcji, itd
 #+END_SRC
 
 * Language servers
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 LSP - [[https://microsoft.github.io/language-server-protocol/][Language Server Protocol]]
 
@@ -1455,9 +1553,13 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
 
 * Programming Languages
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 Programming languages working with Language Server Protocol
 
 ** Java
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1471,6 +1573,8 @@ Programming languages working with Language Server Protocol
 #+END_SRC
 
 ** Scala
+
+[[#table-of-contents][Go to: Table of Contents]]
 
 #+BEGIN_SRC emacs-lisp
 
