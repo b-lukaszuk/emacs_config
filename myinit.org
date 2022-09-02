@@ -3,23 +3,57 @@
 #+STARTUP: indent
 #+OPTIONS: \n: t
 
-* Table of Contents (only some headings) :toc:
-- [[#wyglad-interfejsu][Wyglad Interfejsu]]
+* Table of Contents :toc:
+- [[#user-interface][User Interface]]
+- [[#default-text-scale][Default text scale]]
+- [[#diminish][Diminish]]
+- [[#cl-lib][Cl lib]]
+- [[#utility-functions][Utility Functions]]
++ [[#time-measurement][Time Measurement]]
++ [[#remove-trailing-whitespaces-and-tabs][Remove Trailing Whitespaces and Tabs]]
++ [[#kill-other-buffers][Kill Other Buffers]]
++ [[#paste-text-from-clipboard-to-minibuffer][Paste Text from Clipboard to Minibuffer]]
++ [[#change-keyboard-language][Change Keyboard Language]]
++ [[#etags][Etags]]
+- [[#org-mode][Org mode]]
 - [[#iedit][Iedit]]
 - [[#avy][Avy]]
+- [[#parenthesis-and-brackets][Parenthesis and Brackets]]
 - [[#evil-and-evil-like][Evil and Evil like]]
+- [[#window-numbering][Window Numbering]]
+- [[#nlinum-relative][Nlinum Relative]]
 - [[#helm][Helm]]
+- [[#crux][Crux]]
 - [[#ess][ESS]]
 - [[#python][Python]]
 - [[#ein][EIN]]
+- [[#zoom-window][Zoom Window]]
+- [[#magit][Magit]]
+- [[#neotree][Neotree]]
+- [[#haskell][Haskell]]
+- [[#slime][Slime]]
 - [[#dired][Dired]]
+- [[#auto-complete][Auto Complete]]
 - [[#company][Company]]
 - [[#snippets][Snippets]]
-- [[#javascript][JS/TS]]
+- [[#origami][Origami]]
+- [[#eglot][Eglot]]
+- [[#rainbow-delimiters][Rainbow Delimiters]]
+- [[#highlight-indent-guides][Highlight Indent Guides]]
+- [[#pdf-tools][PDF Tools]]
+- [[#emacs-code-browser][Emacs Code Browser]]
+- [[#javascript-and-typescript][JS/TS]]
+- [[#web-mode][Web Mode]]
+- [[#emmet-mode][Emmet Mode]]
+- [[#which-key][Which Key]]
+- [[#emacs-x-window-manager][Emacs X Window Manager]]
+- [[#autosave-files][Autosave Files]]
+- [[#command-log-mode][Command Log Mode]]
+- [[#dumb-jump][Dumb Jump]]
 - [[#language-servers][Language Servers]]
 - [[#scala][Scala]]
 
-* Wyglad interfejsu
+* User Interface
 
 #+BEGIN_SRC emacs-lisp
   (defun disable-all-themes ()
@@ -56,20 +90,18 @@
   ;; stop emacs from creating backup files
   (setq make-backup-files nil)
 
-  ;(use-package doom-modeline
-  ;  :ensure t
-  ;  :pin melpa-stable
-  ;  :init (doom-modeline-mode 1)
-  ;  :custom ((doom-modeline-height 10)))
+  ;; usuwanie duplikatow z historii komend
+  (setq history-delete-duplicates t)
 
-;; usuwanie duplikatow z historii komend
-(setq history-delete-duplicates t)
+  ;; zasada 80 kolumny
+  (global-display-fill-column-indicator-mode 1)
+  ; M-x customize-variable RET fill-column
 
 #+END_SRC
 
 #+RESULTS:
 
-* Default-text-scale
+* Default Text Scale
 
 Domyslne C-x C-+, lub C-x C-- zmienia rozmiar czcionki tylko dla jedego buforu
 ten minor mode dziala dla wszystkich buforow.
@@ -103,7 +135,7 @@ w use-package (nie wysietla nazwy minor moda na pasku)
 
 #+END_SRC
 
-* cl-lib
+* Cl Lib
 
 (kompatybilnosc z common-lisp)
 
@@ -120,7 +152,9 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 
 #+END_SRC
 
-* Wstaw-godz:min
+* Utility Functions
+** Time Measurement
+*** Wstaw-godz:min
 
 (wstawia aktualny czas w formacie "HH:MM")
 
@@ -143,7 +177,7 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 
 #+END_SRC
 
-* Podlicz wiersz
+*** Podlicz wiersz
 
 oblicza ile minut (np. nauki niemieckiego jest w wierszu), tj.
 zamienia wiersz w stylu:
@@ -239,7 +273,7 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
 
 #+END_SRC
 
-* Podlicz tydzien
+*** Podlicz tydzien
 
 podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zaznaczonego tekstu
 
@@ -292,7 +326,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* usun trailing whitespaces i tabs
+** Remove trailing whitespaces and tabs
 
 #+BEGIN_SRC emacs-lisp
 
@@ -319,7 +353,84 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
-* Org-mode
+** Kill Other Buffers
+
+Do zabicia pozostalych buforow (oprocz tego w ktorym aktualnie jestesmy)
+
+Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
+
+#+BEGIN_SRC emacs-lisp
+
+(defun kill-other-buffers ()
+  (interactive)
+    (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
+
+#+END_SRC
+
+** Change Keyboard Language
+
+#+BEGIN_SRC emacs-lisp
+
+;; swap caps-esc
+;; https://superuser.com/questions/396988/how-to-remap-capslock-to-esc-in-linux-mint-12
+
+;; ustawia uklad klawiatury na polski
+(defun my/keyboard-pol ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap pl") ; klawiatura pl
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
+
+;; ustawia uklad klawiatury na angielski
+(defun my/keyboard-us ()
+  (interactive) ; do wywolania przez M-x
+  (shell-command "setxkbmap us") ; klawiatura us
+  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
+)
+
+#+END_SRC
+** Eshell Clear Command
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/eshell-clear ()
+  "czysci bufor eshell-a"
+  (interactive)
+  (eshell/clear 1))
+
+(add-hook 'eshell-mode-hook
+	  (lambda ()
+	    (define-key
+	      eshell-mode-map (kbd "C-c M-o") #'my/eshell-clear)))
+
+#+END_SRC
+
+** Etags
+
+Tworzy plik TAGS (komenda bashowa etags)
+umozliwiajacy skakanie do definicji (funkcji, metod, klas)
+miedzy plikami w folderze i jego podfolderach
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/create-etags ()
+  "
+    tworzy etagsy dla wszystkich plikow
+    z rozszerzeniem nazwy aktualnie edytowanego pliku.
+    punkt wyjscia to folder aktualnie edytowanego pliku.
+    uwzglednia pliki z tym rozszerzeniem w podfolderach.
+  "
+  (interactive) ; do wywolania przez M-x
+  (message (format "stworzono etags-y"))
+  (shell-command-to-string
+   (format
+    "find . -name \"*.%s\" -print | xargs etags --append"
+    (car (last
+	  (split-string buffer-file-name "\\."))))))
+
+#+END_SRC
+
+* Org Mode
 
 #+BEGIN_SRC emacs-lisp
 
@@ -370,7 +481,7 @@ wyszukuje litere na ekranie i do niej skacze
 
 #+END_SRC
 
-* Nawiasy
+* Parenthesis and Brackets
 
 (zamykanie, podswietlanie pasujacych nawiasow)
 
@@ -392,7 +503,7 @@ wyszukuje litere na ekranie i do niej skacze
 
 #+END_SRC
 
-* Evil and evil like
+* Evil and Evil Like
 
 (Extensive Vi Layer)
 
@@ -468,7 +579,7 @@ wyszukuje litere na ekranie i do niej skacze
 
 #+END_SRC
 
-* Numerowanie okien
+* Window Numbering
 
 Dzieki temu mamy wygodniejsze przechodzenie miedzy oknami.
 
@@ -486,7 +597,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 #+END_SRC
 
-* Relatywne numerowanie linii
+* Nlinum Relative
 
 #+BEGIN_SRC emacs-lisp
 
@@ -679,7 +790,7 @@ Wymaga:
 
 #+END_SRC
 
-* Zoom-window
+* Zoom Window
 
 (Tmux-like window-zooming)
 
@@ -691,20 +802,6 @@ Wymaga:
   :diminish zoom-window-mode
   :bind
   (("C-x C-z" . zoom-window-zoom)))
-
-#+END_SRC
-
-* Kill-other-buffers
-
-Do zabicia pozostalych buforow (oprocz tego w ktorym aktualnie jestesmy)
-
-Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
-
-#+BEGIN_SRC emacs-lisp
-
-(defun kill-other-buffers ()
-  (interactive)
-    (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
 #+END_SRC
 
@@ -798,7 +895,7 @@ otwiera repl-a haskella i laduje do niego aktualny plik
 
 #+END_SRC
 
-* SLIME
+* Slime
 
 (Superior Lisp Interaction Mode for Emacs)
 
@@ -859,7 +956,7 @@ Wymaga:
 
 #+END_SRC
 
-* Auto-complete
+* Auto Complete
 
 (autouzupelnianie)
 
@@ -964,7 +1061,7 @@ Chyba tego nie uzywam
 
 #+END_SRC
 
-* Rainbow delimiters
+* Rainbow Delimiters
 
 Ten sam poziom nawiasow ma ten sam kolor
 
@@ -983,7 +1080,7 @@ Kolory sa subtelne
   :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
-* highlight-indent-guides
+* Highlight Indent Guides
 
 Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
 
@@ -1004,7 +1101,7 @@ Wyswietla linie pokazujaca poziom zaglebienia indentacji kodu
   (setq highlight-indent-guides-auto-character-face-perc 50))
 
 #+END_SRC
-* pdf-tools
+* PDF Tools
 
 (lepsze przegladanie pdf-ow)
 
@@ -1039,7 +1136,7 @@ Wymaga (instalacja z terminala):
   (setq pdf-annot-activate-created-annotations t))
 
 #+END_SRC
-* ECB
+* Emacs Code Browser
 
 (Emacs Code Browser)
 
@@ -1053,7 +1150,7 @@ Wymaga (instalacja z terminala):
 
 #+END_SRC
 
-* Wklejanie tekstu ze schowka do minibufora
+* Paste Text from Clipboard to Minibuffer
 
 Wymaga:
 - xsel (instalacja z terminala)
@@ -1073,7 +1170,7 @@ Wklejanie za pomoca M-y
 
 #+END_SRC
 
-* JavaScript
+* JavaScript and TypeScript
 
 Wciaz nie dziala tak jak bym tego chcial
 
@@ -1220,16 +1317,7 @@ wymaga: prettier (~npm install -g prettier~)
 
 #+END_SRC
 
-* Zasada 80 kolumny
-
-#+BEGIN_SRC emacs-lisp
-
-  (global-display-fill-column-indicator-mode 1)
-  ; M-x customize-variable RET fill-column
-
-#+END_SRC
-
-* web-mode
+* Web Mode
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1242,11 +1330,10 @@ wymaga: prettier (~npm install -g prettier~)
 
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
   ;; (setq web-mode-enable-auto-closing t)
-  ;; (setq web-mode-enable-auto-quoting t)
 
 #+END_SRC
 
-* emmet-mode
+* Emmet Mode
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1257,29 +1344,7 @@ wymaga: prettier (~npm install -g prettier~)
   :pin melpa)
 
 #+END_SRC
-* change keyboard layout
-
-#+BEGIN_SRC emacs-lisp
-
-;; swap caps-esc
-;; https://superuser.com/questions/396988/how-to-remap-capslock-to-esc-in-linux-mint-12
-
-;; ustawia uklad klawiatury na polski
-(defun my/keyboard-pol ()
-  (interactive) ; do wywolania przez M-x
-  (shell-command "setxkbmap pl") ; klawiatura pl
-  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
-)
-
-;; ustawia uklad klawiatury na angielski
-(defun my/keyboard-us ()
-  (interactive) ; do wywolania przez M-x
-  (shell-command "setxkbmap us") ; klawiatura us
-  (shell-command "xmodmap ~/.Xmodmap") ; swap Caps-Esc
-)
-
-#+END_SRC
-* which-key
+* Which Key
 
 pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
@@ -1295,23 +1360,7 @@ pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
 #+END_SRC
 
-* eshell (clear command)
-
-#+BEGIN_SRC emacs-lisp
-
-(defun my/eshell-clear ()
-  "czysci bufor eshell-a"
-  (interactive)
-  (eshell/clear 1))
-
-(add-hook 'eshell-mode-hook
-	  (lambda ()
-	    (define-key
-	      eshell-mode-map (kbd "C-c M-o") #'my/eshell-clear)))
-
-#+END_SRC
-
-* EXWM (Emacs X Window Manager)
+* Emacs X Window Manager
 
 Experyment
 
@@ -1336,7 +1385,7 @@ Na razie wykomentowane wole i3wm, spectrwm
 
 #+END_SRC
 
-* autosave files
+* Autosave Files
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1346,7 +1395,7 @@ Na razie wykomentowane wole i3wm, spectrwm
 (setq create-lockfiles nil)
 
 #+END_SRC
-* command-log-mode
+* Command Log Mode
 
 Wyswietla w bocznym buforze
 nacisniete klawisze i funkcje z nimi powiazane
@@ -1363,7 +1412,7 @@ nacisniete klawisze i funkcje z nimi powiazane
 
 #+END_SRC
 
-* dumb-jump
+* Dumb Jump
 
 Skakanie do definicji funkcji, itd
 
@@ -1373,31 +1422,6 @@ Skakanie do definicji funkcji, itd
   :ensure t
   :pin melpa-stable
   :diminish dump-jump-mode)
-
-#+END_SRC
-
-* etags
-
-Tworzy plik TAGS (komenda bashowa etags)
-umozliwiajacy skakanie do definicji (funkcji, metod, klas)
-miedzy plikami w folderze i jego podfolderach
-
-#+BEGIN_SRC emacs-lisp
-
-(defun my/create-etags ()
-  "
-    tworzy etagsy dla wszystkich plikow
-    z rozszerzeniem nazwy aktualnie edytowanego pliku.
-    punkt wyjscia to folder aktualnie edytowanego pliku.
-    uwzglednia pliki z tym rozszerzeniem w podfolderach.
-  "
-  (interactive) ; do wywolania przez M-x
-  (message (format "stworzono etags-y"))
-  (shell-command-to-string
-   (format
-    "find . -name \"*.%s\" -print | xargs etags --append"
-    (car (last
-	  (split-string buffer-file-name "\\."))))))
 
 #+END_SRC
 
