@@ -727,10 +727,10 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
   :bind
   (("C-x g" . magit-status)))
 
-; (use-package evil-magit
-;   :ensure t
-;   :after magit
-;   :diminish evil-magit-mode)
+(use-package evil-magit
+  :ensure t
+  :after magit
+  :diminish evil-magit-mode)
 
 #+END_SRC
 
@@ -1492,7 +1492,8 @@ Programming languages working with Language Server Protocol
     (lsp-mode . lsp-lens-mode)
     :config (setq lsp-prefer-flymake nil))
 
-  (use-package lsp-metals)
+  (use-package lsp-metals
+    :ensure t)
 
   (use-package lsp-ui) ;; this is necessary to get info about compilation
 
