@@ -1047,28 +1047,29 @@ Wymaga:
 
 #+BEGIN_SRC emacs-lisp
 
-    (use-package company
-      :ensure t
-      :pin melpa-stable
-      :diminish company-mode
-      :bind (("C-c k" . company-complete)
-             :map company-active-map
-             ("C-n" . company-select-next)
-             ("C-p" . company-select-previous)
-             ("<return>" . company-complete-selection)
-             ("<escape>" . company-abort))
+(use-package company
+  :ensure t
+  :pin melpa-stable
+  :diminish company-mode
+  :bind (("C-c k" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("<return>" . company-complete-selection)
+         ("<escape>" . company-abort))
   :hook (scala-mode . company-mode)
-      :config
-      (global-company-mode t)
-(setq lsp-completion-provider :capf)
-      (setq company-idle-delay 0.1)
-      (setq company-minimum-prefix-length 3)
-      (setq company-auto-complete t)
-      (setq company-show-numbers t)
-      (setq company-quickhelp-mode 1)
-      (setq company-quickhelp-mode 0.2)
-      ;; aby sugestie byly case-sensitive
-      (setq company-dabbrev-downcase nil))
+  :config
+  (global-company-mode t)
+  (setq lsp-completion-provider :capf)
+  (setq company-idle-delay 0.1)
+  (setq company-minimum-prefix-length 3)
+  (setq company-auto-complete t)
+  (setq company-show-numbers t)
+  (setq company-quickhelp-mode 1)
+  (setq company-quickhelp-mode 0.2)
+  ;; aby sugestie byly case-sensitive
+  (setq company-dabbrev-downcase nil)
+  )
 
 #+END_SRC
 
@@ -1255,14 +1256,7 @@ Wklejanie za pomoca M-y
 
 [[#table-of-contents][Go to: Table of Contents]]
 
-Wciaz nie dziala tak jak bym tego chcial
-
-(w miedzy czasie wypadly z 2 biblioteki/mody z linkow, np. company-tern)
-
-(na razie nie ma zastepstwa) - ok, wywalilem wszystko bede uzywal VS Code
-
-W zwiazku z powyzszym sprobuje czegos innego.
-za: https://www.youtube.com/watch?v=0zuYCEzrchk
+Za: https://www.youtube.com/watch?v=0zuYCEzrchk
 
 ** node-js (moje funkcje)
 
