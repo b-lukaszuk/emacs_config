@@ -877,10 +877,13 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
   :bind
   (("C-x g" . magit-status)))
 
-(use-package evil-magit
-  :ensure t
-  :after magit
-  :diminish evil-magit-mode)
+;; evil-magit was removed from melpa (2021-02-01), it is now part of
+;; evil-collection
+;(use-package evil-magit
+;  :ensure t
+;  :pin melpa
+;  :after magit
+;  :diminish evil-magit-mode)
 
 #+END_SRC
 
