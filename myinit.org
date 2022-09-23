@@ -478,6 +478,8 @@ miedzy plikami w folderze i jego podfolderach
 
 * Org Roam
 
+[[#table-of-contents][Go to: Table of Contents]]
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package org-roam
