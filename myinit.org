@@ -1507,6 +1507,18 @@ Na razie wykomentowane wole i3wm, spectrwm
 (setq create-lockfiles nil)
 
 #+END_SRC
+
+* Autorefresh Buffers
+
+[[#table-of-contents][Go to: Table of Contents]]
+
+#+BEGIN_SRC emacs-lisp
+
+(global-auto-revert-mode t) 
+(setq auto-revert-use-notify nil)
+
+#+END_SRC
+
 * Command Log Mode
 
 [[#table-of-contents][Go to: Table of Contents]]
