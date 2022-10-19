@@ -50,6 +50,7 @@
 - [[#which-key][Which Key]]
 - [[#emacs-x-window-manager][Emacs X Window Manager]]
 - [[#autosave-files][Autosave Files]]
+- [[#autorefresh-buffers][Autorefresh Buffers]]
 - [[#command-log-mode][Command Log Mode]]
 - [[#dumb-jump][Dumb Jump]]
 - [[#language-servers][Language Servers]]
