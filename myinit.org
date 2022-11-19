@@ -45,6 +45,7 @@
 - [[#pdf-tools][PDF Tools]]
 - [[#emacs-code-browser][Emacs Code Browser]]
 - [[#javascript-and-typescript][JS/TS]]
+- [[#Julia][Julia]]
 - [[#web-mode][Web Mode]]
 - [[#emmet-mode][Emmet Mode]]
 - [[#which-key][Which Key]]
@@ -724,6 +725,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 Wymaga:
 - R-a https://www.r-project.org/
+- Julia
 
 #+BEGIN_SRC emacs-lisp
 
@@ -732,6 +734,11 @@ Wymaga:
   :pin melpa-stable
   :defer t
   :diminish ess-mode
+  :mode (
+	 ("\\.jl\\'" . ess-mode)
+	 ("\\.R\\'" . ess-mode)
+	 ("\\.r\\'" . ess-mode)
+	 )
   :init
   ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
   ;; (w pliku *.r i w konsoli)
@@ -1418,6 +1425,23 @@ wymaga: prettier (~npm install -g prettier~)
      "--print-width" "120"))
   )
 
+#+END_SRC
+
+* Julia
+
+experiment, with julia (maybe I will stick with it, or I will abandon it)
+to start open .jl file and type M-x ess-julia-mode
+then you can to with marking code and executing it in REPL
+like with ESS and R, with C-c
+
+#+BEGIN_SRC emacs-lisp
+(use-package julia-mode
+  :ensure t
+  :pin melpa-stable
+  :mode ("\\.jl\\'" . ess-mode)
+  :init
+  (add-hook 'julia-mode-hook 'ess-julia-mode)
+  )
 #+END_SRC
 
 * Web Mode
