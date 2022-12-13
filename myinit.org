@@ -1544,7 +1544,7 @@ Na razie wykomentowane wole i3wm, spectrwm
 
 #+BEGIN_SRC emacs-lisp
 
-(global-auto-revert-mode t) 
+(global-auto-revert-mode t)
 (setq auto-revert-use-notify nil)
 
 #+END_SRC
@@ -1595,20 +1595,26 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
 
 #+BEGIN_SRC emacs-lisp
 
+;; https://ianyepan.github.io/posts/emacs-ide/
+
 (use-package lsp-mode
   :pin melpa-stable
   :ensure t
+  :hook ((scala-mode) . lsp)
+  (lsp-mode . lsp-lens-mode)
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
-  ; :hook ((lsp-mode . lsp-enable-which-key-integration))
   :config
   (lsp-enable-which-key-integration t)
+  (setq lsp-prefer-flymake nil)
   ;;(setq lsp-completion-enable-additional-text-edit nil)
   :diminish lsp-mode)
 
-;(setq company-lsp-cache-candidates nil)
-;(setq lsp-enable-links nil)
+;; To enable extra information on the sideline (fixes, suggestions,
+;; documentation)
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 
 #+END_SRC
 
@@ -1675,16 +1681,7 @@ Programming languages working with Language Server Protocol
     (setq sbt:program-options '("-Dsbt.supershell=false"))
     )
 
-  (use-package lsp-mode
-    ;; Optional - enable lsp-mode automatically in scala files
-    :hook
-    (scala-mode . lsp)
-    (lsp-mode . lsp-lens-mode)
-    :config (setq lsp-prefer-flymake nil))
-
   (use-package lsp-metals
     :ensure t)
-
-  (use-package lsp-ui) ;; this is necessary to get info about compilation
 
 #+END_SRC
