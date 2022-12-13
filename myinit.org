@@ -1614,7 +1614,14 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
 ;; To enable extra information on the sideline (fixes, suggestions,
 ;; documentation)
 (use-package lsp-ui
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-border (face-foreground 'default))
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-delay 0.05))
 
 #+END_SRC
 
