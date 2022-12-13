@@ -798,19 +798,19 @@ Wymaga:
     (add-hook 'python-mode-hook 'company-mode))
 
 (defun python-mode-company-init ()
-  (setq company-backends '((company-jedi
+  (setq company-backends '((lsp-pyright
                                   company-etags
                                   company-dabbrev-code))))
 
 ;; wymaga instalacji jedi przez pip3
-(use-package company-jedi
-  :ensure t
-  :pin melpa-stable
-  :defer t
-  :diminish company-jedi-mode
-  :config
-    (require 'company)
-    (add-hook 'python-mode-hook 'python-mode-company-init))
+;(use-package company-jedi
+;  :ensure t
+;  :pin melpa-stable
+;  :defer t
+;  :diminish company-jedi-mode
+;  :config
+;    (require 'company)
+;    (add-hook 'python-mode-hook 'python-mode-company-init))
 
 ;; M-x pyenv-activate
 (use-package pyvenv
@@ -1643,6 +1643,26 @@ Programming languages working with Language Server Protocol
 ;  :config
 ;  (add-hook 'java-mode-hook 'lsp)
 ;  :diminish lsp-java)
+
+#+END_SRC
+
+** Python
+
+[[#table-of-contents][Go to: Table of Contents]]
+
+#+BEGIN_SRC emacs-lisp
+
+;; wymaga instalacji pyright przez pip3 lub po 1 uruchomieniu
+(use-package lsp-pyright
+  :ensure t
+  :pin melpa-stable
+  :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+  :init (when (executable-find "python3")
+          (setq lsp-pyright-python-executable-cmd "python3"))
+  :config
+  (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
+  (setq lsp-pyright-typechecking-mode "strict")
+  )
 
 #+END_SRC
 
