@@ -730,17 +730,20 @@ Wymaga:
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package ess
-  :ensure t
-  :pin melpa-stable
-  :defer t
-  :diminish ess-mode
-  :init
-  ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
-  ;; (w pliku *.r i w konsoli)
-  (add-hook 'ess-mode-hook
-            (lambda ()
-              (ess-toggle-underscore nil))))
+  (use-package ess
+    :ensure t
+    :pin melpa-stable
+    :defer t
+    :diminish ess-mode
+    :config
+    (setq inferior-julia-program-name "/usr/bin/julia")
+    (load "~/.emacs.d/elpa/ess-18.10.2/ess-site.elc")
+    :init
+    ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
+    ;; (w pliku *.r i w konsoli)
+    (add-hook 'ess-mode-hook
+              (lambda ()
+                (ess-toggle-underscore nil))))
 
 #+END_SRC
 
@@ -1445,12 +1448,12 @@ like with ESS and R, with C-c
 
   ;; some suggestions to try, tweak: https://hershsingh.net/blog/emacs-julia/
 
-    (use-package julia-mode
-      :ensure t
-      :pin melpa-stable
-      :config
-      (setq inferior-julia-program-name "/usr/bin/julia")
-      )
+   (use-package julia-mode
+     :ensure t
+     :pin melpa-stable
+     :init
+     (add-hook 'julia-mode-hook 'ess-julia-mode)
+     )
 
     (use-package julia-repl
       :ensure t
