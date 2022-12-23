@@ -324,6 +324,20 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 (electric-pair-mode 1) ; autoparied brackets
 #+END_SRC
 
+* Company
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! company
+  :ensure t
+  :defer t
+  :diminish company-mode
+  :config
+  (setq company-show-numbers t)
+  )
+
+#+END_SRC
+
 * Workspaces
 
 Z dokumnetacji doom-a: https://docs.doomemacs.org/latest/modules/ui/workspaces/
