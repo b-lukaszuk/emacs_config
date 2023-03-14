@@ -523,5 +523,6 @@ Wymaga (instalacja z terminala):
 * Julia
 
 #+BEGIN_SRC emacs-lisp
-(setq lsp-julia-default-environment "~/.julia/environment/v1.8")
+(setq lsp-julia-package-dir nil)
+(setq lsp-julia-default-environment "~/.julia/environments/v1.8/")
 #+END_SRC
