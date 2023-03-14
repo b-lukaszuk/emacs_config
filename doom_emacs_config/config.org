@@ -383,6 +383,19 @@ Mozna tez uzyc M-{1|2|3} aby isc do okreslonej workspace
 
 #+END_SRC
 
+* EIN
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; wyswietlanie plotow w buforze Emacs-a
+  ;; a nie w wyskakujacym oknie (domyslne)
+  (setq ein:output-area-inlined-images t)
+  ;; umieszczenie tego setq w use-package nic nie daje
+  ;; (ani w :config, ani w :init, ani w :custom,
+  ;; ani jako hook), nie wiem dlaczego, ale tak jest
+
+#+END_SRC
+
 * Avy
 
 wyszukuje litere na ekranie i do niej skacze
