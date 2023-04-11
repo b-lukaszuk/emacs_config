@@ -1464,8 +1464,8 @@ with marking code and executing it in REPL like with ESS and R, with C-c
   ;; julia> exit()
   (setq lsp-julia-package-dir nil)
   ;; this -J flag in the path below needs to be there
-  ;; replace ~/etc. in the path with /home/user-name/etc.
-  (setq lsp-julia-flags `("-J/home/oisezc/julia-1.8.3/myBLcompiled/languageserver.so"))
+  ;; replace '~/etc.' in the path with '/home/user-name/etc.' (no spaces after -J)
+  (setq lsp-julia-flags `("-J~/julia-1.8.3/myBLcompiled/languageserver.so"))
   ;; (require 'lsp-julia) must come after this!
 
   (use-package lsp-julia
