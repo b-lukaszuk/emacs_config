@@ -45,13 +45,12 @@
 - [[#pdf-tools][PDF Tools]]
 - [[#emacs-code-browser][Emacs Code Browser]]
 - [[#javascript-and-typescript][JS/TS]]
-- [[#Julia][Julia]]
+- [[#julia][julia]]
 - [[#web-mode][Web Mode]]
 - [[#emmet-mode][Emmet Mode]]
 - [[#which-key][Which Key]]
 - [[#emacs-x-window-manager][Emacs X Window Manager]]
 - [[#autosave-files][Autosave Files]]
-- [[#autorefresh-buffers][Autorefresh Buffers]]
 - [[#command-log-mode][Command Log Mode]]
 - [[#dumb-jump][Dumb Jump]]
 - [[#language-servers][Language Servers]]
@@ -726,25 +725,22 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 Wymaga:
 - R-a https://www.r-project.org/
-- Julia
+- Julia?
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package ess
-    :ensure t
-    :pin melpa-stable
-    :defer t
-    :diminish ess-mode
-    :config
-    (setq inferior-julia-program-name "/usr/bin/julia")
-    (load "~/.emacs.d/elpa/ess-18.10.2/ess-site.elc")
-    :init
-    ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
-    ;; (w pliku *.r i w konsoli)
-    (add-hook 'ess-mode-hook
-              (lambda ()
-                (ess-toggle-underscore nil))))
-
+(use-package ess
+  :ensure t
+  :pin melpa-stable
+  :defer t
+  :diminish ess-mode
+  :init
+  ;; inaczej piszac snake casem "_" jest zamieniane na "<-"
+  ;; (w pliku *.r i w konsoli)
+  (add-hook 'ess-mode-hook
+            (lambda ()
+              (ess-toggle-underscore nil)))
+  )
 #+END_SRC
 
 * Python
@@ -1113,6 +1109,7 @@ kawalki kodu dla szybszego pisania for-ow, definicji funkcji, klas, itd.
 
 dziala z roznymi jezykami programowania
 
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package yasnippet
@@ -1291,8 +1288,6 @@ Za: https://www.youtube.com/watch?v=0zuYCEzrchk
 
 ** node-js (moje funkcje)
 
-[[#table-of-contents][Go to: Table of Contents]]
-
 wywoluje w shellu komende: ~node nazwa_otwartego_pliku.js~
 
 lub
@@ -1324,8 +1319,6 @@ output wyswietla w minibuforze
 
 ** typescript (moje funkcje)
 
-[[#table-of-contents][Go to: Table of Contents]]
-
 wywoluje w shellu komende: ~tsc nazwa_otwartego_pliku.ts~
 
 output wyswietla w minibuforze
@@ -1354,8 +1347,6 @@ output wyswietla w minibuforze
 
 ** RJSX-mode
 
-[[#table-of-contents][Go to: Table of Contents]]
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package rjsx-mode
@@ -1373,8 +1364,6 @@ output wyswietla w minibuforze
 #+END_SRC
 
 ** Tide
-
-[[#table-of-contents][Go to: Table of Contents]]
 
 Wymaga:
 
@@ -1412,8 +1401,6 @@ Wymaga:
 
 ** Prettier
 
-[[#table-of-contents][Go to: Table of Contents]]
-
 wymaga: prettier (~npm install -g prettier~)
 
 #+BEGIN_SRC emacs-lisp
@@ -1430,7 +1417,7 @@ wymaga: prettier (~npm install -g prettier~)
   (setq
    prettier-js-args
    '("--single-quote" "true"
-     "--print-width" "120"))
+     "--print-width" "80")) ; 120 is considered to be OK
   )
 
 #+END_SRC
@@ -1439,34 +1426,57 @@ wymaga: prettier (~npm install -g prettier~)
 
 [[#table-of-contents][Go to: Table of Contents]]
 
-experiment, with julia (maybe I will stick with it, or I will abandon it)
-to start open .jl file and type M-x ess-julia-mode
-then you can to with marking code and executing it in REPL
-like with ESS and R, with C-c
+experiment, with julia (maybe I will stick with it, or I will abandon
+it) to start open .jl file and type M-x ess-julia-mode then you can to
+with marking code and executing it in REPL like with ESS and R, with C-c
 
 #+BEGIN_SRC emacs-lisp
 
   ;; some suggestions to try, tweak: https://hershsingh.net/blog/emacs-julia/
 
-   (use-package julia-mode
-     :ensure t
-     :pin melpa-stable
-     :init
-     (add-hook 'julia-mode-hook 'ess-julia-mode)
-     )
+  (use-package julia-mode
+    :ensure t
+    :pin melpa-stable
+    :config
+    (setq inferior-julia-program-name "/usr/bin/julia")
+    )
 
-    (use-package julia-repl
-      :ensure t
-      :pin melpa-stable
-      :hook (julia-mode . julia-repl-mode)
+  (use-package julia-repl
+    :ensure t
+    :pin melpa-stable
+    :hook (julia-mode . julia-repl-mode)
 
-      :init
-      (setenv "JULIA_NUM_THREADS" "8")
+    :init
+    (setenv "JULIA_NUM_THREADS" "8")
 
-      :config
-      ;; Set the terminal backend
-      (julia-repl-set-terminal-backend 'vterm)
-      )
+    :config
+    ;; Set the terminal backend
+    (julia-repl-set-terminal-backend 'vterm)
+    )
+
+  ;; how to create languageserver.so see below (shell> pkg> juli> modes in julia)
+  ;; shell> mkdir NewSysImageEnv
+  ;; shell> cd NewSysImageEnv
+  ;; julia> using PackageCompiler
+  ;; pkg> activate .
+  ;; julia> add LanguageServer
+  ;; julia> create_sysimage(["LanguageServer"]; sysimage_path="languageserver.so")
+  ;; julia> exit()
+  (setq lsp-julia-package-dir nil)
+  ;; this -J flag in the path below needs to be there
+  ;; replace ~/etc. in the path with /home/user-name/etc.
+  (setq lsp-julia-flags `("-J/home/oisezc/julia-1.8.3/myBLcompiled/languageserver.so"))
+  ;; (require 'lsp-julia) must come after this!
+
+  (use-package lsp-julia
+    :pin melpa-stable
+    :ensure t
+    :config
+    (setq lsp-julia-default-environment "~/.julia/environments/v1.8")
+    )
+
+  (add-hook 'julia-mode-hook #'lsp-mode)
+  (add-hook 'julia-mode-hook #'lsp)
 
 #+END_SRC
 
