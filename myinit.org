@@ -1460,7 +1460,7 @@ with marking code and executing it in REPL like with ESS and R, with C-c
   ;; shell> pwd
   ;; julia> using PackageCompiler
   ;; pkg> activate .
-  ;; julia> add LanguageServer
+  ;; pkg> add LanguageServer
   ;; julia> create_sysimage(["LanguageServer"]; sysimage_path="languageserver.so")
   ;; julia> exit()
   (setq lsp-julia-package-dir nil)
