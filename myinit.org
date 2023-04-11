@@ -45,7 +45,7 @@
 - [[#pdf-tools][PDF Tools]]
 - [[#emacs-code-browser][Emacs Code Browser]]
 - [[#javascript-and-typescript][JS/TS]]
-- [[#julia][julia]]
+- [[#julia][Julia]]
 - [[#web-mode][Web Mode]]
 - [[#emmet-mode][Emmet Mode]]
 - [[#which-key][Which Key]]
@@ -1455,15 +1455,16 @@ with marking code and executing it in REPL like with ESS and R, with C-c
     )
 
   ;; how to create languageserver.so see below (shell> pkg> juli> modes in julia)
-  ;; shell> mkdir NewSysImageEnv
-  ;; shell> cd NewSysImageEnv
+  ;; shell> mkdir ~/julia-1.8.3/myBLcompiled
+  ;; shell> cd ~/julia-1.8.3/myBLcompiled/
+  ;; shell> pwd
   ;; julia> using PackageCompiler
   ;; pkg> activate .
   ;; julia> add LanguageServer
   ;; julia> create_sysimage(["LanguageServer"]; sysimage_path="languageserver.so")
   ;; julia> exit()
   (setq lsp-julia-package-dir nil)
-  ;; this -J flag in the path below needs to be there
+  ;; this '-J' flag in the path below needs to be there
   ;; replace '~/etc.' in the path with '/home/user-name/etc.' (no spaces after -J)
   (setq lsp-julia-flags `("-J~/julia-1.8.3/myBLcompiled/languageserver.so"))
   ;; (require 'lsp-julia) must come after this!
