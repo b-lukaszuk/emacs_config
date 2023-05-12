@@ -1479,6 +1479,31 @@ with marking code and executing it in REPL like with ESS and R, with C-c
   (add-hook 'julia-mode-hook #'lsp-mode)
   (add-hook 'julia-mode-hook #'lsp)
 
+  ;; quick and dirty code formatting, requires JuliaFormatter
+  ;; how to create jlformatter.so see below (shell> pkg> juli> modes in julia)
+  ;; shell> cd ~/julia-1.8.3/myBLcompiled/
+  ;; shell> pwd
+  ;; julia> using PackageCompiler
+  ;; pkg> activate .
+  ;; pkg> add JuliaFormatter
+  ;; julia> create_sysimage(["JuliaFormatter"]; sysimage_path="jlformatter.so")
+  ;; julia> exit()
+  (defun my/jl-format-this-file ()
+    (interactive) ; potrzebne do wywolania przez M-x
+
+    (shell-command-to-string
+     (concat
+      "julia --sysimage /full_path_to_jlformatter.so/jlformatter.so "
+      "-E 'JuliaFormatter.format_file("
+      "\""
+      (buffer-file-name)
+      "\""
+      ")'"
+      " | " (buffer-file-name)
+      )
+     )
+    )
+
 #+END_SRC
 
 * Web Mode
