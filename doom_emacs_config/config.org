@@ -528,5 +528,5 @@ Wymaga (instalacja z terminala):
 (setq lsp-enable-folding t)
 (setq lsp-folding-range-limit 100)
 ;; languageserver.so needs to be created with PackageCompiler.jl
-(setq lsp-julia-flags `("-J/home/oisezc/julia-1.8.3/myBLcompiled/languageserver.so"))
+(setq lsp-julia-flags `("-J/home/user_name/julia-1.8.3/myBLcompiled/languageserver.so"))
 #+END_SRC
