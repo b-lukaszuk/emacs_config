@@ -525,4 +525,8 @@ Wymaga (instalacja z terminala):
 #+BEGIN_SRC emacs-lisp
 (setq lsp-julia-package-dir nil)
 (setq lsp-julia-default-environment "~/.julia/environments/v1.8/")
+(setq lsp-enable-folding t)
+(setq lsp-folding-range-limit 100)
+;; languageserver.so needs to be created with PackageCompiler.jl
+(setq lsp-julia-flags `("-J/home/oisezc/julia-1.8.3/myBLcompiled/languageserver.so"))
 #+END_SRC
