@@ -953,6 +953,11 @@ otwiera repl-a haskella i laduje do niego aktualny plik
   :pin melpa-stable
   :diminish haskell-mode)
 
+;; haskell-mode supports haskel-stylish
+;; https://github.com/haskell/stylish-haskell
+(custom-set-variables
+ '(haskell-stylish-on-save t))
+
 (use-package haskell-indentation-mode
   :pin melpa-stable
   :diminish haskell-indentation-mode
