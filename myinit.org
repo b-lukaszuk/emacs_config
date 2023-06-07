@@ -942,6 +942,7 @@ zamykanie panelu ~q~
 
 Wymaga:
 - [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
+- stylish-haskell, najlepiej: ~apt-get install stylish-haskell~
 
 Bedac w otwartym pliku *.hs C-c C-l
 otwiera repl-a haskella i laduje do niego aktualny plik
@@ -954,6 +955,7 @@ otwiera repl-a haskella i laduje do niego aktualny plik
   :diminish haskell-mode)
 
 ;; haskell-mode supports haskel-stylish
+;; requires stylish-haskell from the link below
 ;; https://github.com/haskell/stylish-haskell
 (custom-set-variables
  '(haskell-stylish-on-save t))
