@@ -942,6 +942,11 @@ zamykanie panelu ~q~
 Wymaga:
 - [[https://www.haskell.org/][Haskell]], najlepiej: ~apt-get install haskell-platform~
 - stylish-haskell, najlepiej: ~apt-get install stylish-haskell~
+- hlint for code writting tips
+  https://github.com/ndmitchell/hlint
+  or
+  ~apt-get install hlint~
+  (usage M-x !hlint .)
 
 Bedac w otwartym pliku *.hs C-c C-l
 otwiera repl-a haskella i laduje do niego aktualny plik
@@ -958,6 +963,17 @@ otwiera repl-a haskella i laduje do niego aktualny plik
 ;; https://github.com/haskell/stylish-haskell
 (custom-set-variables
  '(haskell-stylish-on-save t))
+
+;; https://github.com/mihaimaruseac/hindent
+;; or apt-get install hindent
+;; C-M-\ reformats the current region.
+(use-package hindent
+  :ensure t
+  :pin melpa
+  :diminish hindent)
+
+(add-to-list 'load-path "/path/to/hindent/elisp")
+(add-hook 'haskell-mode-hook #'hindent-mode)
 
 (use-package haskell-indentation-mode
   :pin melpa
