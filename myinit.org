@@ -120,7 +120,7 @@ Skroty zapewniane przez ten mod: C-M-= oraz C-M--
 
 (use-package default-text-scale
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish default-text-scale
   :bind
   ("C-M-=" . #'default-text-scale-increase)
@@ -141,7 +141,7 @@ w use-package (nie wysietla nazwy minor moda na pasku)
 
 (use-package diminish
   :ensure t
-  :pin melpa-stable)
+  :pin melpa)
 
 #+END_SRC
 
@@ -159,7 +159,7 @@ Nastepca moda/biblioteki cl, funckje common lispa sa poprzedzone przedrostkiem "
 
 (use-package cl-lib
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t)
 
 #+END_SRC
@@ -466,7 +466,7 @@ miedzy plikami w folderze i jego podfolderach
 
 (use-package org
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :bind
   (:map org-mode-map ; uzywanie napisanych przeze mnie funkcji
@@ -527,7 +527,7 @@ wyszukuje litere na ekranie i do niej skacze
 
 (use-package avy
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish avy-mode
   :bind
@@ -548,7 +548,6 @@ wyszukuje litere na ekranie i do niej skacze
 
 (use-package paredit
   :ensure t
-  ;; tu bez pin melpa-stable bo nie moze znalezc pasujacej wersji
   :pin melpa
   :defer t
   :diminish paredit-mode
@@ -570,7 +569,7 @@ wyszukuje litere na ekranie i do niej skacze
 
   (use-package evil
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     ;; don't block emacs when starting, load evil immediately after startup
     :defer 0.1
     :init
@@ -611,7 +610,7 @@ wyszukuje litere na ekranie i do niej skacze
   (use-package evil-collection
     :after evil
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :diminish evil-collection-mode
     :config
     (evil-collection-init))
@@ -619,14 +618,14 @@ wyszukuje litere na ekranie i do niej skacze
   (use-package evil-surround
     :after evil
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :diminish evil-surround-mode
     :config (global-evil-surround-mode 1))
 
   (use-package elscreen
     :after evil
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :diminish elscreen-mode
     :bind
     (:map evil-normal-state-map
@@ -651,7 +650,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 (use-package window-numbering
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish window-numbering-mode
   :config
   (window-numbering-mode))
@@ -682,7 +681,7 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 (use-package helm
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish helm-mode
   :bind
@@ -693,7 +692,9 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
   :config
   (helm-mode 1))
 
-(use-package helm-config)
+;(use-package helm-config
+;  :pin melpa
+;  :ensure t)
 
 #+END_SRC
 
@@ -731,7 +732,7 @@ Wymaga:
 
 (use-package ess
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish ess-mode
   :init
@@ -764,7 +765,7 @@ Wymaga:
 
 (use-package flycheck
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish flycheck-mode
   :init
   (global-flycheck-mode t))
@@ -773,7 +774,7 @@ Wymaga:
  ;; M-x elpy-config i sprawdzic czy ustawienia sa poprawne
 (use-package elpy
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish elpy-mode
   :init
@@ -805,7 +806,7 @@ Wymaga:
 ;; wymaga instalacji jedi przez pip3
 ;(use-package company-jedi
 ;  :ensure t
-;  :pin melpa-stable
+;  :pin melpa
 ;  :defer t
 ;  :diminish company-jedi-mode
 ;  :config
@@ -815,7 +816,7 @@ Wymaga:
 ;; M-x pyenv-activate
 (use-package pyvenv
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish pyvenv-mode
   :hook ((python-mode . pyvenv-mode)))
 
@@ -849,8 +850,6 @@ Wymaga:
 (use-package ein
   :ensure t
   :after elpy-mode
-  ;; tu melpa-stable nie mialo zaleznosci websocket
-  ;; w odpowiedniej wersji
   :pin melpa
   :defer t
   :diminish ein-mode)
@@ -874,7 +873,7 @@ Wymaga:
 
 (use-package zoom-window
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish zoom-window-mode
   :bind
   (("C-x C-z" . zoom-window-zoom)))
@@ -896,7 +895,7 @@ Jak jest duzo plikow w danym commitcie to zauwazalnie zwalnia
 
 (use-package magit
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish magit-mode
   :bind
@@ -926,7 +925,7 @@ zamykanie panelu ~q~
 
 (use-package neotree
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish neotree-mode
   :bind
   (("<f8>" . neotree-dir))
@@ -951,7 +950,7 @@ otwiera repl-a haskella i laduje do niego aktualny plik
 
 (use-package haskell-mode
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish haskell-mode)
 
 ;; haskell-mode supports haskel-stylish
@@ -961,12 +960,12 @@ otwiera repl-a haskella i laduje do niego aktualny plik
  '(haskell-stylish-on-save t))
 
 (use-package haskell-indentation-mode
-  :pin melpa-stable
+  :pin melpa
   :diminish haskell-indentation-mode
   :hook haskell-mode)
 
 (use-package interactive-haskell-mode
-  :pin melpa-stable
+  :pin melpa
   :diminish interactive-haskell-mode
   :hook haskell-mode
   :bind
@@ -1000,7 +999,7 @@ Wymaga:
 
 (use-package slime
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish slime-mode
   :config
   (setq inferior-lisp-program "sbcl"))
@@ -1084,7 +1083,7 @@ Wymaga:
 
 (use-package company
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish company-mode
   :bind (("C-c k" . company-complete)
          :map company-active-map
@@ -1121,14 +1120,14 @@ dziala z roznymi jezykami programowania
 
 (use-package yasnippet
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish yasnippet-mode
   :init
     (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish yasnippet-snippets-mode)
 
 #+END_SRC
@@ -1180,7 +1179,7 @@ Kolory sa subtelne
 
 (use-package rainbow-delimiters
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :defer t
   :diminish rainbow-delimiters-mode
   :init
@@ -1233,7 +1232,7 @@ Wymaga (instalacja z terminala):
 
 (use-package pdf-tools
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish pdf-tools-mode
   ;; wylaczenie nlinum moda w pdf-toolsie
   ;; inaczej 'dusi' Emacs-a
@@ -1443,14 +1442,14 @@ with marking code and executing it in REPL like with ESS and R, with C-c
 
   (use-package julia-mode
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :config
     (setq inferior-julia-program-name "/usr/bin/julia")
     )
 
   (use-package julia-repl
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :hook (julia-mode . julia-repl-mode)
 
     :init
@@ -1477,7 +1476,7 @@ with marking code and executing it in REPL like with ESS and R, with C-c
   ;; (require 'lsp-julia) must come after this!
 
   (use-package lsp-julia
-    :pin melpa-stable
+    :pin melpa
     :ensure t
     :config
     (setq lsp-julia-default-environment "~/.julia/environments/v1.8")
@@ -1521,7 +1520,7 @@ with marking code and executing it in REPL like with ESS and R, with C-c
 
   (use-package web-mode
     :ensure t
-    :pin melpa-stable
+    :pin melpa
     :defer t
     :diminish web-mode
     :after (emmet-mode))
@@ -1554,7 +1553,7 @@ pokazuje dostepne opcje/kontynuacje (kbd) po wcisnieciu danego klawisza
 
 (use-package which-key
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :init (which-key-mode)
   :diminish which-key-mode
   :config
@@ -1642,7 +1641,7 @@ Skakanie do definicji funkcji, itd
 
 (use-package dumb-jump
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :diminish dump-jump-mode)
 
 #+END_SRC
@@ -1662,7 +1661,7 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
 ;; https://ianyepan.github.io/posts/emacs-ide/
 
 (use-package lsp-mode
-  :pin melpa-stable
+  :pin melpa
   :ensure t
   :hook ((scala-mode) . lsp)
   (lsp-mode . lsp-lens-mode)
@@ -1678,6 +1677,8 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
 ;; To enable extra information on the sideline (fixes, suggestions,
 ;; documentation)
 (use-package lsp-ui
+  :pin melpa
+  :ensure t
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable nil)
@@ -1702,7 +1703,7 @@ Programming languages working with Language Server Protocol
 #+BEGIN_SRC emacs-lisp
 
 ;(use-package lsp-java
-;  :pin melpa-stable
+;  :pin melpa
 ;  :ensure t
 ;  :config
 ;  (add-hook 'java-mode-hook 'lsp)
@@ -1719,7 +1720,7 @@ Programming languages working with Language Server Protocol
 ;; wymaga instalacji pyright przez pip3 lub po 1 uruchomieniu
 (use-package lsp-pyright
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
   :init (when (executable-find "python3")
           (setq lsp-pyright-python-executable-cmd "python3"))
