@@ -1104,7 +1104,7 @@ Wymaga:
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
-         ("<return>" . company-complete-selection)
+         ("C-y" . company-complete-selection)
          ("<escape>" . company-abort))
   :hook (scala-mode . company-mode)
   :config
@@ -1112,7 +1112,7 @@ Wymaga:
   (setq lsp-completion-provider :capf)
   (setq company-idle-delay 0.1)
   (setq company-minimum-prefix-length 3)
-  (setq company-auto-complete t)
+  (setq company-auto-complete nil)
   (setq company-show-numbers t)
   (setq company-quickhelp-mode 1)
   (setq company-quickhelp-mode 0.2)
