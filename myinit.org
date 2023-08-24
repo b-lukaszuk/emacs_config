@@ -1114,8 +1114,7 @@ Wymaga:
   (setq company-minimum-prefix-length 3)
   (setq company-auto-complete nil)
   (setq company-show-numbers t)
-  (setq company-quickhelp-mode 1)
-  (setq company-quickhelp-mode 0.2)
+  (setq company-quickhelp-mode 0.5)
   ;; aby sugestie byly case-sensitive
   (setq company-dabbrev-downcase nil)
   )
