@@ -104,6 +104,10 @@
   ; M-x customize-variable RET fill-column
 
   (add-to-list 'image-types 'svg)
+
+  (global-display-line-numbers-mode 1)
+  (setq display-line-numbers-type 'relative)
+
 #+END_SRC
 
 * Default Text Scale
@@ -1056,7 +1060,6 @@ Wymaga:
   ;; tj. wyswietlenie dodatkowych informacji
   ;; (display w stylu outputu komendy: ls -la)
   (dired-mode . dired-hide-details-mode)
-  (dired-mode . nlinum-relative-mode)
   :bind
   (:map dired-mode-map
 	("\y" . #'my-put-file-name-on-clipboard))
@@ -1252,7 +1255,7 @@ Wymaga (instalacja z terminala):
   ;; inaczej 'dusi' Emacs-a
   :init
   (add-hook 'pdf-tools-setup-hook (lambda ()
-				    (nlinum-relative-mode -1)))
+				    (global-display-line-numbers-mode -1)))
   :config
   ;; initialise
   (pdf-tools-install)
