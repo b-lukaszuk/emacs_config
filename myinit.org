@@ -1418,7 +1418,7 @@ Wymaga:
     (add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
     (add-to-list 'auto-mode-alist '("\\.json\\'" . typescript-mode))
 
-    (add-hook 'typescript-mode-hook '(lambda () (emmet-mode 1)))
+    (add-hook 'typescript-mode-hook #'(lambda () (emmet-mode 1)))
 
 #+END_SRC
 
