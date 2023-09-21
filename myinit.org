@@ -660,20 +660,6 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
 
 #+END_SRC
 
-* Nlinum Relative
-
-[[#table-of-contents][Go to: Table of Contents]]
-
-#+BEGIN_SRC emacs-lisp
-
-(use-package nlinum-relative
-  :ensure t
-  :pin melpa
-  :diminish nlinum-relative-mode
-  :hook (prog-mode . nlinum-relative-mode))
-
-#+END_SRC
-
 * Helm
 
 [[#table-of-contents][Go to: Table of Contents]]
