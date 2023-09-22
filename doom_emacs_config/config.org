@@ -183,8 +183,8 @@ czas nie moze obejmowac 00:00, tj. np. 23:57-00:03 spowoduje bledne obliczenia
     ;; (wczesniej robilem tak z klawiatury)
     ;; (samo evilowe "V" zostawia kursor na pocz linijki)
     ;; (a evilowa sekwencja: "0v$"), coz, nie chce mi sie jej ciagle wklepywac
-    (evil-digit-argument-or-evil-beginning-of-line)
-    (evil-visual-block)
+    (evil-beginning-of-line)
+    (evil-visual-char)
     (evil-end-of-line)
 
       ;;; teraz linijki obliczajace czas i wstawiajace min na koncu linijki
