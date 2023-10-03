@@ -478,6 +478,7 @@ miedzy plikami w folderze i jego podfolderach
 	("C-c w" . #'my/wiersz-podlicz)
 	("C-c t" . #'my/tydzien-podlicz)))
   ;; patrz powyzej
+(add-hook 'org-mode-hook (lambda() (display-line-numbers-mode -1)))
 
 #+END_SRC
 
@@ -1795,5 +1796,7 @@ Requires cmake, and libtool-bin
 (use-package vterm
   :ensure t
   :pin melpa)
+
+(add-hook 'vterm-mode-hook (lambda() (display-line-numbers-mode -1)))
 
 #+END_SRC
