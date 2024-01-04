@@ -89,6 +89,14 @@ Pamietac o zrobieniu '~/.emacs.d/bin/doom sync' z terminala
   ;; they are implemented.
 
 #+END_SRC
+* Fill column indicator
+
+#+BEGIN_SRC emacs-lisp
+
+(global-display-fill-column-indicator-mode t)
+
+#+END_SRC
+
 * Wstaw-godz:min
 
 (wstawia aktualny czas w formacie "HH:MM")
