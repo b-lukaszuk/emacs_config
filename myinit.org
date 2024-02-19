@@ -108,6 +108,8 @@
   (global-display-line-numbers-mode 1)
   (setq display-line-numbers-type 'relative)
 
+  (setq warning-minimum-level :error)
+
 #+END_SRC
 
 * Default Text Scale
