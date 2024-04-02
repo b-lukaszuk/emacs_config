@@ -90,6 +90,8 @@ Pamietac o zrobieniu '~/.emacs.d/bin/doom sync' z terminala
   ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
   ;; they are implemented.
 
+  (setq doom-font (font-spec :size 18))
+
 #+END_SRC
 * Fill column indicator
 
@@ -397,6 +399,9 @@ Mozna tez uzyc M-{1|2|3} aby isc do okreslonej workspace
 
 #+BEGIN_SRC emacs-lisp
 
+  (use-package! ein-notebook
+    :bind (:map ein:notebook-mode-map
+                ("C-c C-s" . ein:tb-show)))
   ;; wyswietlanie plotow w buforze Emacs-a
   ;; a nie w wyskakujacym oknie (domyslne)
   (setq ein:output-area-inlined-images t)
