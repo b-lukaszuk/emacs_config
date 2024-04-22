@@ -1657,7 +1657,7 @@ Skakanie do definicji funkcji, itd
 
 #+END_SRC
 
-* Language servers
+* Language servers (LSPs)
 
 [[#table-of-contents][Go to: Table of Contents]]
 
@@ -1676,6 +1676,7 @@ Robienie z Emacs-a mojego customizowalnego IDE dla niektorych jezykow
   :ensure t
   :hook ((scala-mode) . lsp)
   (lsp-mode . lsp-lens-mode)
+  (rust-mode . lsp)
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
