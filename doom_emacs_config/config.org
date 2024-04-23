@@ -558,3 +558,18 @@ Wymaga (instalacja z terminala):
 ;; languageserver.so needs to be created with PackageCompiler.jl
 (setq lsp-julia-flags `("-J/home/user_name/julia-1.8.3/myBLcompiled/languageserver.so"))
 #+END_SRC
+
+* Language Server Protocols (LSPs)
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! lsp-mode
+  :ensure t
+  :diminish lsp-mode
+  :bind (:map lsp-mode-map
+         ("C-c d" . lsp-describe-thing-at-point))
+  :config
+  (setq lsp-prefer-capf t)
+)
+
+#+END_SRC
