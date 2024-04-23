@@ -353,8 +353,21 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   :ensure t
   :defer t
   :diminish company-mode
+  :bind (("C-c k" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("C-y" . company-complete-selection)
+         ("<escape>" . company-abort))
   :config
+  (setq company-idle-delay 0.1)
+  (setq company-minimum-prefix-length 3)
+  (setq company-auto-complete nil)
+  (setq lsp-completion-provider :capf)
   (setq company-show-numbers t)
+  (setq company-quickhelp-mode 0.5)
+  ;; aby sugestie byly case-sensitive
+  (setq company-dabbrev-downcase nil)
   )
 
 #+END_SRC
