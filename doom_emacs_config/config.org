@@ -3,7 +3,7 @@
 #+STARTUP: indent
 #+OPTIONS: \n: t
 
-Pamietac o zrobieniu '~/.emacs.d/bin/doom sync' z terminala
+Pamietac o zrobieniu '~/.config/emacs//bin/doom sync' z terminala
 
 * Default doom config.el
 
