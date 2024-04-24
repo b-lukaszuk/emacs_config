@@ -391,7 +391,8 @@ Z dokumnetacji doom-a: https://docs.doomemacs.org/latest/modules/ui/workspaces/
 | workspace/delete               | SPC TAB d            | Delete the current workspace                               |
 | workspace/kill-session         | SPC TAB x / :sclear  | Clears the current session (kills all windows and buffers) |
 
-Mozna tez uzyc M-{1|2|3} aby isc do okreslonej workspace
+Mozna tez uzyc M-{1|2|3} lub Spc-Tab-{1|2|3} aby isc do okreslonej workspace.
+Lepiej to drugie, po dodaniu windows-numbering M-{1|2|3} sluzy zmianie okna
 
 * Iedit
 
@@ -571,5 +572,17 @@ Wymaga (instalacja z terminala):
   :config
   (setq lsp-prefer-capf t)
 )
+
+#+END_SRC
+
+* Window Numbering
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package! window-numbering
+  :ensure t
+  :diminish window-numbering-mode
+  :config
+  (window-numbering-mode))
 
 #+END_SRC
