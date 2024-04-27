@@ -51,7 +51,7 @@ Pamietac o zrobieniu '~/.config/emacs//bin/doom sync' z terminala
 
   ;; This determines the style of line numbers in effect. If set to `nil', line
   ;; numbers are disabled. For relative line numbers, set this to `relative'.
-  (setq display-line-numbers-type t)
+  ;; (setq display-line-numbers-type t)
 
   ;; If you use `org' and don't want your org files in the default location below,
   ;; change `org-directory'. It must be set before org loads!
@@ -464,18 +464,23 @@ Do zabicia pozostalych buforow (oprocz tego w ktorym aktualnie jestesmy)
 
 Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 
+Niepotrzebne, uzywac doom/kill-other-buffers (SPC b O)
+
 #+BEGIN_SRC emacs-lisp
 
-(defun kill-other-buffers ()
-  (interactive)
-    (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
+;; (defun kill-other-buffers ()
+;;   (interactive)
+;;     (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
 #+END_SRC
 
 * Relatywne numerowanie linii
 
+pamietac o wylaczeni global-display-line-numbers-mode np. w pdf-tools ie
+
 #+BEGIN_SRC emacs-lisp
 
+(global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 
 #+END_SRC
@@ -504,6 +509,11 @@ Przydatene jesli sie ich za duzo nazbieralo po dniu pracy i ciezko manewrowac)
 ;;; wiec nie trzeba go sciagac, ladowac, itd.
 (use-package! dired
   ;; wcisniecie "(" powoduje wlaczenie/wylaczenie domyslnego wyswietlania
+  :hook
+  ;; wcisniecie "(" powoduje wlaczenie domyslnego wyswietlania
+  ;; tj. wyswietlenie dodatkowych informacji
+  ;; (display w stylu outputu komendy: ls -la)
+  (dired-mode . dired-hide-details-mode)
   ;; tj. wyswietlenie dodatkowych informacji
   :bind
   (:map dired-mode-map
