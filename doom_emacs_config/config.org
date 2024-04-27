@@ -45,9 +45,9 @@ Pamietac o zrobieniu '~/.config/emacs//bin/doom sync' z terminala
   ;; `load-theme' function. This is the default:
   ;; (setq doom-theme 'doom-theme')
   ;; (setq doom-theme 'doom-dracula)
-  ;; (setq doom-theme 'wheatgrass)
+  (setq doom-theme 'wheatgrass)
   ;; (setq doom-theme 'doom-gruvbox)
-  (setq doom-theme 'tsdh-dark)
+  ;; (setq doom-theme 'tsdh-dark)
 
   ;; This determines the style of line numbers in effect. If set to `nil', line
   ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -91,6 +91,14 @@ Pamietac o zrobieniu '~/.config/emacs//bin/doom sync' z terminala
   ;; they are implemented.
 
   (setq doom-font (font-spec :size 18))
+
+  ;; highlight line with the cursor, preserving the colours.
+  ;; load-theme -> themy przy ktorych te ustawienia sa ok
+  ;; ciemny: wheatgras, misterioso, tsdh
+  ;; jasny: tsdh-light, light-blue
+  (global-hl-line-mode +1)
+  (set-face-background 'hl-line "gray15")
+  (set-face-foreground 'highlight nil)
 
 #+END_SRC
 * Fill column indicator
