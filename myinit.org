@@ -684,9 +684,17 @@ zamiast domyslnego Emacsowego C-x o (Ctrl+x o)
   :config
   (helm-mode 1))
 
-;(use-package helm-config
-;  :pin melpa
-;  :ensure t)
+(use-package helm-files
+  :diminish helm-find-files
+  :bind
+  (
+   :map helm-find-files-map
+   ("C-h" . helm-find-files-up-one-level)
+   ("C-l" . helm-ff-RET)
+   )
+  :config
+  (helm-mode 1)
+  )
 
 #+END_SRC
 
