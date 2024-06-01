@@ -372,7 +372,7 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
   (setq company-minimum-prefix-length 3)
   (setq company-auto-complete nil)
   (setq lsp-completion-provider :capf)
-  (setq company-show-numbers t)
+  (setq company-show-quick-access 'left) ; shows numbers left to hints
   (setq company-quickhelp-mode 0.5)
   ;; aby sugestie byly case-sensitive
   (setq company-dabbrev-downcase nil)
