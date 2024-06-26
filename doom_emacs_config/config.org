@@ -300,7 +300,12 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+BEGIN_SRC emacs-lisp
 
-(setq org-roam-directory "~/RoamNotes")
+(use-package! org-roam
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/RoamNotes")
+  )
 
 #+END_SRC
 
