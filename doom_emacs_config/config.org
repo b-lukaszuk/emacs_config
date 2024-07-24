@@ -615,6 +615,15 @@ Wymaga (instalacja z terminala):
   (setq lsp-prefer-capf t)
 )
 
+;; completion in *.jl files
+(use-package lsp-julia
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.8")
+  )
+
+(add-hook 'julia-mode-hook #'lsp-mode)
+(add-hook 'julia-mode-hook #'lsp)
+
 #+END_SRC
 
 * Window Numbering
