@@ -426,6 +426,14 @@ Lepiej to drugie, po dodaniu windows-numbering M-{1|2|3} sluzy zmianie okna
 
 #+BEGIN_SRC emacs-lisp
 
+  (use-package! ein
+    :init
+    (setq ein:use-auto-complete t
+          ein:use-smartrep t)
+    :config
+    (setq ein:completion-backend 'ein:use-company-backend)
+   )
+
   (use-package! ein-notebook
     :bind (:map ein:notebook-mode-map
                 ("C-c C-s" . ein:tb-show)))
@@ -435,6 +443,17 @@ Lepiej to drugie, po dodaniu windows-numbering M-{1|2|3} sluzy zmianie okna
   ;; umieszczenie tego setq w use-package nic nie daje
   ;; (ani w :config, ani w :init, ani w :custom,
   ;; ani jako hook), nie wiem dlaczego, ale tak jest
+
+  ;; ensures completion in EIN buffer running python mode
+  ;; perhaps jedi pkg alone would work as well
+  (use-package! company-jedi
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-jedi))
+
+  (after! python
+    (set-company-backend! 'python-mode
+      '(company-jedi :with company-capf)))
 
 #+END_SRC
 
