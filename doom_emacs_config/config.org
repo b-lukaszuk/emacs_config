@@ -45,6 +45,8 @@ Pamietac o zrobieniu '~/.config/emacs/bin/doom sync' z terminala
   ;; `load-theme' function. This is the default:
   ;; (setq doom-theme 'doom-theme')
   ;; (setq doom-theme 'doom-dracula)
+  ;; (setq doom-theme 'doom-oceanic-next)
+  (setq doom-theme 'modus-vivendi)
   (setq doom-theme 'wheatgrass)
   ;; (setq doom-theme 'doom-gruvbox)
   ;; (setq doom-theme 'tsdh-dark)
