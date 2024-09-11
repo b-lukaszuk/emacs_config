@@ -283,6 +283,33 @@ podlicza sume minut (cyfry przed " min") i sume pln (cyfry przed " pln") z zazna
 
 #+END_SRC
 
+* Remove trailing whitespaces and tabs
+
+#+BEGIN_SRC emacs-lisp
+
+(defun my/trim-trailing-whitespace-chars (tekst)
+  "trims strayed trailing whitespaces and tabs from the code"
+  (replace-regexp-in-string
+   "\t+$" "" (replace-regexp-in-string " +$" "" tekst)))
+
+(defun my/remove-trailing-whitespaces-from-curr-buffer ()
+  "removes trailing whitespace chars (spaces and tabs)
+  from end of lines"
+  (interactive)
+
+  (let ((poz-startowa (point))
+	(tekst-z-tego-bufora
+	 (buffer-substring-no-properties (point-min) (point-max))))
+    (delete-region (point-min) (point-max)) ; usuniecie tekstu z bufora
+					; zastapienie czystszym tesktem
+    (insert (my/trim-trailing-whitespace-chars tekst-z-tego-bufora))
+					; powrot do pozycji startowej
+    (goto-char poz-startowa))
+    (message "trailing whtiespaces ( +$) and tabs (\t+$) has been removed"))
+
+
+#+END_SRC
+
 * Org-mode
 
 #+BEGIN_SRC emacs-lisp
